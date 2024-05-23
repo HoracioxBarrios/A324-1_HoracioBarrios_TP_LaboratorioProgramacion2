@@ -9,7 +9,7 @@ namespace Entidades
     public class Mesa
     {
         private int _cantidadComnsales;
-        private Mesero mozo;
+        private Mesero _mozo;
         
         public Mesa(int cantidadComnsales) 
         {
@@ -17,7 +17,7 @@ namespace Entidades
         }
         public Mesa(int cantidadComnsales, Mesero mozo) : this(cantidadComnsales)
         {            
-            this.mozo = mozo;
+            _mozo = mozo;
         }
 
 
