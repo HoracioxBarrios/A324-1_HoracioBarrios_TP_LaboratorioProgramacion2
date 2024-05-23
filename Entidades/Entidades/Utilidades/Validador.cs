@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
-{ 
+namespace Entidades.Utilidades
+{
     /// <summary>
     /// Class para Validar Datos
     /// </summary>
@@ -22,7 +22,7 @@ namespace Entidades
         {
             bool esValido = false;
             if (!string.IsNullOrEmpty(dato))
-            {                
+            {
                 esValido = true;
             }
             return esValido;
@@ -38,7 +38,7 @@ namespace Entidades
         public static bool ValidarLongitudCadea(string dato, int longitudMaxima)
         {
             bool esValido = false;
-            if(dato.Length <= longitudMaxima)
+            if (dato.Length <= longitudMaxima)
             {
                 esValido = true;
             }
