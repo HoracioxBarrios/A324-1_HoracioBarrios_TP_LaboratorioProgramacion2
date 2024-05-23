@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Entidades.Enumerables;
 
 namespace Entidades
 {
@@ -9,12 +10,16 @@ namespace Entidades
     {
         private string? _nombre;
         private string? _apellido;
+        private string? _direccion;
+        private string? _contacto;
+        private decimal _salario;
+        private ERolEmpleado _rol;
 
-        protected Empleado(string nombre, string apellido)
+        protected Empleado(string nombre, string apellido,ERolEmpleado rol)
         {
             Nombre = nombre;
             Apellido = apellido;
-
+            _rol = rol;
         }
         public string Nombre
         {
@@ -38,5 +43,12 @@ namespace Entidades
                 }
             }
         }
+        public string Direccion
+        {
+            get { return _direccion; }
+            set { _direccion = value; }
+        }
+
+
     }
 }

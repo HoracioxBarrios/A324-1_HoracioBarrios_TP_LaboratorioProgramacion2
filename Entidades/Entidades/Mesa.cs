@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entidades.Enumerables;
 
 namespace Entidades
 {
@@ -10,6 +11,7 @@ namespace Entidades
     {
         private int _cantidadComnsales;
         private Mesero _mozo;
+        private EStateMesa _estado = EStateMesa.Cerrada;
         
         public Mesa(int cantidadComnsales) 
         {

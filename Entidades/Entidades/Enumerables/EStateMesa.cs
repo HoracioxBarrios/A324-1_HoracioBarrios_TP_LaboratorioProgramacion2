@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace Entidades.Enumerables
 {
     /// <summary>
     /// Emun que representa el estado de la mesa:
