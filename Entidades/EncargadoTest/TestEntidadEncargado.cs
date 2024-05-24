@@ -6,7 +6,7 @@ namespace EncargadoTest
     public class TestEntidadEncargado
     {
         [TestMethod]
-        public void TestVerificarInstanciaDeEncargadPruebaSiElSalaRioObtenidoEsIgualDaTrue()
+        public void TestVerificarInstanciaDeEncargadoPruebaSiElSalarioObtenidoEsIgualDaTrue()
         {
             //Arrange
             string nombre = "Pibe";
