@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
-    public enum ERolEmpleado
+    /// <summary>
+    /// ERol representa los roles de los empleados
+    /// </summary>
+    public enum ERol
     {
         Encargado = 0,
         Cocinero = 1,
