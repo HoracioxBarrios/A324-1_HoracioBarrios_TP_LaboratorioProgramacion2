@@ -13,6 +13,7 @@ namespace Entidades
         private List<IIngrediente> _ingredientes;
 
         private decimal _precio;
+
         private EDisponibilidad _dispinible;
         public string Nombre { get; set; }
 

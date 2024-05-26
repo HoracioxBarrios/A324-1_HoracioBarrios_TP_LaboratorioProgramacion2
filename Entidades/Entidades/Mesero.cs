@@ -11,7 +11,7 @@ namespace Entidades
 {
     public class Mesero : Empleado, ICobrador
     {
-        private decimal _montoAcumulado;
+        private decimal _montoAcumulado = 0;
 
         private Mesero()
         {
@@ -29,10 +29,10 @@ namespace Entidades
 
         public void Cobrar(decimal monto)
         {
-            throw new NotImplementedException();
+            _montoAcumulado += monto;
         }
 
-        public void CerrarMesa()
+        public void CerrarMesa(Mesa.Id)
         {
             throw new NotImplementedException();
         }

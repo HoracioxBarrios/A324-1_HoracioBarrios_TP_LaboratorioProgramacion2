@@ -6,10 +6,10 @@ using System.Windows.Input;
 
 namespace Entidades
 {
-    public class ConsultaStockVigenteCommand : ICommand<IProducto>
+    public class ConsultaStockVigenteCommand :ICommand<IProducto>
     {
         private Restaurante _restaurante;
-        private List<IProduct> _productos;
+        private List<IProducto> _productos;
         public ConsultaStockVigenteCommand(Restaurante restaurante)
         {
             _restaurante = restaurante;

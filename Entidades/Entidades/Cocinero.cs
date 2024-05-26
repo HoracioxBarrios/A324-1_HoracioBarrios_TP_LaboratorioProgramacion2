@@ -7,7 +7,7 @@ namespace Entidades
 {
     public class Cocinero : Empleado, ICocinero
     {
-        
+       
         private Cocinero() 
         {
             this.Rol = ERol.Cocinero;
@@ -50,26 +50,27 @@ namespace Entidades
         {
             if (ExitePlatoEnLista(nombrePlato, listPlatosEnMenu))
             {
+                
                 listPlatosEnMenu.Add(new Plato(nombrePlato, ingredientes));
             }
         }
 
 
 
-        public void EditarPlato()
+        public Plato EditarPlato()
         {
             throw new NotImplementedException();
         }
 
-        public void EliminarPlato()
+        public Plato EliminarPlato()
         {
             throw new NotImplementedException();
         }
 
-
-
-
-
+        public Plato CrearPlato()
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }

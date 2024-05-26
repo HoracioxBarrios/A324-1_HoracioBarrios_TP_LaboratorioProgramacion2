@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class CorregirPedidoPlatoCommand : ICommand<string>
+    public class CorregirPedidoPlatoCommand : ICommand<>
     {
-        private Restaurante _restaurante;
+        private Stock _stock;
         private Plato _plato;
 
-        public CorregirPedidoPlatoCommand(Restaurante restaurante, Plato plato)
+        public CorregirPedidoPlatoCommand(Stock restaurante, Plato plato)
         {
             _restaurante = restaurante;
             _plato = plato;
