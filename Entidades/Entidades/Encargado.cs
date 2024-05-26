@@ -11,7 +11,7 @@ namespace Entidades
         {
             this.Rol = ERol.Encargado;
         }
-        public Encargado(string nombre, string apellido, string contacto, string direccion, decimal salario) :this()
+        public Encargado(string nombre, string apellido, string contacto, string direccion, decimal salario) : this()
         {
             this.Nombre = nombre;
             this.Apellido = apellido;

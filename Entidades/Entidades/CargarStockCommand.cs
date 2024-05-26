@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class CargarStockCommand : ICommand
+    public class CargarStockCommand 
     {
-
+        //debe implementar : : ICommand
 
     }
 }

@@ -41,5 +41,20 @@ namespace EncargadoTest
             //Assert
             Assert.IsInstanceOfType(encargado, typeof(IEmpleado));
         }
+
+        [TestMethod]
+        public void VerificarInstancia_SiIEmpleadoTieneRolEncargadoEsEntoncesEncargado_DebeDarTrue()
+        {
+            string nombre = "Jarvan";
+            string apellido = "4to";
+            string cantacto = "Grieta del invocador";
+            string calle = "San Def";
+            decimal sueldo = 45000M;
+            IEmpleado empleadoEncargado1 = new Encargado(nombre, apellido, cantacto, calle, sueldo);
+
+            ERol rol = ERol.Encargado;
+
+            Assert.AreEqual(rol, empleadoEncargado1.Rol);
+        }
     }
 }

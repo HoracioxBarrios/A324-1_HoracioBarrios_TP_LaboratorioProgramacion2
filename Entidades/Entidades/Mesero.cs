@@ -17,7 +17,7 @@ namespace Entidades
         {
             this.Rol = ERol.Mesero;
         }
-        public Mesero(string nombre, string apellido, string contacto, ERol rol, string direccion, decimal salario) : this()
+        public Mesero(string nombre, string apellido, string contacto, string direccion, decimal salario) : this()
         {
             this.Nombre = nombre;
             this.Apellido = apellido;
@@ -32,10 +32,10 @@ namespace Entidades
             _montoAcumulado += monto;
         }
 
-        public void CerrarMesa(Mesa.Id)
-        {
-            throw new NotImplementedException();
-        }
+        //public void CerrarMesa(Mesa.Id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         
 

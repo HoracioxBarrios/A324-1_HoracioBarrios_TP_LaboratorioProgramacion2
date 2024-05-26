@@ -5,9 +5,9 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Cocinero : Empleado, ICocinero
+    public class Cocinero : Empleado, IEmpleado,  ICocinero
     {
-       
+        private ERol Rol {  get; set; }
         private Cocinero() 
         {
             this.Rol = ERol.Cocinero;
@@ -46,13 +46,17 @@ namespace Entidades
         /// </summary>
         /// <param name="nombrePlato"></param>
         /// <param name="listPlatosEnMenu"></param>
-        public Plato CrearPlato(string nombrePlato,List<Plato> listPlatosEnMenu)
+        public void CrearPlato(string nombrePlato,List<Plato> listPlatosEnMenu)
         {
             if (ExitePlatoEnLista(nombrePlato, listPlatosEnMenu))
             {
+                //Plato nuevoPlato = new Plato(nombrePlato, ingredientes)
+                //listPlatosEnMenu.Add(nuevoPlato);
                 
-                listPlatosEnMenu.Add(new Plato(nombrePlato, ingredientes));
             }
+
+            
+
         }
 
 
