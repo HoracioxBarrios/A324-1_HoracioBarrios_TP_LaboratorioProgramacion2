@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades.Interfaces
+namespace Entidades.Enumerables
 {
-    public interface IIngrediente
+    public enum ECategoriaDeProducto
     {
+        Carnes,
+        Vegetales,
+        Harinas,
+        Fideos
     }
 }

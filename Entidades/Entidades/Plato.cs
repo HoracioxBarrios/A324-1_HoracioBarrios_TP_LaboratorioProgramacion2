@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Plato
+    public class Plato : IConsumible
     {
+        private List<IIngrediente> _ingredientes;
+
         private decimal _precio;
+        private EDisponibilidad _dispinible;
         public string Nombre { get; set; }
 
-        private List<IIngrediente> _ingredientes;
-        private EDisponibilidad Disponibilidad { get; set; }
+        
 
 
         public Plato(string nombre, List<IIngrediente> listaIngredientes) 
@@ -33,5 +35,7 @@ namespace Entidades
             }
         }
 
+        public ECategoriaConsumible Categoria { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public EDisponibilidad Disponibilidad { get; set; }
     }
 }

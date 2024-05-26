@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
-    public enum UnidadMedida
+    public enum EUnidadMedida
     {
         Kilo,
         Gramo,
