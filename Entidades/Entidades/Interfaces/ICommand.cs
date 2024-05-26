@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface IEliminarPlato
+    public interface ICommand<T>
     {
-        void EliminarPlato();
+        T EjecutarAccion();
     }
 }

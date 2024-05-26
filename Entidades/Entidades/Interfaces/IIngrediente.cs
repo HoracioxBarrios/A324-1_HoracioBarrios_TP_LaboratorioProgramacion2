@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface IGestionarStock
+    public class IIngrediente
     {
-        void ConsultarStock();
-        void ConsultarStockPorAgotamiento();
-
-        void CargarAStock();
     }
-        
 }

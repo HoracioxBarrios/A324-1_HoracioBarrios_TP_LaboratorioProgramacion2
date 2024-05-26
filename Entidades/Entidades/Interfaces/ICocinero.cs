@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    internal interface ICorregirPedido
+    public interface ICocinero
     {
-        void CorrigePedidoPlato();
+        Plato CrearPlato();
+        Plato EditarPlato();
+        Plato EliminarPlato();
     }
 }
-

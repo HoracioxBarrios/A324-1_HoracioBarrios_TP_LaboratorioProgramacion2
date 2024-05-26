@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades.Interfaces
+namespace Entidades.Enumerables
 {
-    public interface IMesero
+    public enum UnidadMedida
     {
-        void CerrarMesa();
+        Kilo,
+        Gramo,
+        Litro
     }
+
 }

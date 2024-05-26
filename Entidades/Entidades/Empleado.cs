@@ -1,34 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using Entidades.Enumerables;
+using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public abstract class Empleado
+    public abstract class Empleado : IEmpleado
     {
         private string? _nombre;
         private string? _apellido;
         private string? _contacto;
         private ERol _rol;
         private string? _direccion;
-        private decimal _salario;
-        
-
+        private decimal _salario;        
+        protected Empleado() { }
         public string Nombre
         {
             get { return _nombre; }
-            set
-            {
-                _nombre = value;
-            }
+            set { _nombre = value;}
         }
         public string Apellido
         {
             get { return _apellido; }
-            set
-            {
-                _apellido = value;
-            }
+            set { _apellido = value;}
         }
         public string Contacto
         {

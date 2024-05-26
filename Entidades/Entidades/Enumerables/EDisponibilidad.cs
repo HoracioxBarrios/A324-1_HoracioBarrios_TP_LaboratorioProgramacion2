@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades.Interfaces
+namespace Entidades.Enumerables
 {
-    public interface ICrearPlato
+    public enum EDisponibilidad
     {
-        void CrearPlato();
+        No_Disponible = 0,
+        Disponible = 1
     }
 }

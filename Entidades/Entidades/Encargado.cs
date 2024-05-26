@@ -5,7 +5,7 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Encargado : Empleado, IGestionarStock, IEstablecerPrecioPlato, ICorregirPedido
+    public class Encargado : Empleado
     {
         private Encargado()
         {
@@ -20,31 +20,11 @@ namespace Entidades
             this.Salario = salario;
             
         }
-
-        public void ConsultarStock()
+        public void EjecutarCommando(ICommand<string> command)
         {
-            throw new NotImplementedException();
+            var resultado = command.EjecutarAccion();
+            
         }
 
-        public void ConsultarStockPorAgotamiento()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CargarAStock()
-        {
-            throw new NotImplementedException();
-        }
-          
-
-        public void EstablecerPrecioPlato()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CorrigePedidoPlato()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -9,7 +9,7 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Mesero : Empleado, ICobrador, IMesero
+    public class Mesero : Empleado, ICobrador
     {
         private decimal _montoAcumulado;
 

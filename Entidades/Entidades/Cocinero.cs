@@ -5,9 +5,9 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Cocinero : Empleado, ICrearPlato, IModificarPlato, IEliminarPlato
+    public class Cocinero : Empleado, ICocinero
     {
-        private List<MenuPlatos> menuPlatos;
+        
         private Cocinero() 
         {
             this.Rol = ERol.Cocinero;
@@ -21,12 +21,42 @@ namespace Entidades
             this.Salario = salario;            
         }
 
-        public void CrearPlato()
+
+        /// <summary>
+        /// Verifica si el plato esta en la lista de Menu
+        /// </summary>
+        /// <param name="nombrePlato"></param>
+        /// <returns>Devuelve si existe en la Lista de Platos </returns>
+        private bool ExitePlatoEnLista(string nombrePlato, List<Plato> listPlatosEnMenu)
         {
-            throw new NotImplementedException();
+            bool seEncontro = false;
+            foreach (Plato plato in listPlatosEnMenu)
+            {
+                if (plato.Nombre == nombrePlato)
+                {
+                    seEncontro = true;
+                    break;
+                }
+            }
+            return seEncontro;
         }
 
-        public void ModificarPlato()
+        /// <summary>
+        /// Crea un Plato (Comida) si no existe aun y lo agrega a listaMenu
+        /// </summary>
+        /// <param name="nombrePlato"></param>
+        /// <param name="listPlatosEnMenu"></param>
+        public Plato CrearPlato(string nombrePlato,List<Plato> listPlatosEnMenu)
+        {
+            if (ExitePlatoEnLista(nombrePlato, listPlatosEnMenu))
+            {
+                listPlatosEnMenu.Add(new Plato(nombrePlato, ingredientes));
+            }
+        }
+
+
+
+        public void EditarPlato()
         {
             throw new NotImplementedException();
         }
@@ -36,10 +66,10 @@ namespace Entidades
             throw new NotImplementedException();
         }
 
-        public Plato GetPlato()
-        {
-            //Recorre la lista, busca el plato y lo devuelve
-            return new Plato();
-        }
+
+
+
+
+
     }
 }
