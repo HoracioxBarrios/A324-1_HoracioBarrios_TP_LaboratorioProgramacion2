@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Entidades
+namespace Entidades.CommandMenu
 {
     public class EstablecerPrecioPlatoCommand : ICommand<string>
     {

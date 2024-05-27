@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Entidades.Enumerables;
+﻿using Entidades.Enumerables;
 using Entidades.Interfaces;
 
 namespace Entidades

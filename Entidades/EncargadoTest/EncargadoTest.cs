@@ -10,6 +10,7 @@ namespace EncargadoTest
         public void VerificaInstanciaDeEncargado_SiElSalarioObtenidoEsIgual_DaTrue()
         {
             //Arrange
+            
             string nombre = "Pibe";
             string apellido = "Mc Test";
             string contacto = "1144553311";
@@ -17,7 +18,7 @@ namespace EncargadoTest
             string direccion = "Av. San Pocho";
             decimal salario = 150000.50M;
             //act
-            Encargado encargado = new Encargado(nombre, apellido,contacto,direccion,salario);
+            Encargado encargado = new Encargado(rol, nombre, apellido,contacto,direccion,salario);
             decimal salarioObtenido = encargado.Salario;
 
             //assert
@@ -36,7 +37,7 @@ namespace EncargadoTest
             ERol rol = ERol.Encargado;
             decimal salario = 150000.50M;
             //Act
-            Encargado encargado = new Encargado(nombre, apellido, contacto, direccion, salario);
+            Encargado encargado = new Encargado(rol, nombre, apellido, contacto, direccion, salario);
 
             //Assert
             Assert.IsInstanceOfType(encargado, typeof(IEmpleado));

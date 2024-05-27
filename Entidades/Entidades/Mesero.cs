@@ -13,18 +13,16 @@ namespace Entidades
     {
         private decimal _montoAcumulado = 0;
 
-        private Mesero()
-        {
-            this.Rol = ERol.Mesero;
-        }
-        public Mesero(string nombre, string apellido, string contacto, ERol rol, string direccion, decimal salario) : this()
+        private Mesero() { }     
+
+        public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario)
         {
             this.Nombre = nombre;
             this.Apellido = apellido;
-            this.Contacto = contacto;
-            
+            this.Contacto = contacto;            
             this.Direccion = direccion;
             this.Salario = salario;
+            this.Rol = rol;
         }
 
         public void Cobrar(decimal monto)
@@ -32,10 +30,10 @@ namespace Entidades
             _montoAcumulado += monto;
         }
 
-        public void CerrarMesa(Mesa.Id)
-        {
-            throw new NotImplementedException();
-        }
+        //public void CerrarMesa(Mesa.Id)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         
 

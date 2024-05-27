@@ -8,17 +8,16 @@ namespace Entidades
     public class Cocinero : Empleado, ICocinero
     {
        
-        private Cocinero() 
-        {
-            this.Rol = ERol.Cocinero;
-        }
-        public Cocinero(string nombre, string apellido, string contacto, string direccion, decimal salario) : this() 
+        private Cocinero() { }
+
+        public Cocinero(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) 
         {
             this.Nombre = nombre;
             this.Apellido = apellido;
             this.Contacto = contacto;
             this.Direccion = direccion;
-            this.Salario = salario;            
+            this.Salario = salario;
+            this.Rol = rol;
         }
 
 
@@ -46,13 +45,15 @@ namespace Entidades
         /// </summary>
         /// <param name="nombrePlato"></param>
         /// <param name="listPlatosEnMenu"></param>
-        public Plato CrearPlato(string nombrePlato,List<Plato> listPlatosEnMenu)
+        public void CrearPlato(string nombrePlato,List<Plato> listPlatosEnMenu)
         {
+            
             if (ExitePlatoEnLista(nombrePlato, listPlatosEnMenu))
             {
                 
-                listPlatosEnMenu.Add(new Plato(nombrePlato, ingredientes));
+                //listPlatosEnMenu.Add();
             }
+            
         }
 
 
