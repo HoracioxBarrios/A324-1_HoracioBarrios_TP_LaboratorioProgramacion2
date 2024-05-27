@@ -42,7 +42,7 @@ namespace EntidadTest
             decimal salario = 150000.50M;
 
             //Act
-            ;
+           
 
             //Act y Assert
             Assert.ThrowsException<EmpleadoDatosException>(()=> EmpleadoFactory.CrearEmpleado(rol, nombreVacio, apellido, contacto, direccion, salario));
