@@ -9,6 +9,7 @@ namespace Entidades.Enumerables
     public enum ETipoBebida
     {
         Sin_Alcohol = 0,
-        Alcoholica = 1
+        Alcoholica = 1,
+        
     }
 }

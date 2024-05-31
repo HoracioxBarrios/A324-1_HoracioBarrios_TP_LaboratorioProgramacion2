@@ -13,7 +13,8 @@ namespace Entidades.Enumerables
     /// </summary>
     public enum EStateMesa
     {
-        Cerrada = 0,
-        Consumo_No_Pagado = 1
+        Cerrada,
+        Consumo_No_Pagado,
+        
     }
 }

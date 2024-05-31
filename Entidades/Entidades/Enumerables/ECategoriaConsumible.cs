@@ -9,6 +9,6 @@ namespace Entidades.Enumerables
     public enum ECategoriaConsumible
     {
         Comida,
-        Bebida
+        Bebida,        
     }
 }

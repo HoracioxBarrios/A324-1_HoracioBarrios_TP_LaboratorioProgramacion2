@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
-    public enum ECategoriaDeProducto
+    public enum EDiaDeLaSemana
     {
-        Carnes,
-        Vegetales,
-        Harinas,
-        Fideos,        
+        Lunes,
+        Martes,
+        Miercoles,
+        Jueves,
+        viernes,
+        Sabado,        
     }
 }

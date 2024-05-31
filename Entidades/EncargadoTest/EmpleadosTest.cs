@@ -22,7 +22,7 @@ namespace EntidadTest
             decimal salario = 150000.50M;
 
             //Act
-            IEmpleado empleado = EmpleadoFactory.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
+            IEmpleado empleado = EmpleadoService.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
 
             //Assert
             Assert.IsNotNull(empleado);
@@ -45,7 +45,7 @@ namespace EntidadTest
            
 
             //Act y Assert
-            Assert.ThrowsException<EmpleadoDatosException>(()=> EmpleadoFactory.CrearEmpleado(rol, nombreVacio, apellido, contacto, direccion, salario));
+            Assert.ThrowsException<EmpleadoDatosException>(()=> EmpleadoService.CrearEmpleado(rol, nombreVacio, apellido, contacto, direccion, salario));
 
         }
 

@@ -10,7 +10,8 @@ namespace Entidades.Enumerables
     {
         Kilo,
         Gramo,
-        Litro
+        Litro,
+        
     }
 
 }

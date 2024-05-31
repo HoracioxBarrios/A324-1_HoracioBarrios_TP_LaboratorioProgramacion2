@@ -4,9 +4,23 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public static class EmpleadoFactory
+    /// <summary>
+    /// Class Empleado Service - (Usa el Patron de Diseño Factory Method para crear IEmpleados
+    /// </summary>
+    public static class EmpleadoService
     {
-
+        /// <summary>
+        /// Methodo que Crea un Empleado
+        /// </summary>
+        /// <param name="rol">Representa el Rol que va a tener el empleado</param>
+        /// <param name="nombre">Nombre del empleado</param>
+        /// <param name="apellido">Apellido del empleado</param>
+        /// <param name="contacto">Contato como Numero de Telefono, Correo, Email </param>
+        /// <param name="direccion">Direccion representa el Lugar de residencia</param>
+        /// <param name="salario"> Salario representa cuanto cobra el empleado</param>
+        /// <returns>Devuelve un IEmpleado</returns>
+        /// <exception cref="EmpleadoDatosException">Lanza una excecion si los datos no son Validos</exception>
+        /// <exception cref="EmpleadoRolNoExistenteException">Lanza una excepcion si el rol es incorrecto</exception>
         public static IEmpleado CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
         {
             if ((string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido)

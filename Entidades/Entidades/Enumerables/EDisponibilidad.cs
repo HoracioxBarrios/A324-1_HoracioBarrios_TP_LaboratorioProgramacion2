@@ -8,7 +8,7 @@ namespace Entidades.Enumerables
 {
     public enum EDisponibilidad
     {
-        No_Disponible = 0,
-        Disponible = 1
+        No_Disponible,
+        Disponible,
     }
 }

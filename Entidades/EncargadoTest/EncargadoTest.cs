@@ -7,7 +7,7 @@ namespace EncargadoTest
     public class EncargadoTest
     {
         [TestMethod]
-        public void VerificaInstanciaDeEncargado_SiElSalarioObtenidoEsIgual_DaTrue()
+        public void VerificaInstanciaDeEncargado_SiElSalarioObtenidoEsIgual_DebeDarTrue()
         {
             //Arrange
             
@@ -27,7 +27,7 @@ namespace EncargadoTest
         }
 
         [TestMethod]
-        public void VerificaIntanciaDeEncargado_SiEncargadoEsIEncargado_DaTrue()
+        public void VerificaLaIntanciaEncargado_SiEncargadoEsIEncargado_DebeDarTrue()
         {
             //Arrange
             string nombre = "Robert";
@@ -51,9 +51,9 @@ namespace EncargadoTest
             string cantacto = "Grieta del invocador";
             string calle = "San Def";
             decimal sueldo = 45000M;
-            IEmpleado empleadoEncargado1 = new Encargado(nombre, apellido, cantacto, calle, sueldo);
-
             ERol rol = ERol.Encargado;
+            IEmpleado empleadoEncargado1 = new Encargado(rol ,nombre, apellido, cantacto, calle, sueldo);
+                        
 
             Assert.AreEqual(rol, empleadoEncargado1.Rol);
         }

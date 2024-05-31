@@ -15,5 +15,6 @@ namespace Entidades.Enumerables
         Cocinero = 1,
         Mesero = 2,
         Delivery = 3,
+        
     }
 }
