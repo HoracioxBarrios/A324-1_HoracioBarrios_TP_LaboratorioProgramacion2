@@ -10,7 +10,8 @@ namespace Entidades
         private string? _contacto;
         private ERol _rol;
         private string? _direccion;
-        private decimal _salario;        
+        private decimal _salario;
+        
         protected Empleado() { }
         public string Nombre
         {

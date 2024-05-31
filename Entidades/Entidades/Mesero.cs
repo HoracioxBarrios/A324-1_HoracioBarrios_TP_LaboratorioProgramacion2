@@ -12,7 +12,7 @@ namespace Entidades
     public class Mesero : Empleado, ICobrador
     {
         private decimal _montoAcumulado = 0;
-
+        private Mesa _mesa;
         private Mesero() { }     
 
         public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario)
@@ -35,6 +35,10 @@ namespace Entidades
         //    throw new NotImplementedException();
         //}
 
+        public void ObtenerMesa(Mesa mesa)
+        {
+            _mesa = mesa;
+        }
         
 
         public decimal MontoAcumulado

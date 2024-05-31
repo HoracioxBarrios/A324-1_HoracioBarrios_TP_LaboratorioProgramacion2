@@ -30,11 +30,11 @@ namespace EntidadTest
         }
 
         [TestMethod]
-        public void VerificaElEmpleadoFactory_SeLePasaUnDatoIcorrecto_DebeDarExcepcion()
+        public void VerificaElEmpleadoFactory_SePasaNombreVacioDebeDarExcepcion_SiDaExcepcionFuncionaBien()
         {
             //Arrange
             string nombre = "Pibe";
-            string nombreVacio = "";
+            string nombreVacio = string.Empty;
             string apellido = "Mc Test";
             string contacto = "1144553311";
             ERol rol = ERol.Encargado;            
