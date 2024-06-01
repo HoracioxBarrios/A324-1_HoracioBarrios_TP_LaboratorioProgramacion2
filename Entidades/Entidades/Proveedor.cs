@@ -18,13 +18,13 @@ namespace Entidades
         private string? _nombre;
         private string? _cuit;
         private string? _direccion;
-        private ETipoDeProducto _tipoDeProductoQueProvee;
+        private ETipoDeProductoProveido _tipoDeProductoProveido;
         private EMediosDePago _medioDePago;
         private EAcreedor _esAcreedor;
         private EDiaDeLaSemana _diaDeEntrega;
         
 
-        public Proveedor(string nombre, string cuit, string direccion, ETipoDeProducto tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
+        public Proveedor(string nombre, string cuit, string direccion, ETipoDeProductoProveido tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
         {
             Nombre = nombre;
             Cuit = cuit;
@@ -53,10 +53,10 @@ namespace Entidades
             set { _direccion = value; }
         }
 
-        public ETipoDeProducto TipoDeProducto 
+        public ETipoDeProductoProveido TipoDeProducto 
         { 
-            get { return _tipoDeProductoQueProvee; }
-            set { _tipoDeProductoQueProvee = value; }
+            get { return _tipoDeProductoProveido; }
+            set { _tipoDeProductoProveido = value; }
         }
 
         public EMediosDePago MediosDePago

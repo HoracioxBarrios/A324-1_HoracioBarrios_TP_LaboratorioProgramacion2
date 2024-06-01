@@ -21,7 +21,7 @@ namespace Entidades
 
         public Ingrediente(
             string nombre, double cantidad, EUnidadMedida unidadMedida, decimal precio
-            , IProveedor proveedor , ETipoDeProducto tipoDeProducto, bool disponibilidad)
+            , IProveedor proveedor , ETipoProductoCreable tipoDeProducto, bool disponibilidad)
         {
             Nombre = nombre;
             Cantidad = cantidad;

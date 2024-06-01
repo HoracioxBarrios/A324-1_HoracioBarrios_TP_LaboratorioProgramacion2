@@ -11,9 +11,9 @@ namespace RestoranAplicacionConsola
         static void Main(string[] args)
         {           
             GestorDeProveedores gestorDeProveedores = new GestorDeProveedores();
-            gestorDeProveedores.CrearProveedor("Aser S.A", "452", "Av Los Macacos 35", ETipoDeProducto.Almacen, EMediosDePago.Transferencia,EAcreedor.No,EDiaDeLaSemana.Lunes);
-            gestorDeProveedores.CrearProveedor("Carnes Argentinas SRL", "126", "Av Sin Agua 1500", ETipoDeProducto.Carniceria, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Miercoles);
-            gestorDeProveedores.CrearProveedor("Almacenes S.A", "598", "Av Sin Tierra 1500", ETipoDeProducto.Almacen, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Jueves);
+            gestorDeProveedores.CrearProveedor("Aser S.A", "452", "Av Los Macacos 35", ETipoDeProductoProveido.Almacen, EMediosDePago.Transferencia,EAcreedor.No,EDiaDeLaSemana.Lunes);
+            gestorDeProveedores.CrearProveedor("Carnes Argentinas SRL", "126", "Av Sin Agua 1500", ETipoDeProductoProveido.Carniceria, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Miercoles);
+            gestorDeProveedores.CrearProveedor("Almacenes S.A", "598", "Av Sin Tierra 1500", ETipoDeProductoProveido.Almacen, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Jueves);
             MostrarDatosProveedoresEnConsola(gestorDeProveedores.GetProveedores(),"Proveedores: ");
 
             GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados();
@@ -26,17 +26,19 @@ namespace RestoranAplicacionConsola
 
 
             IProveedor proveedor1 = gestorDeProveedores.GetProveedor(1);
-            Ingrediente ingrediente1 = new Ingrediente("Pollo", 250, EUnidadMedida.Gramo, 1000, proveedor1, ETipoDeProducto.Ingrediente, true);
+            Ingrediente ingrediente1 = new Ingrediente("Pollo", 250, EUnidadMedida.Gramo, 1000, proveedor1, ETipoProductoCreable.Ingrediente,true);
             Console.WriteLine(ingrediente1);
 
             IProveedor proveedor2 = gestorDeProveedores.GetProveedor(2);
-            Ingrediente ingrediente2 = new Ingrediente("papa", 250, EUnidadMedida.Gramo, 1000, proveedor2, ETipoDeProducto.Ingrediente, true);
+            Ingrediente ingrediente2 = new Ingrediente("papa", 250, EUnidadMedida.Gramo, 1000, proveedor2, ETipoProductoCreable.Ingrediente, true);
             Console.WriteLine(ingrediente2);
 
             IProveedor proveedor3 = gestorDeProveedores.GetProveedor(3);
-            Ingrediente ingrediente3 = new Ingrediente("Tomate", 250, EUnidadMedida.Gramo, 1000, proveedor2, ETipoDeProducto.Ingrediente, true);
+            Ingrediente ingrediente3 = new Ingrediente("Tomate", 250, EUnidadMedida.Gramo, 1000, proveedor2, ETipoProductoCreable.Ingrediente, true);
             Console.WriteLine(ingrediente3);
 
+
+            Console.ReadKey();
         }
         //static bool Login(string user, string password)
         //{

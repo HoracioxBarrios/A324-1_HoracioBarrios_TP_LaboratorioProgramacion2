@@ -11,10 +11,10 @@ namespace Entidades
     public class Bebida : Producto, IConsumible
     {
         private static int _contadorId = 0;
-        private readonly int _id;
+        private int _id;
         private ECategoriaConsumible _eCategoriaConsumible;
         private EClasificacionBebida _ClasificacionDeBebida;
-        private ETipoDeProducto _tipoDeProducto;
+        private ETipoProductoCreable _tipoDeProducto;
 
 
         public Bebida(
@@ -29,8 +29,8 @@ namespace Entidades
             Categoria = categoriaDeConsumible;
             ClasificacionDeBebida = clasificacionDeBebida;
 
-            _id = ++_contadorId;
-            TipoDeProducto = ETipoDeProducto.Bebida;
+            Id = ++_contadorId;
+            TipoDeProducto = ETipoProductoCreable.Bebida;
         }
 
         public ECategoriaConsumible Categoria 
@@ -45,7 +45,10 @@ namespace Entidades
             set { _ClasificacionDeBebida = value; }
         }
 
-        public int ID { get { return _id; } }   
+        public int ID { 
+            get { return _id; }
+            private set { _id = value; }
+        }   
         public override string ToString()
         {
             return $"ID: {ID}, Nombre: {Nombre}, Cantidad {Cantidad}, Precio: {Precio}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Con Alcohol? : {ClasificacionDeBebida}";

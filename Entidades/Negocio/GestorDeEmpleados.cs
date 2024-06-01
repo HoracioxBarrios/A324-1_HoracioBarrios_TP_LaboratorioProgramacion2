@@ -19,7 +19,7 @@ namespace Negocio
         {
             try
             {
-                IEmpleado empleado = EmpleadoService.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
+                IEmpleado empleado = EmpleadoFactoryService.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
                 _listaDeEmpleados.Add(empleado);
             }
             catch (EmpleadoDatosException ex)
