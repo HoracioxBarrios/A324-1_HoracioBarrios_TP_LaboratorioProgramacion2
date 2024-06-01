@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades.Enumerables
+namespace Entidades
 {
-    public enum ETipoDeProduto
+    public class GestorDeProductos
     {
-        Carniceria,
-        Almacen,
-        Verduleria,
-       
     }
 }

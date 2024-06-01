@@ -2,31 +2,38 @@
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Entidades
 {
+    /// <summary>
+    /// Clase Publica: Proveedor
+    /// </summary>
     public class Proveedor : IProveedor
     {
-        private static int _id = 0;
+        private static int _contadorId = 1000;
+        private readonly int _id;
 
-        private string _nombre;
-        private string _cuit;
-        private string _direccion;
-        private ETipoDeProduto _tipoDeProductoQueProvee;
+
+        private string? _nombre;
+        private string? _cuit;
+        private string? _direccion;
+        private ETipoDeProducto _tipoDeProductoQueProvee;
         private EMediosDePago _medioDePago;
+        private EAcreedor _esAcreedor;
         private EDiaDeLaSemana _diaDeEntrega;
+        
 
-        public Proveedor(string nombre, string cuit, string direccion, ETipoDeProduto tipoDeproducto, EMediosDePago medioDePago, EDiaDeLaSemana diaDeEntrega)
+        public Proveedor(string nombre, string cuit, string direccion, ETipoDeProducto tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
         {
             Nombre = nombre;
             Cuit = cuit;
             Direccion = direccion;
             TipoDeProductoQueProvee = tipoDeproducto;
             MediosDePago = medioDePago;
+            EsAcreedor = esAcreedor;
             DiaDeEntrega = diaDeEntrega;
+            _id = ++_contadorId;
         }
         public string Nombre 
         { 
@@ -46,7 +53,7 @@ namespace Entidades
             set { _direccion = value; }
         }
 
-        public ETipoDeProduto TipoDeProductoQueProvee 
+        public ETipoDeProducto TipoDeProductoQueProvee 
         { 
             get { return _tipoDeProductoQueProvee; }
             set { _tipoDeProductoQueProvee = value; }
@@ -57,10 +64,23 @@ namespace Entidades
             get { return _medioDePago; }
             set { _medioDePago = value;}
         }
+        public EAcreedor EsAcreedor
+        {
+            get { return _esAcreedor; }
+            set { _esAcreedor = value;}
+        }
         public EDiaDeLaSemana DiaDeEntrega
         {
             get { return _diaDeEntrega; }
             set { _diaDeEntrega = value; }
+        }
+        public int ID
+        {
+            get { return _id; }
+        }
+        public override string ToString()
+        {
+            return $"ID: {ID}, Nombre: {Nombre}, CUIT: {Cuit}, Direccion: {Direccion}, Tipo de Producto que Provee: {TipoDeProductoQueProvee}, Medio de Pago: {MediosDePago}, Es Acreedor? : {EsAcreedor}, Dia de Entrega: {DiaDeEntrega}";
         }
     }
 }

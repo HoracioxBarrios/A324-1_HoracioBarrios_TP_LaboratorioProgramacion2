@@ -44,6 +44,9 @@ namespace Entidades
             get { return _salario; }
             set { _salario=value; }
         }
-
+        public override string ToString()
+        {
+            return $"Nombre: {Nombre}, Apellido: {Apellido}, Contacto: {Contacto}, Rol: {Rol}, Direccion: {Direccion}, Salario: {Salario}";
+        }
     }
 }

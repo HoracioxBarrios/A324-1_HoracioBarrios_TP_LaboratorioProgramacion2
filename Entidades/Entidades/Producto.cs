@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
+    /// <summary>
+    /// Clase Publica Abstracta:  Producto
+    /// </summary>
     public abstract class Producto : IProducto
     {
 

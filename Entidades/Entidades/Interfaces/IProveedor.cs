@@ -7,9 +7,11 @@ namespace Entidades.Interfaces
         string Nombre { get;set;}
         string Cuit { get;set; }
         string Direccion { get;set; }
-        ETipoDeProduto TipoDeProductoQueProvee { get;set; }        
+        ETipoDeProducto TipoDeProductoQueProvee { get;set; }        
         EMediosDePago MediosDePago { get;set; }
+        EAcreedor EsAcreedor { get;set;}
         EDiaDeLaSemana DiaDeEntrega { get;set; }
+        int ID { get; }
 
     }
 }

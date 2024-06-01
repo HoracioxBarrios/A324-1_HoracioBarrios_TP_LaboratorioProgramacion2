@@ -18,11 +18,12 @@ namespace EntidadTest
             string nombre = "Asa";
             string cuit = "25565";
             string direccion = "Av los pikachus";
-            ETipoDeProduto tipoDeProducto = ETipoDeProduto.Carniceria;
+            ETipoDeProducto tipoDeProducto = ETipoDeProducto.Carniceria;
             EMediosDePago medioDePago = EMediosDePago.Contado;
+            EAcreedor eAcreedor = EAcreedor.Si;
             EDiaDeLaSemana diaDeEntrega = EDiaDeLaSemana.Lunes;
 
-            Proveedor proveedor = new Proveedor(nombre, cuit, direccion, tipoDeProducto,medioDePago,diaDeEntrega);
+            Proveedor proveedor = new Proveedor(nombre, cuit, direccion, tipoDeProducto,medioDePago,eAcreedor, diaDeEntrega);
 
             Assert.IsNotNull(proveedor);
         }

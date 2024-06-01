@@ -9,7 +9,8 @@ namespace Entidades
     /// Class Proveedor Service - Provee Servicio de Manejo de Proveedores
     /// </summary>
     public static class ProveedorService
-    {       
+    {
+      
         /// <summary>
         /// Methodo que Crea un Proveedor
         /// </summary>
@@ -21,7 +22,7 @@ namespace Entidades
         /// <param name="diaDeEntrega">-Enum -Dia de Entrega</param>
         /// <returns>Devuelve un IProveedor si los datos son validos, de no serlo Lanza una excepcion</returns>
         /// <exception cref="ProveedorDatosException"></exception>
-        public static IProveedor CrearProveedor(string nombre, string cuit, string direccion, ETipoDeProduto tipoDeproducto, EMediosDePago medioDePago, EDiaDeLaSemana diaDeEntrega)
+        public static IProveedor CrearProveedor(string nombre, string cuit, string direccion, ETipoDeProducto tipoDeproducto, EMediosDePago medioDePago, EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega)
         {
 
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(cuit) || string.IsNullOrEmpty(direccion))
@@ -30,7 +31,7 @@ namespace Entidades
             }
             else
             {
-                return new Proveedor(nombre, cuit, direccion, tipoDeproducto, medioDePago, diaDeEntrega);
+                return new Proveedor(nombre, cuit, direccion, tipoDeproducto, medioDePago, esAcreedor, diaDeEntrega);
             }
         }
 

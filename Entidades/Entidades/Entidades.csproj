@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Diagrama\**" />
     <Compile Remove="NewFolder1\**" />
+    <EmbeddedResource Remove="Diagrama\**" />
     <EmbeddedResource Remove="NewFolder1\**" />
+    <None Remove="Diagrama\**" />
     <None Remove="NewFolder1\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Diagrama\" />
   </ItemGroup>
 
 </Project>

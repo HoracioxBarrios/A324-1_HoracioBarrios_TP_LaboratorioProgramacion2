@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Enti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntidadTest", "EncargadoTest\EntidadTest.csproj", "{6D7140C8-10A5-42A2-BDEB-33A331CB87BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestoranAplicacionConsola", "RestoranAplicacionConsola\RestoranAplicacionConsola.csproj", "{56C58F77-B95E-45FA-AFC8-FE456E3F5569}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6D7140C8-10A5-42A2-BDEB-33A331CB87BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D7140C8-10A5-42A2-BDEB-33A331CB87BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D7140C8-10A5-42A2-BDEB-33A331CB87BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C58F77-B95E-45FA-AFC8-FE456E3F5569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C58F77-B95E-45FA-AFC8-FE456E3F5569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C58F77-B95E-45FA-AFC8-FE456E3F5569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C58F77-B95E-45FA-AFC8-FE456E3F5569}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
