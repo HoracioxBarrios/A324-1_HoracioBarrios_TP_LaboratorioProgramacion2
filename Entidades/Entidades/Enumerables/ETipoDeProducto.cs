@@ -9,11 +9,12 @@ namespace Entidades.Enumerables
     /// <summary>
     /// Enumerable: Verduleria, Carniceria, Almacen, Bebida
     /// </summary>
-    public enum ECategoriaDEProducto
+    public enum ETipoDeProducto
     {
         Verduleria,        
         Carniceria,
         Almacen,
-        Bebida
+        Bebida,
+        Ingrediente
     }
 }

@@ -18,7 +18,7 @@ namespace EntidadTest
             string nombre = "Asa";
             string cuit = "25565";
             string direccion = "Av los pikachus";
-            ECategoriaDEProducto tipoDeProducto = ECategoriaDEProducto.Carniceria;
+            ETipoDeProducto tipoDeProducto = ETipoDeProducto.Carniceria;
             EMediosDePago medioDePago = EMediosDePago.Contado;
             EAcreedor eAcreedor = EAcreedor.Si;
             EDiaDeLaSemana diaDeEntrega = EDiaDeLaSemana.Lunes;

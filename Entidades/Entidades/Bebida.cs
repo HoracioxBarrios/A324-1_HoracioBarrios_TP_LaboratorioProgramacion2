@@ -6,15 +6,15 @@ using System.Collections.Generic;
 namespace Entidades
 {
     /// <summary>
-    /// Class Bebida
+    /// Class Bebida (Hereda de Producto, a su vez por gerarquia de herencia hereda la interface IProducto, e Implementa IConsumible)
     /// </summary>
-    public class Bebida : Producto, IProducto, IConsumible
+    public class Bebida : Producto, IConsumible
     {
         private static int _contadorId = 0;
         private readonly int _id;
         private ECategoriaConsumible _eCategoriaConsumible;
         private EClasificacionBebida _ClasificacionDeBebida;
-        private ECategoriaDEProducto _tipoDeProducto;
+        private ETipoDeProducto _tipoDeProducto;
 
 
         public Bebida(
@@ -30,7 +30,7 @@ namespace Entidades
             ClasificacionDeBebida = clasificacionDeBebida;
 
             _id = ++_contadorId;
-            TipoDeProducto = ECategoriaDEProducto.Bebida;
+            TipoDeProducto = ETipoDeProducto.Bebida;
         }
 
         public ECategoriaConsumible Categoria 

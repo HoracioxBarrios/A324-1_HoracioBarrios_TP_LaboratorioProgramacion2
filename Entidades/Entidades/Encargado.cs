@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using Entidades.Enumerables;
 using Entidades.Interfaces;
 
@@ -10,15 +11,16 @@ namespace Entidades
     {
         
         private Encargado(){}
-        public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
+        public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario):base()
         {
-            this.Nombre = nombre;
-            this.Apellido = apellido;
-            this.Contacto = contacto;
-            this.Direccion = direccion;
-            this.Salario = salario;
-            this.Rol = rol;
-
+            Nombre = nombre;
+            Apellido = apellido;
+            Contacto = contacto;
+            Direccion = direccion;
+            Salario = salario;
+            Rol = rol;
+            Id = _contadorId;
+           
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace Entidades
 {
     public class Plato : IConsumible
     {
-        private List<IIngrediente> _ingredientes;
+        private List<IProducto> _ingredientes;// Ingrediente es un iproducto
 
         private decimal _precio;
 
@@ -20,7 +20,7 @@ namespace Entidades
         
 
 
-        public Plato(string nombre, List<IIngrediente> listaIngredientes) 
+        public Plato(string nombre, List<IProducto> listaIngredientes) 
         { 
             Nombre = nombre;
             _ingredientes = listaIngredientes;

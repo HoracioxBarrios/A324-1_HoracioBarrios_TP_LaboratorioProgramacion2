@@ -5,6 +5,9 @@ namespace Entidades
 {
     public abstract class Empleado : IEmpleado
     {
+        protected static int _contadorId = 0;
+        private int _id;
+
         private string? _nombre;
         private string? _apellido;
         private string? _contacto;
@@ -12,7 +15,18 @@ namespace Entidades
         private string? _direccion;
         private decimal _salario;
         
-        protected Empleado() { }
+        protected Empleado() 
+        {
+            _id = ++_contadorId;
+        }
+
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        
+
         public string Nombre
         {
             get { return _nombre; }
@@ -46,7 +60,7 @@ namespace Entidades
         }
         public override string ToString()
         {
-            return $"Nombre: {Nombre}, Apellido: {Apellido}, Contacto: {Contacto}, Rol: {Rol}, Direccion: {Direccion}, Salario: {Salario}";
+            return $"Id: {Id}, Nombre: {Nombre}, Apellido: {Apellido}, Contacto: {Contacto}, Rol: {Rol}, Direccion: {Direccion}, Salario: {Salario}";
         }
     }
 }

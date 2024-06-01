@@ -30,7 +30,7 @@ namespace Negocio
         /// <exception cref="ProveedorErrorAlCrearException"></exception>
         /// <exception cref="Exception"></exception>
         public void CrearProveedor(
-                 string nombre, string cuit, string direccion, ECategoriaDEProducto tipoDeProducto
+                 string nombre, string cuit, string direccion, ETipoDeProducto tipoDeProducto
                 ,EMediosDePago mediosDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega)
         {
             try
@@ -55,6 +55,39 @@ namespace Negocio
         public List<IProveedor> GetProveedores()
         {
             return _listProveedores;
+        }
+
+        public IProveedor GetProveedor(string nombre)
+        {
+            if (string.IsNullOrEmpty(nombre))
+            {
+                throw new DatoIncorrectoException("Dato Incorrecto: Nombre");
+            }
+            
+            foreach (IProveedor proveedor in _listProveedores)
+            {
+                if (string.Equals(proveedor.Nombre, nombre, StringComparison.OrdinalIgnoreCase))
+                {
+                    return proveedor;                   
+                }
+            }
+            return null;
+        }
+        public IProveedor GetProveedor(int id)
+        {
+            if (id < 0)
+            {
+                throw new DatoIncorrectoException("Dato Incorrecto: ID no valida");
+            }
+
+            foreach (IProveedor proveedor in _listProveedores)
+            {
+                if (int.Equals(proveedor.ID, id))
+                {
+                    return proveedor;
+                }
+            }
+            return null;
         }
     }
 }

@@ -18,18 +18,18 @@ namespace Entidades
         private string? _nombre;
         private string? _cuit;
         private string? _direccion;
-        private ECategoriaDEProducto _tipoDeProductoQueProvee;
+        private ETipoDeProducto _tipoDeProductoQueProvee;
         private EMediosDePago _medioDePago;
         private EAcreedor _esAcreedor;
         private EDiaDeLaSemana _diaDeEntrega;
         
 
-        public Proveedor(string nombre, string cuit, string direccion, ECategoriaDEProducto tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
+        public Proveedor(string nombre, string cuit, string direccion, ETipoDeProducto tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
         {
             Nombre = nombre;
             Cuit = cuit;
             Direccion = direccion;
-            TipoDeProductoQueProvee = tipoDeproducto;
+            TipoDeProducto = tipoDeproducto;
             MediosDePago = medioDePago;
             EsAcreedor = esAcreedor;
             DiaDeEntrega = diaDeEntrega;
@@ -53,7 +53,7 @@ namespace Entidades
             set { _direccion = value; }
         }
 
-        public ECategoriaDEProducto TipoDeProductoQueProvee 
+        public ETipoDeProducto TipoDeProducto 
         { 
             get { return _tipoDeProductoQueProvee; }
             set { _tipoDeProductoQueProvee = value; }
@@ -80,7 +80,7 @@ namespace Entidades
         }
         public override string ToString()
         {
-            return $"ID: {ID}, Nombre: {Nombre}, CUIT: {Cuit}, Direccion: {Direccion}, Tipo de Producto que Provee: {TipoDeProductoQueProvee}, Medio de Pago: {MediosDePago}, Es Acreedor? : {EsAcreedor}, Dia de Entrega: {DiaDeEntrega}";
+            return $"ID: {ID}, Nombre: {Nombre}, CUIT: {Cuit}, Direccion: {Direccion}, Tipo de Producto que Provee: {TipoDeProducto}, Medio de Pago: {MediosDePago}, Es Acreedor? : {EsAcreedor}, Dia de Entrega: {DiaDeEntrega}";
         }
     }
 }
