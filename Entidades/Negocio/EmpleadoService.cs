@@ -1,8 +1,9 @@
-﻿using Entidades.Enumerables;
+﻿using Entidades;
+using Entidades.Enumerables;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
 
-namespace Entidades
+namespace Negocio
 {
     /// <summary>
     /// Class Empleado Service - (Usa el Patron de Diseño Factory Method para crear IEmpleados

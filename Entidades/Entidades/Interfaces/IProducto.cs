@@ -15,8 +15,8 @@ namespace Entidades.Interfaces
         
         Proveedor Proveedor { get; set; }
         decimal Precio { get; set; }
-        int Id { get; set; }        
-        EDisponibilidad EDisponibilidad { get; set;}
+        int Id { get; set; }
+        bool Disponibilidad  { get; set;}
 
         
     }

@@ -1,9 +1,9 @@
-﻿
+﻿using Entidades;
 using Entidades.Enumerables;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
 
-namespace Entidades
+namespace Negocio
 {
     /// <summary>
     /// Class Proveedor Service - Provee Servicio de Manejo de Proveedores

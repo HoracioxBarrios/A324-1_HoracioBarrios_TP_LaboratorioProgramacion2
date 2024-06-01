@@ -14,7 +14,7 @@ namespace Entidades
 
         private decimal _precio;
 
-        private EDisponibilidad _dispinible;
+        private bool _dispinible;
         public string Nombre { get; set; }
 
         
@@ -37,6 +37,6 @@ namespace Entidades
         }
 
         public ECategoriaConsumible Categoria { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public EDisponibilidad Disponibilidad { get; set; }
+        public bool Disponibilidad { get; set; }
     }
 }
