@@ -22,7 +22,7 @@ namespace Negocio
         /// <param name="diaDeEntrega">-Enum -Dia de Entrega</param>
         /// <returns>Devuelve un IProveedor si los datos son validos, de no serlo Lanza una excepcion</returns>
         /// <exception cref="ProveedorDatosException"></exception>
-        public static IProveedor CrearProveedor(string nombre, string cuit, string direccion, ETipoDeProducto tipoDeproducto, EMediosDePago medioDePago, EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega)
+        public static IProveedor CrearProveedor(string nombre, string cuit, string direccion, ECategoriaDEProducto tipoDeproducto, EMediosDePago medioDePago, EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega)
         {
 
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(cuit) || string.IsNullOrEmpty(direccion))

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
+    /// <summary>
+    /// Enumerable: Dias -> Lunes, Martes, Miercoles, Jueves, Viernes, Sabado
+    /// </summary>
     public enum EDiaDeLaSemana
     {
         Lunes,

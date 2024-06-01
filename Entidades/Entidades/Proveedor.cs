@@ -11,20 +11,20 @@ namespace Entidades
     /// </summary>
     public class Proveedor : IProveedor
     {
-        private static int _contadorId = 1000;
+        private static int _contadorId = 0;
         private readonly int _id;
 
 
         private string? _nombre;
         private string? _cuit;
         private string? _direccion;
-        private ETipoDeProducto _tipoDeProductoQueProvee;
+        private ECategoriaDEProducto _tipoDeProductoQueProvee;
         private EMediosDePago _medioDePago;
         private EAcreedor _esAcreedor;
         private EDiaDeLaSemana _diaDeEntrega;
         
 
-        public Proveedor(string nombre, string cuit, string direccion, ETipoDeProducto tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
+        public Proveedor(string nombre, string cuit, string direccion, ECategoriaDEProducto tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
         {
             Nombre = nombre;
             Cuit = cuit;
@@ -53,7 +53,7 @@ namespace Entidades
             set { _direccion = value; }
         }
 
-        public ETipoDeProducto TipoDeProductoQueProvee 
+        public ECategoriaDEProducto TipoDeProductoQueProvee 
         { 
             get { return _tipoDeProductoQueProvee; }
             set { _tipoDeProductoQueProvee = value; }

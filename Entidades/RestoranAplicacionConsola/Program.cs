@@ -10,8 +10,8 @@ namespace RestoranAplicacionConsola
         static void Main(string[] args)
         {           
             GestorDeProveedores gestorDeProveedores = new GestorDeProveedores();
-            gestorDeProveedores.CrearProveedor("Aser S.A", "452", "Av Los Macacos 35", ETipoDeProducto.Almacen, EMediosDePago.Transferencia,EAcreedor.No,EDiaDeLaSemana.Lunes);
-            gestorDeProveedores.CrearProveedor("Carnes Argentinas SRL", "126", "Av Sin Agua 1500", ETipoDeProducto.Carniceria, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Miercoles);
+            gestorDeProveedores.CrearProveedor("Aser S.A", "452", "Av Los Macacos 35", ECategoriaDEProducto.Almacen, EMediosDePago.Transferencia,EAcreedor.No,EDiaDeLaSemana.Lunes);
+            gestorDeProveedores.CrearProveedor("Carnes Argentinas SRL", "126", "Av Sin Agua 1500", ECategoriaDEProducto.Carniceria, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Miercoles);
             MostrarDatosProveedoresEnConsola(gestorDeProveedores.GetProveedores(),"Proveedores: ");
 
             GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados();

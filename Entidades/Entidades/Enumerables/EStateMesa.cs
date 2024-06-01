@@ -8,7 +8,7 @@ namespace Entidades.Enumerables
 {
     /// <summary>
     /// Emun que representa el estado de la mesa:
-    /// Cerrada = Disponible
+    /// Cerrada = Disponible /
     /// Consumo_No_Pagado = No disponible
     /// </summary>
     public enum EStateMesa

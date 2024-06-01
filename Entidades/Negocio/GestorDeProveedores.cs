@@ -30,7 +30,7 @@ namespace Negocio
         /// <exception cref="ProveedorErrorAlCrearException"></exception>
         /// <exception cref="Exception"></exception>
         public void CrearProveedor(
-                 string nombre, string cuit, string direccion, ETipoDeProducto tipoDeProducto
+                 string nombre, string cuit, string direccion, ECategoriaDEProducto tipoDeProducto
                 ,EMediosDePago mediosDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega)
         {
             try

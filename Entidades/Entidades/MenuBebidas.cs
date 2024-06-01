@@ -8,6 +8,6 @@ namespace Entidades
 {
     public class MenuBebidas
     {
-        private List<Bebidas> _listaBebidas;
+        private List<Bebida> _listaBebidas;
     }
 }

@@ -11,9 +11,9 @@ namespace Entidades.Interfaces
     {
         string Nombre { get; set; }
         double Cantidad { get; set; }
-        EUnidadMedida EUnidadMedida { get; set; }
-        
-        Proveedor Proveedor { get; set; }
+        EUnidadMedida UnidadDeMedida { get; set; }        
+        ECategoriaDEProducto TipoDeProducto { get; set; }
+        IProveedor Proveedor { get; set; }
         decimal Precio { get; set; }
         int Id { get; set; }
         bool Disponibilidad  { get; set;}

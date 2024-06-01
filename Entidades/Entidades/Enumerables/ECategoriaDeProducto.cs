@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
-    public enum ECategoriaDeProducto
+    /// <summary>
+    /// Enumerable: Verduleria, Carniceria, Almacen, Bebida
+    /// </summary>
+    public enum ECategoriaDEProducto
     {
-        Carnes,
-        Vegetales,
-        Harinas,
-        Fideos,        
+        Verduleria,        
+        Carniceria,
+        Almacen,
+        Bebida
     }
 }

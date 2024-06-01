@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
-    public enum ETipoDeProducto
+    /// <summary>
+    /// Enumerable: Con Alcohol, Sin Alcohol
+    /// </summary>
+    public enum EClasificacionBebida
     {
-        Carniceria,
-        Almacen,
-        Verduleria,
-       
+        Con_Alcohol,
+        Sin_Añcohol
     }
 }
