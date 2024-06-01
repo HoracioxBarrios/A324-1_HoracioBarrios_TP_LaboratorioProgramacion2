@@ -15,12 +15,10 @@ namespace Entidades
     {
 
         public string Nombre { get; set; }
-        public double Cantidad { get; set; }
-       
+        public double Cantidad { get; set; }       
         public Proveedor Proveedor { get; set; }
         public int Id { get; set; }
         public decimal Precio { get; set; }
-
         public EDisponibilidad EDisponibilidad { get; set; }
         public EUnidadMedida EUnidadMedida { get ; set ; }
     }
