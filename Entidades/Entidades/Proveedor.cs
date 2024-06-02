@@ -2,6 +2,7 @@
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 
 namespace Entidades
@@ -12,7 +13,7 @@ namespace Entidades
     public class Proveedor : IProveedor
     {
         private static int _contadorId = 0;
-        private readonly int _id;
+        private int _id;
 
 
         private string? _nombre;
@@ -77,6 +78,7 @@ namespace Entidades
         public int ID
         {
             get { return _id; }
+            private set { _id = value; }
         }
         public override string ToString()
         {

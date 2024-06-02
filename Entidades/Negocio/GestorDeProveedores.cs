@@ -54,7 +54,12 @@ namespace Negocio
 
         public List<IProveedor> GetProveedores()
         {
-            return _listProveedores;
+            if(_listProveedores.Count > 0)
+            {
+                return _listProveedores;
+            }
+            throw new ListaVaciaException("La lista Esta Vacia");
+            
         }
 
         public IProveedor GetProveedor(string nombre)
@@ -80,7 +85,7 @@ namespace Negocio
                 throw new DatoIncorrectoException("Dato Incorrecto: ID no valida");
             }
 
-            foreach (IProveedor proveedor in _listProveedores)
+            foreach (IProveedor proveedor in GetProveedores())
             {
                 if (int.Equals(proveedor.ID, id))
                 {

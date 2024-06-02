@@ -15,24 +15,33 @@ namespace Entidades
     /// </summary>
     public class Ingrediente : Producto, IConsumible
     {
-        private static int _contadorId = 0;
-        private int _id;
         private ECategoriaConsumible _eCategoriaConsumible;
 
         public Ingrediente(
             string nombre, double cantidad, EUnidadMedida unidadMedida, decimal precio
-            , IProveedor proveedor , ETipoProductoCreable tipoDeProducto, bool disponibilidad)
+            , IProveedor proveedor , ETipoProductoCreable tipoDeProducto)
         {
             Nombre = nombre;
             Cantidad = cantidad;
             UnidadDeMedida = unidadMedida;
             Proveedor = proveedor;
             TipoDeProducto = tipoDeProducto;
-            Disponibilidad = disponibilidad;
+            if(cantidad > 0)
+            {
+                Disponibilidad = true;
+            }
 
-            Id = ++_contadorId;
         }
 
+
+        public override decimal CalcularPrecio()
+        {
+            return Precio;
+        }
+        public override void DescontarCantidad(double cantidad)
+        {
+            throw new NotImplementedException();
+        }
 
         public ECategoriaConsumible Categoria 
         {
@@ -40,9 +49,13 @@ namespace Entidades
             set { _eCategoriaConsumible = value; }
         }
 
+
+
+
+
         public override string ToString()
         {
-            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad}, Unidad de Medida: {UnidadDeMedida}, Tipo de Producto:{TipoDeProducto}, Proveedor: {Proveedor}, Disponible: {Disponibilidad}";
+            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad}, Disponible: {Disponibilidad}, Unidad de Medida: {UnidadDeMedida}, Tipo de Producto: {TipoDeProducto}, Proveedor: {Proveedor.Nombre}";
         }
     }
 }

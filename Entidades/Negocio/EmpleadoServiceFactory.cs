@@ -8,7 +8,7 @@ namespace Negocio
     /// <summary>
     /// Class Empleado Service - (Usa el Patron de Diseño Factory Method para crear IEmpleados
     /// </summary>
-    public static class EmpleadoFactoryService
+    public static class EmpleadoServiceFactory
     {
         /// <summary>
         /// Methodo que Crea un Empleado

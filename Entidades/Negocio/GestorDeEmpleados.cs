@@ -19,7 +19,7 @@ namespace Negocio
         {
             try
             {
-                IEmpleado empleado = EmpleadoFactoryService.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
+                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
                 _listaDeEmpleados.Add(empleado);
             }
             catch (EmpleadoDatosException ex)
@@ -35,9 +35,31 @@ namespace Negocio
 
         public List<IEmpleado> GetEmpleados()
         {
-            return _listaDeEmpleados;
+            if(_listaDeEmpleados.Count > 0)
+            {
+                return _listaDeEmpleados;
+            }
+            throw new ListaVaciaException("La lista esta vacia");
         }
 
+        private int VerificarExistenciaDeEmpleado(string nombre)
+        {
+            if (string.IsNullOrEmpty(nombre))
+            {
+                throw new DatoIncorrectoException("El Dato es invalido");
+            }
+            foreach(IEmpleado empleado in GetEmpleados())
+            {
+                if(string.Equals(empleado.Nombre, nombre, StringComparison.OrdinalIgnoreCase))
+                {
+                    Empleado? emp = empleado as Empleado;
+                    {
+                        return emp.Id;
+                    }
+                }
+            }
+            throw new ErrorAlObtenerIDException("Error al obtener la Id");
+        }
 
     }
 }

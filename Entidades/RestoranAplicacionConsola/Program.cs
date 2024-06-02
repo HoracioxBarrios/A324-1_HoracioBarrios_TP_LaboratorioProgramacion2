@@ -14,7 +14,7 @@ namespace RestoranAplicacionConsola
             gestorDeProveedores.CrearProveedor("Aser S.A", "452", "Av Los Macacos 35", ETipoDeProductoProveido.Almacen, EMediosDePago.Transferencia,EAcreedor.No,EDiaDeLaSemana.Lunes);
             gestorDeProveedores.CrearProveedor("Carnes Argentinas SRL", "126", "Av Sin Agua 1500", ETipoDeProductoProveido.Carniceria, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Miercoles);
             gestorDeProveedores.CrearProveedor("Almacenes S.A", "598", "Av Sin Tierra 1500", ETipoDeProductoProveido.Almacen, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Jueves);
-            MostrarDatosProveedoresEnConsola(gestorDeProveedores.GetProveedores(),"Proveedores: ");
+            Mostrar(gestorDeProveedores.GetProveedores(),"Proveedores: ");
 
             GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados();
             gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
@@ -22,34 +22,35 @@ namespace RestoranAplicacionConsola
             gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
             gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
             gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
-            MostrarDatosEmpleadosEnConsola(gestorDeEmpleados.GetEmpleados(), "Empleados: ");
+            Mostrar(gestorDeEmpleados.GetEmpleados(), "Empleados: ");
+
+
+            
+
 
 
             IProveedor proveedor1 = gestorDeProveedores.GetProveedor(1);
-            Ingrediente ingrediente1 = new Ingrediente("Pollo", 250, EUnidadMedida.Gramo, 1000, proveedor1, ETipoProductoCreable.Ingrediente,true);
-            Console.WriteLine(ingrediente1);
-
             IProveedor proveedor2 = gestorDeProveedores.GetProveedor(2);
-            Ingrediente ingrediente2 = new Ingrediente("papa", 250, EUnidadMedida.Gramo, 1000, proveedor2, ETipoProductoCreable.Ingrediente, true);
-            Console.WriteLine(ingrediente2);
-
             IProveedor proveedor3 = gestorDeProveedores.GetProveedor(3);
-            Ingrediente ingrediente3 = new Ingrediente("Tomate", 250, EUnidadMedida.Gramo, 1000, proveedor2, ETipoProductoCreable.Ingrediente, true);
-            Console.WriteLine(ingrediente3);
+
+            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            IProducto productoIngrediente1= gestorDeProductos.CrearProducto(ETipoProductoCreable.Ingrediente, "Tomate", 10, EUnidadMedida.Kilo, 600, proveedor1);
+            //Console.WriteLine(productoIngrediente1);
+
+            IProducto productoBebida =gestorDeProductos.CrearProducto(ETipoProductoCreable.Bebida, "Coca Cola", 30, EUnidadMedida.Unidad, 1500, proveedor3);
+            //Console.WriteLine(productoBebida);
+            Mostrar(gestorDeProductos.GetProductos(), "Productos: ");
+
+
+
+
 
 
             Console.ReadKey();
         }
-        //static bool Login(string user, string password)
-        //{
-        //    if (user == GestorUsuario.GetUser(user) && password == GestorUser.GetPass(password)) ;
-        //}
-        //static int MostrarMenuOpciones()
-        //{
-        //    Console.WriteLine();
-        //}
 
-        public static void MostrarDatosProveedoresEnConsola(List<IProveedor> proveedores, string mensage)
+
+        public static void Mostrar(List<IProveedor> proveedores, string mensage)
         {
             if(proveedores.Count > 0)
             {
@@ -62,7 +63,7 @@ namespace RestoranAplicacionConsola
             }
 
         }
-        public static void MostrarDatosEmpleadosEnConsola(List<IEmpleado> empleados, string mensage)
+        public static void Mostrar(List<IEmpleado> empleados, string mensage)
         {
             if (empleados.Count > 0)
             {
@@ -74,6 +75,19 @@ namespace RestoranAplicacionConsola
                 }
             }
 
+        }
+
+        public static void Mostrar(List<IProducto> productos, string mensage)
+        {
+            if (productos.Count > 0)
+            {
+                Console.WriteLine(mensage);
+                foreach (IProducto producto in productos)
+                {
+
+                    Console.WriteLine(producto);
+                }
+            }
         }
     }
 }

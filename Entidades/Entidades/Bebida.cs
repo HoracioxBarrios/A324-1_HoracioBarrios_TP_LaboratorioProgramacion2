@@ -9,14 +9,13 @@ namespace Entidades
     /// Class Bebida (Hereda de Producto, a su vez por gerarquia de herencia hereda la interface IProducto, e Implementa IConsumible)
     /// </summary>
     public class Bebida : Producto, IConsumible
-    {
-        private static int _contadorId = 0;
-        private int _id;
+    {   
         private ECategoriaConsumible _eCategoriaConsumible;
         private EClasificacionBebida _ClasificacionDeBebida;
         private ETipoProductoCreable _tipoDeProducto;
 
 
+        
         public Bebida(
             string nombre, double cantidad, EUnidadMedida unidadDeMedida, decimal precio, IProveedor proveedor, 
             ECategoriaConsumible categoriaDeConsumible, EClasificacionBebida clasificacionDeBebida)
@@ -29,9 +28,26 @@ namespace Entidades
             Categoria = categoriaDeConsumible;
             ClasificacionDeBebida = clasificacionDeBebida;
 
-            Id = ++_contadorId;
             TipoDeProducto = ETipoProductoCreable.Bebida;
+            
         }
+
+        /// <summary>
+        /// Calcula el Precio del Producto
+        /// Ejemplo: Precio total del stock = Cantidad × Precio unitario=10×100=1000
+        /// </summary>
+        /// <returns></returns>
+        public override decimal CalcularPrecio()
+        {
+            return Precio;
+        }
+
+
+        public override void DescontarCantidad(double cantidad)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public ECategoriaConsumible Categoria 
         { 
@@ -45,13 +61,11 @@ namespace Entidades
             set { _ClasificacionDeBebida = value; }
         }
 
-        public int ID { 
-            get { return _id; }
-            private set { _id = value; }
-        }   
+
+
         public override string ToString()
         {
-            return $"ID: {ID}, Nombre: {Nombre}, Cantidad {Cantidad}, Precio: {Precio}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Con Alcohol? : {ClasificacionDeBebida}";
+            return $"ID: {Id}, Nombre: {Nombre}, Cantidad {Cantidad}, Precio: {Precio}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Clasificacion : {ClasificacionDeBebida}";
         }
     }
 }
