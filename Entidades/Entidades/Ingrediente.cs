@@ -24,6 +24,7 @@ namespace Entidades
             Nombre = nombre;
             Cantidad = cantidad;
             UnidadDeMedida = unidadMedida;
+            Precio = precio;
             Proveedor = proveedor;
             TipoDeProducto = tipoDeProducto;
             if(cantidad > 0)
@@ -55,7 +56,7 @@ namespace Entidades
 
         public override string ToString()
         {
-            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad}, Disponible: {Disponibilidad}, Unidad de Medida: {UnidadDeMedida}, Tipo de Producto: {TipoDeProducto}, Proveedor: {Proveedor.Nombre}";
+            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Precio {Precio}, Disponible: {Disponibilidad}, Unidad de Medida: {UnidadDeMedida}, Tipo de Producto: {TipoDeProducto}, Proveedor: {Proveedor.Nombre}";
         }
     }
 }

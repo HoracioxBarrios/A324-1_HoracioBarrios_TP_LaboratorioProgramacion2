@@ -40,7 +40,8 @@ namespace RestoranAplicacionConsola
             IProducto productoBebida =gestorDeProductos.CrearProducto(ETipoProductoCreable.Bebida, "Coca Cola", 30, EUnidadMedida.Unidad, 1500, proveedor3);
             //Console.WriteLine(productoBebida);
             Mostrar(gestorDeProductos.GetProductos(), "Productos: ");
-
+            Console.WriteLine("Precio Total en Stock");
+            Console.WriteLine(gestorDeProductos.CalcularPrecio());
 
 
 

@@ -10,7 +10,7 @@ namespace Negocio
     public class GestorDeProductos
     {
         List<IProducto> _listProductosStock;
-        private decimal _precioTotalDeLosProductosEnStock;
+        private decimal _precioTotalStock = 0;
         public GestorDeProductos()
         {
             _listProductosStock = new List<IProducto>();
@@ -42,7 +42,17 @@ namespace Negocio
             }
 
         }
-
+        public decimal CalcularPrecio()
+        {
+            if(_listProductosStock.Count > 0)
+            {
+                foreach(IProducto producto in _listProductosStock)
+                {
+                    _precioTotalStock += producto.CalcularPrecio();
+                }
+            }
+            return _precioTotalStock;
+        }
 
         public List<IProducto> GetProductos()
         {
