@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Enti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestEntidades", "EncargadoTest\TestEntidades.csproj", "{6D7140C8-10A5-42A2-BDEB-33A331CB87BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestoranAplicacionConsola", "RestoranAplicacionConsola\RestoranAplicacionConsola.csproj", "{56C58F77-B95E-45FA-AFC8-FE456E3F5569}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestoranAplicacionConsola", "RestoranAplicacionConsola\RestoranAplicacionConsola.csproj", "{56C58F77-B95E-45FA-AFC8-FE456E3F5569}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Negocio", "Negocio\Negocio.csproj", "{CD70630C-67BF-481D-9BA4-5A656CCEE177}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Negocio", "Negocio\Negocio.csproj", "{CD70630C-67BF-481D-9BA4-5A656CCEE177}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

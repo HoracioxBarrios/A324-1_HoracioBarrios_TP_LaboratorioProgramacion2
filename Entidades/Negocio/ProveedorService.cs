@@ -29,10 +29,10 @@ namespace Negocio
             {
                 throw new ProveedorDatosException("Los Datos Del Proveedor no son Validos");
             }
-            else
-            {
-                return new Proveedor(nombre, cuit, direccion, tipoDeproducto, medioDePago, esAcreedor, diaDeEntrega);
-            }
+            return new Proveedor(nombre, cuit, direccion, tipoDeproducto, medioDePago, esAcreedor, diaDeEntrega);
+
+
+
         }
 
 

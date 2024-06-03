@@ -8,6 +8,6 @@ namespace Entidades.EncargadoCommands
 {
     public class ConsultarStockPorAgotarseCommand
     {
-
+        //ICommand
     }
 }

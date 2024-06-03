@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Entidades.StockCommands
 {
-    //public class CargarStockCommand : ICommand
-    //{
+    public class CargarStockCommand 
+    {
 
-
-    //}
+        //: ICommand
+    }
 }

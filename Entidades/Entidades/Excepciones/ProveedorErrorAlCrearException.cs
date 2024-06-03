@@ -10,7 +10,6 @@ namespace Entidades.Excepciones
     {
         public ProveedorErrorAlCrearException() { }
         public ProveedorErrorAlCrearException(string message): base (message) { }
-
         public ProveedorErrorAlCrearException(string message, Exception innerException): base (message, innerException) { }
     }
 }
