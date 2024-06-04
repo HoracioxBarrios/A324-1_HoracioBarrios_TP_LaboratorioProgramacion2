@@ -18,21 +18,21 @@ namespace Entidades
         private ECategoriaConsumible _eCategoriaConsumible;
 
         public Ingrediente(
-            string nombre, double cantidad, EUnidadMedida unidadMedida, decimal precio
-            , IProveedor proveedor , ETipoDeProducto tipoDeProducto)
+            string nombre, double cantidad, EUnidadMedida eUnidadMedida, decimal precio
+            , IProveedor proveedor, ETipoDeProducto tipoDeProducto)
         {
             Nombre = nombre;
             Cantidad = cantidad;
-            UnidadDeMedida = unidadMedida;
+            UnidadDeMedida = eUnidadMedida;
             Precio = precio;
             Proveedor = proveedor;
             TipoDeProducto = tipoDeProducto;
-            if(cantidad > 0)
+            if (cantidad > 0)
             {
                 Disponibilidad = true;
             }
 
-        }
+        }//Tengo que hacer: como con bebida. 1ro poner en orden las Unidades de medida como hice en Bebida. 2do hacer sobrecarga de Ingredientes para que si son de la misma Id se resten entre ellos. de los platos.
 
 
         public override decimal CalcularPrecio()
@@ -44,7 +44,7 @@ namespace Entidades
             throw new NotImplementedException();
         }
 
-        public ECategoriaConsumible Categoria 
+        public ECategoriaConsumible Categoria
         {
             get { return _eCategoriaConsumible; }
             set { _eCategoriaConsumible = value; }

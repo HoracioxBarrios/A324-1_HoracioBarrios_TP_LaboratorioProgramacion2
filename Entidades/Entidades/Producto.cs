@@ -19,9 +19,10 @@ namespace Entidades
         public string Nombre { get; set; }
         public double Cantidad { get; set; }
         public decimal Precio { get; set; }
+        public IUnidadDeMedida TipoDeUnidadDeMedida { get; set; }
         public ETipoDeProducto TipoDeProducto { get; set; }
         public bool Disponibilidad { get; set; }
-        public EUnidadMedida UnidadDeMedida { get; set; }
+        public EUnidadMedida EUnidadDeMedida { get; set; }
         public IProveedor Proveedor { get; set; }
         public int Id { get; set; }
 
@@ -34,7 +35,8 @@ namespace Entidades
         }
 
         public abstract decimal CalcularPrecio();
-        public abstract void DescontarCantidad(double cantidad);
+
+
 
     }
 }

@@ -10,7 +10,7 @@ namespace Entidades.Unidades_de_Medida
 {
     public class MiliLitro : IUnidadDeMedida
     {
-        public double Cantidad { get ; set ; }
+        private double _cantidad;
 
         public MiliLitro(double cantidad) 
         { 
@@ -67,6 +67,10 @@ namespace Entidades.Unidades_de_Medida
             return new MiliLitro(nuevaCantidad);
         }
 
-
+        public double Cantidad
+        {
+            get { return _cantidad; }
+            set { _cantidad = value; }
+        }
     }
 }

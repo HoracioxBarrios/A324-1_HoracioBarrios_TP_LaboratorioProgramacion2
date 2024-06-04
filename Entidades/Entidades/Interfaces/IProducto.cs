@@ -12,8 +12,9 @@ namespace Entidades.Interfaces
         string Nombre { get; set; }
         double Cantidad { get; set; }
         decimal Precio { get; set; }
+        IUnidadDeMedida TipoDeUnidadDeMedida { get; set; }
         bool Disponibilidad { get; set; }
         decimal CalcularPrecio();
-        void DescontarCantidad(double cantidad);
+
     }
 }

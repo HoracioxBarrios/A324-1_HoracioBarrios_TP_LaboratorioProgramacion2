@@ -10,7 +10,7 @@ namespace Entidades.Unidades_de_Medida
 {
     public class Unidad : IUnidadDeMedida
     {
-        public double Cantidad { get ; set ; }
+        private double _cantidad;
 
         public Unidad(double cantidad) 
         { 
@@ -39,6 +39,12 @@ namespace Entidades.Unidades_de_Medida
                 throw new AlSumarException("Error al Restar, el resultado da negativo");
             }
             return new Unidad(nuevaCantidad);
+        }
+
+        public double Cantidad 
+        {
+            get { return _cantidad; }
+            set { _cantidad = value; }
         }
 
     }

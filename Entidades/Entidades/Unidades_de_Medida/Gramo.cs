@@ -10,7 +10,7 @@ namespace Entidades.Unidades_de_Medida
 {
     public class Gramo : IUnidadDeMedida
     {
-        public double Cantidad { get ; set ; }
+        private double _cantidad;
 
 
         public Gramo(double cantidad)
@@ -112,5 +112,10 @@ namespace Entidades.Unidades_de_Medida
             return new Gramo(nuevaCantidad);
         }
 
+        public double Cantidad
+        {
+            get { return _cantidad; }
+            set { _cantidad = value; }
+        }
     }
 }

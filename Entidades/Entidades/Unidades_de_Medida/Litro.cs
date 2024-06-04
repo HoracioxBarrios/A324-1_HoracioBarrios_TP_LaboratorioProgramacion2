@@ -10,7 +10,7 @@ namespace Entidades.Unidades_de_Medida
 {
     public class Litro : IUnidadDeMedida
     {
-        public double Cantidad { get ; set ; }
+        private double _cantidad;
 
         public Litro(double cantidad)
         {
@@ -66,6 +66,12 @@ namespace Entidades.Unidades_de_Medida
                 throw new AlRestarException("Error al restar, el resultado da Negativo");
             }
             return new Litro(nuevaCantidad);
+        }
+
+        public double Cantidad
+        {
+            get { return _cantidad; }
+            set { _cantidad = value; }
         }
     }
 }

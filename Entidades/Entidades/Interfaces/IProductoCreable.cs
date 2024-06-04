@@ -11,7 +11,7 @@ namespace Entidades.Interfaces
     {
         int Id { get; set; }
         ETipoDeProducto TipoDeProducto { get; set; }
-        EUnidadMedida UnidadDeMedida { get; set; }
+        EUnidadMedida EUnidadDeMedida { get; set; }
         IProveedor Proveedor { get; set; }
     }
 }
