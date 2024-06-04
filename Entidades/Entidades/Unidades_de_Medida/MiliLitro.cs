@@ -24,8 +24,49 @@ namespace Entidades.Unidades_de_Medida
                 double cantidadConvertida = miliLitro.Cantidad / 1000;
                 return new Litro(cantidadConvertida);
             }
-            throw new ErrorAlConvertirException("Error al querer convertir de miliLitro a Litro");
+            throw new AlConvertirException("Error al querer convertir de miliLitro a Litro");
         }   
+
+
+        public static MiliLitro operator +(MiliLitro miliLitro, MiliLitro miliLitro2)
+        {
+            double nuevaCantidad = miliLitro.Cantidad + miliLitro2.Cantidad;
+            if(nuevaCantidad < 0)
+            {
+                throw new AlSumarException("Error al sumar, el Resultado da negativo");
+            }
+            return new MiliLitro(nuevaCantidad);
+        }
+        public static MiliLitro operator -(MiliLitro miliLitro, MiliLitro miliLitro2)
+        {
+            double nuevaCantidad = miliLitro.Cantidad - miliLitro2.Cantidad;
+            if (nuevaCantidad < 0)
+            {
+                throw new AlRestarException("Error al sumar, el Resultado da negativo");
+            }
+            return new MiliLitro(nuevaCantidad);
+        }
+        public static MiliLitro operator +(MiliLitro miliLitro, Litro litro)
+        {
+            MiliLitro nuevoMilitro = (MiliLitro)litro;
+            double nuevaCantidad = miliLitro.Cantidad + nuevoMilitro.Cantidad;
+            if(nuevaCantidad < 0)
+            {
+                throw new AlSumarException("Error al sumar , la cantidad da negativa");
+            }
+            return new MiliLitro(nuevaCantidad);
+        }
+        public static MiliLitro operator -(MiliLitro miliLitro, Litro litro)
+        {
+            MiliLitro nuevoMilitro = (MiliLitro)litro;
+            double nuevaCantidad = miliLitro.Cantidad - nuevoMilitro.Cantidad;
+            if (nuevaCantidad < 0)
+            {
+                throw new AlSumarException("Error al Restar , la cantidad da negativa");
+            }
+            return new MiliLitro(nuevaCantidad);
+        }
+
 
     }
 }

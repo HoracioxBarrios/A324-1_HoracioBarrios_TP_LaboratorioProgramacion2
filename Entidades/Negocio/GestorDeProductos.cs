@@ -28,13 +28,13 @@ namespace Negocio
                 return producto;
 
             }
-            catch (ErrorDatosDeProductoException ex)
+            catch (DatosDeProductoException ex)
             {
-                throw new ErrorAlCrearProductoException("Error al crear el Producto ", ex);
+                throw new AlCrearProductoException("Error al crear el Producto ", ex);
             }
-            catch(ErrorTipoDeProductoDesconocidoException ex)
+            catch(TipoDeProductoDesconocidoException ex)
             {
-                throw new ErrorAlCrearProductoException("Error al crear el Producto ", ex);
+                throw new AlCrearProductoException("Error al crear el Producto ", ex);
             }
             catch (Exception ex)
             {

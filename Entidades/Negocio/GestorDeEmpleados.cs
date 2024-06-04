@@ -58,7 +58,7 @@ namespace Negocio
                     }
                 }
             }
-            throw new ErrorAlObtenerIDException("Error al obtener la Id");
+            throw new AlObtenerIDException("Error al obtener la Id");
         }
 
     }

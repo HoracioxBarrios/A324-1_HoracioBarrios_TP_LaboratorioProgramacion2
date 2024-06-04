@@ -24,7 +24,7 @@ namespace Entidades.Unidades_de_Medida
         /// </summary>
         /// <param name="gramos">recibe un obj. Gramo</param>
         /// <returns>Devuelve el  Kilo con su respectiva Cantidad dentro</returns>
-        /// <exception cref="ErrorAlConvertirException"></exception>
+        /// <exception cref="AlConvertirException"></exception>
         
         public static explicit operator Kilo(Gramo gramos)
         {
@@ -33,7 +33,7 @@ namespace Entidades.Unidades_de_Medida
                 double cantidadConvertida = gramos.Cantidad / 1000;
                 return new Kilo(cantidadConvertida);
             }
-            throw new ErrorAlConvertirException("Error al querer Convertir de Gramos a Kilo");
+            throw new AlCastearException("Error al querer Convertir de Gramos a Kilo");
         }
 
         /// <summary>
@@ -44,7 +44,12 @@ namespace Entidades.Unidades_de_Medida
         /// <returns>Devuelve el nuevo Gramo con su respectva Cantidad</returns>
         public static Gramo operator +(Gramo gramo1, Gramo gramo2)
         {
+
             double nuevaCantidad = gramo1.Cantidad + gramo2.Cantidad;
+            if(nuevaCantidad < 0)
+            {
+                throw new AlSumarException("Error al querer sumar, el resultado da negativo");
+            }
             return new Gramo(nuevaCantidad);
         }
 
@@ -55,13 +60,13 @@ namespace Entidades.Unidades_de_Medida
         /// <param name="gramo1">recibe un: obj. gramo</param>
         /// <param name="gramo2">recibe otro: obj. gramo</param>
         /// <returns>Devuelve el nuevo Gramo con su respectva Cantidad</returns>
-        /// <exception cref="ErrorAlRestarException"></exception>
+        /// <exception cref="AlRestarException"></exception>
         public static Gramo operator -(Gramo gramo1, Gramo gramo2)
         {
             double nuevaCantidad = gramo1.Cantidad - gramo2.Cantidad;           
             if (nuevaCantidad < 0)
             {
-                throw new ErrorAlRestarException("La resta da resultado negativo de gramos.");
+                throw new AlRestarException("La resta da resultado negativo de gramos.");
             }
             return new Gramo(nuevaCantidad);
         }
@@ -79,6 +84,10 @@ namespace Entidades.Unidades_de_Medida
         {
             Gramo nuevoGramo = (Gramo)kilo;
             double nuevaCantidad = gramo.Cantidad + nuevoGramo.Cantidad;
+            if (nuevaCantidad < 0)
+            {
+                throw new AlSumarException("Error al querer sumar, el resultado da negativo");
+            }
             return new Gramo(nuevaCantidad);
         }
 
@@ -91,14 +100,14 @@ namespace Entidades.Unidades_de_Medida
         /// <param name="gramo">recibe un obj. Gramo</param>
         /// <param name="kilo">recibe otro obj. Kilo</param>
         /// <returns>Devuelve el nuevo Gramo con su respectva Cantidad</returns>
-        /// <exception cref="ErrorAlRestarException"></exception>
+        /// <exception cref="AlRestarException"></exception>
         public static Gramo operator -(Gramo gramo, Kilo kilo)
         {
             Gramo nuevoGramo = (Gramo)kilo;
             double nuevaCantidad = gramo.Cantidad - nuevoGramo.Cantidad;
             if (nuevaCantidad < 0)
             {
-                throw new ErrorAlRestarException("La resta da resultado negativo de gramos.");
+                throw new AlRestarException("La resta da resultado negativo de gramos.");
             }
             return new Gramo(nuevaCantidad);
         }

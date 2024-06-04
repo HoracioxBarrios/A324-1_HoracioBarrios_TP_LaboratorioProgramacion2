@@ -13,9 +13,6 @@ namespace Negocio
     public static class ProductoServiceFactory 
     {
 
-
-
-
         public static IProducto CrearProducto(
               ETipoProductoCreable tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
@@ -23,7 +20,7 @@ namespace Negocio
             {
                 if(string.IsNullOrEmpty(nombre) || cantidad <= 0 || precio <= 0)
                 {
-                    throw new ErrorDatosDeProductoException("Datos del Producto Exception");
+                    throw new DatosDeProductoException("Datos del Producto Exception");
                 }
                 switch (tipoProducto)
                 {
@@ -32,7 +29,7 @@ namespace Negocio
                     case ETipoProductoCreable.Ingrediente:
                         return new Ingrediente(nombre, cantidad, unidadDeMedida, precio, proveedor, ETipoProductoCreable.Ingrediente);
                     default:
-                        throw new ErrorTipoDeProductoDesconocidoException("Tipo de producto no reconocido");                  
+                        throw new TipoDeProductoDesconocidoException("Tipo de producto no reconocido");                  
             
                 }
             }

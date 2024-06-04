@@ -22,7 +22,7 @@ namespace Entidades.Unidades_de_Medida
         /// Operador de Conversion Explicito de Kilos a Gramos
         /// </summary>
         /// <param name="kilo">recibe un obj. Kilo</param>
-        /// <exception cref="ErrorAlConvertirException" ></exception>
+        /// <exception cref="AlConvertirException" ></exception>
 
         public static explicit operator Gramo(Kilo kilo)
         {
@@ -31,23 +31,28 @@ namespace Entidades.Unidades_de_Medida
                 double cantidadConvertida = kilo.Cantidad * 1000;
                 return new Gramo(cantidadConvertida);
             }
-            throw new ErrorAlConvertirException("Error al querer Convertir de Kilo a Gramos");
+            throw new AlConvertirException("Error al querer Convertir de Kilo a Gramos");
         }
 
 
 
         public static Kilo operator +(Kilo kilo1, Kilo kilo2)
         {
-           double nuevaCantidad = kilo1.Cantidad + kilo2.Cantidad;
-           return new Kilo(nuevaCantidad);
+            double nuevaCantidad = kilo1.Cantidad + kilo2.Cantidad;
+            if(nuevaCantidad < 0)
+            {
+                throw new AlSumarException("Error al querer sumar, el resultado da negativo");
+            }
+            return new Kilo(nuevaCantidad);
         }
+
 
         public static Kilo operator -(Kilo kilo1, Kilo kilo2)
         {
             double nuevaCantidad = kilo1.Cantidad - kilo2.Cantidad;
             if(nuevaCantidad < 0)
             {
-                throw new ErrorAlConvertirException("La resta da resultado negativo en KIlos");
+                throw new AlRestarException("La resta da resultado negativo en KIlos");
             }
             return new Kilo(nuevaCantidad);
         }
@@ -57,6 +62,10 @@ namespace Entidades.Unidades_de_Medida
         {
             Kilo nuevoKilo = (Kilo)gramo;
             double nuevaCantidad = kilo.Cantidad + nuevoKilo.Cantidad;
+            if (nuevaCantidad < 0)
+            {
+                throw new AlSumarException("Error al querer sumar, el resultado da negativo ");
+            }
             return new Kilo(nuevaCantidad);
         }
         public static Kilo operator -(Kilo kilo, Gramo gramo)
@@ -65,7 +74,7 @@ namespace Entidades.Unidades_de_Medida
             double nuevaCantidad = kilo.Cantidad - nuevoKilo.Cantidad;
             if( nuevaCantidad < 0)
             {
-                throw new ErrorAlConvertirException("La resta da resultado negativo de Kilos.");
+                throw new AlConvertirException("La resta da resultado negativo de Kilos.");
             }
             return new Kilo(nuevaCantidad);
         }
