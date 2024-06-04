@@ -38,15 +38,14 @@ namespace Entidades
         }
 
         /// <summary>
-        /// Calcula base a su cantidad el precio total del producto.
-        /// Este método multiplica el precio unitario por la cantidad disponible.
-        /// Ejemplo: Si la cantidad es 10 y el precio unitario es 100, el precio total del stock será 10 × 100 = 1000.
+        /// Calcula el precio Unitario de cada bebida.
         /// </summary>
-        /// <returns>El precio total del stock.</returns>
+        /// <returns>devuelve el precio de una bebida</returns>
         public override decimal CalcularPrecio()
         {
             return Precio * (decimal)_tipoDeUnidadDeMedida.Cantidad;
         }
+
 
         public static Bebida operator +(Bebida bebida1, Bebida bebida2)
         {
