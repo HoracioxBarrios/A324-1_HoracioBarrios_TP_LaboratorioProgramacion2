@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
-    public enum ETipoDeProductoProveido
+    public enum ETipoDeProducto
     {
         Verduleria,
         Carniceria,

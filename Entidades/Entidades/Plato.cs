@@ -11,11 +11,10 @@ namespace Entidades
     public class Plato : IConsumible
     {
         private List<IConsumible> _ingredientes;// Ingrediente es un iproducto
-
+        private string _nonbre;
         private decimal _precio;
-
-        private bool _dispinible;
-        public string Nombre { get; set; }
+        private bool _disponibilidad;
+        
 
         
 
@@ -36,7 +35,16 @@ namespace Entidades
             }
         }
 
-        public ECategoriaConsumible Categoria { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool Disponibilidad { get; set; }
+        
+        public bool Disponibilidad 
+        {
+            get {return _disponibilidad; } set { _disponibilidad = value; } 
+        }
+        public ECategoriaConsumible Categoria { get; set; }
+        public string Nombre 
+        { 
+            get { return _nonbre; }
+            set { _nonbre = value; }
+        }
     }
 }

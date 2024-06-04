@@ -14,7 +14,7 @@ namespace Negocio
     {
 
         public static IProducto CrearProducto(
-              ETipoProductoCreable tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
+              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default)
             {
@@ -24,10 +24,10 @@ namespace Negocio
                 }
                 switch (tipoProducto)
                 {
-                    case ETipoProductoCreable.Bebida:
+                    case ETipoDeProducto.Bebida:
                         return new Bebida(nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);
-                    case ETipoProductoCreable.Ingrediente:
-                        return new Ingrediente(nombre, cantidad, unidadDeMedida, precio, proveedor, ETipoProductoCreable.Ingrediente);
+                    case ETipoDeProducto.Ingrediente:
+                        return new Ingrediente(nombre, cantidad, unidadDeMedida, precio, proveedor, ETipoDeProducto.Ingrediente);
                     default:
                         throw new TipoDeProductoDesconocidoException("Tipo de producto no reconocido");                  
             

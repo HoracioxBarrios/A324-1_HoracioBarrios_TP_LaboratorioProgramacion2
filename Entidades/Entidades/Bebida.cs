@@ -12,7 +12,7 @@ namespace Entidades
     {   
         private ECategoriaConsumible _eCategoriaConsumible;
         private EClasificacionBebida _ClasificacionDeBebida;
-        private ETipoProductoCreable _tipoDeProducto;
+        private ETipoDeProducto _tipoDeProducto;
 
 
         
@@ -28,7 +28,7 @@ namespace Entidades
             Categoria = categoriaDeConsumible;
             ClasificacionDeBebida = clasificacionDeBebida;
 
-            TipoDeProducto = ETipoProductoCreable.Bebida;
+            TipoDeProducto = ETipoDeProducto.Bebida;
             
         }
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    public static class UnidadesDeMedidaFactory
+    public static class UnidadesDeMedidaServiceFactory
     {
 
 

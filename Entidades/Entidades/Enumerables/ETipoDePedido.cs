@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace Entidades.Enumerables
 {
-    public class MenuPlatos
+    public enum ETipoDePedido
     {
-        private List<Plato> _listaPlatos;
-
+        Para_Local,
+        Para_Delivery
     }
 }

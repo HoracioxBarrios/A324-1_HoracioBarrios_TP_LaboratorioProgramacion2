@@ -11,13 +11,15 @@ namespace Negocio
     {
         List<IProducto> _listProductosStock;
         private decimal _precioTotalStock = 0;
-        public GestorDeProductos()
+
+        private string _servicioDeGuardado = "";
+        public GestorDeProductos() //Puede esperar un servicio a DB o a Archivo? _servicioDeGuardado
         {
             _listProductosStock = new List<IProducto>();
         }
 
         public IProducto CrearProducto(
-              ETipoProductoCreable tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
+              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default)
         {

@@ -10,7 +10,7 @@ namespace Entidades.Interfaces
     public interface IProductoCreable
     {
         int Id { get; set; }
-        ETipoProductoCreable TipoDeProducto { get; set; }
+        ETipoDeProducto TipoDeProducto { get; set; }
         EUnidadMedida UnidadDeMedida { get; set; }
         IProveedor Proveedor { get; set; }
     }

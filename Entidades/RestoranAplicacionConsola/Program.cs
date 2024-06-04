@@ -11,9 +11,9 @@ namespace RestoranAplicacionConsola
         static void Main(string[] args)
         {           
             GestorDeProveedores gestorDeProveedores = new GestorDeProveedores();
-            gestorDeProveedores.CrearProveedor("Aser S.A", "452", "Av Los Macacos 35", ETipoDeProductoProveido.Almacen, EMediosDePago.Transferencia,EAcreedor.No,EDiaDeLaSemana.Lunes);
-            gestorDeProveedores.CrearProveedor("Carnes Argentinas SRL", "126", "Av Sin Agua 1500", ETipoDeProductoProveido.Carniceria, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Miercoles);
-            gestorDeProveedores.CrearProveedor("Almacenes S.A", "598", "Av Sin Tierra 1500", ETipoDeProductoProveido.Almacen, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Jueves);
+            gestorDeProveedores.CrearProveedor("Aser S.A", "452", "Av Los Macacos 35", ETipoDeProducto.Almacen, EMediosDePago.Transferencia,EAcreedor.No,EDiaDeLaSemana.Lunes);
+            gestorDeProveedores.CrearProveedor("Carnes Argentinas SRL", "126", "Av Sin Agua 1500", ETipoDeProducto.Carniceria, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Miercoles);
+            gestorDeProveedores.CrearProveedor("Almacenes S.A", "598", "Av Sin Tierra 1500", ETipoDeProducto.Almacen, EMediosDePago.Tarjeta, EAcreedor.Si, EDiaDeLaSemana.Jueves);
             Mostrar(gestorDeProveedores.GetProveedores(),"Proveedores: ");
 
             GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados();
@@ -34,10 +34,10 @@ namespace RestoranAplicacionConsola
             IProveedor proveedor3 = gestorDeProveedores.GetProveedor(3);
 
             GestorDeProductos gestorDeProductos = new GestorDeProductos();
-            IProducto productoIngrediente1= gestorDeProductos.CrearProducto(ETipoProductoCreable.Ingrediente, "Tomate", 10, EUnidadMedida.Kilo, 600, proveedor1);
+            IProducto productoIngrediente1= gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Tomate", 10, EUnidadMedida.Kilo, 600, proveedor1);
             //Console.WriteLine(productoIngrediente1);
 
-            IProducto productoBebida =gestorDeProductos.CrearProducto(ETipoProductoCreable.Bebida, "Coca Cola", 30, EUnidadMedida.Unidad, 1500, proveedor3);
+            IProducto productoBebida =gestorDeProductos.CrearProducto(ETipoDeProducto.Bebida, "Coca Cola", 30, EUnidadMedida.Unidad, 1500, proveedor3);
             //Console.WriteLine(productoBebida);
             Mostrar(gestorDeProductos.GetProductos(), "Productos: ");
             Console.WriteLine("Precio Total en Stock");
