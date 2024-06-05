@@ -56,6 +56,56 @@ namespace Negocio
             return _precioTotalStock;
         }
 
+
+
+        public static void ActualizarListaOriginal(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> productosActualizados)
+        {
+            for (int i = 0; i < listaDeProductosIngredientesStock.Count; i++)
+            {
+                listaDeProductosIngredientesStock[i] = productosActualizados[i];
+            }
+        }
+
+        public static List<IProducto> DescontarProductos(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> listaDeIngredienteEnElPlato)
+        {
+            List<IProducto> productosActualizados = new List<IProducto>();
+
+            foreach (IProducto producto in listaDeProductosIngredientesStock)
+            {
+                if (producto is Ingrediente ingrediente)
+                {
+                    bool encontrado = false;
+                    foreach (IProducto productoADescontar in listaDeIngredienteEnElPlato)
+                    {
+                        if (productoADescontar is Ingrediente ingredienteADescontar)
+                        {
+                            if (ingrediente.Id == ingredienteADescontar.Id)
+                            {
+                                Ingrediente nuevoIngrediente = ingrediente - (Ingrediente)productoADescontar;
+                                productosActualizados.Add(nuevoIngrediente);
+                                encontrado = true;
+                                break; // Salir del bucle si se encontro el producto a descontar
+                            }
+                        }
+                    }
+                    if (!encontrado)
+                    {
+                        productosActualizados.Add(ingrediente);
+                    }
+                }
+            }
+
+            return productosActualizados;
+        }
+
+
+
+
+
+
+
+
+
         public List<IProducto> GetProductos()
         {
             if(_listProductosStock.Count > 0)

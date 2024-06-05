@@ -1,5 +1,6 @@
 ﻿using Entidades.Enumerables;
 using Entidades.Interfaces;
+using Entidades.Unidades_de_Medida;
 using Entidades.Utilidades;
 using Negocio;
 using System;
@@ -22,10 +23,10 @@ namespace Entidades
         private decimal _precio;
         private ETipoDeProducto _tipoDeProducto;
         private bool _disponibilidad;
-        private EUnidadMedida _eUnidadDeMeidad;
+        private EUnidadMedida _eUnidadDeMedida;
         private IProveedor _proveedor;
-        private static int _contadorId = 0;
-        private int _id;
+        private int _contadorId = 0;
+        private int _id = 0;
 
 
         public Ingrediente(
@@ -35,8 +36,12 @@ namespace Entidades
             Nombre = nombre;
             Precio = precio;
             _tipoDeUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadMedida, cantidad);
+
+
             Proveedor = proveedor;
             TipoDeProducto = tipoDeProducto;
+
+            Id = ++_contadorId;
             if (cantidad > 0)
             {
                 Disponibilidad = true;
@@ -105,16 +110,17 @@ namespace Entidades
             get { return _tipoDeProducto; }
             set { _tipoDeProducto = value; }
         }
-        
-        public ITipoUnidadDeMedida TipoDeUnidadDeMedidad
+        public ITipoUnidadDeMedida TipoUnidadDeMedida
         {
             get { return _tipoDeUnidadDeMedida; }
+            set { _tipoDeUnidadDeMedida = value; }
         }
+
 
         public EUnidadMedida EUnidadMedida
         {
-            get { return _eUnidadDeMeidad; }
-            set { _eUnidadDeMeidad = value; }
+            get { return _eUnidadDeMedida; }
+            set { _eUnidadDeMedida = value; }
             
         }
         public bool Disponibilidad
@@ -131,12 +137,12 @@ namespace Entidades
         public int Id
         {
             get { return _id; }
-            private set { _id = value; }
+            set { _id = value; }
         }
 
         public override string ToString()
         {
-            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Precio {Precio}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadMedida}, Tipo de Producto: {TipoDeProducto}, Proveedor: {Proveedor.Nombre}";
+            return $"Id: {_id}, Nombre: {Nombre}, Cantidad: {Cantidad},Precio {Precio}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadMedida}, Tipo de Producto: {TipoDeProducto}, Proveedor: {Proveedor.Nombre}";
         }
     }
 }

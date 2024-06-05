@@ -26,7 +26,7 @@ namespace Entidades
         private ETipoDeProducto _tipoDeProducto;
         private bool _disponibilidad;
         private int _id;
-        private static int _contadorId = 0;
+        private int _contadorId = 0;
 
 
         public Bebida(

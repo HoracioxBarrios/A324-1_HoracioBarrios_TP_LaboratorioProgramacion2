@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace Entidades
     /// </summary>
     public abstract class Producto : IProducto, IProductoCreable
     {
-        private static int _contadorId = 0;
+
         public string Nombre { get; set; }
         public double Cantidad { get; set; }
         public decimal Precio { get; set; }
@@ -25,6 +26,8 @@ namespace Entidades
         public EUnidadMedida EUnidadDeMedida { get; set; }
         public IProveedor Proveedor { get; set; }
         public int Id { get; set; }
+
+        private int _contadorId = 0;
 
 
 

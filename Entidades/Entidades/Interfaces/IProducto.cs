@@ -14,6 +14,7 @@ namespace Entidades.Interfaces
         decimal Precio { get; set; }
         ITipoUnidadDeMedida TipoDeUnidadDeMedida { get; set; }
         bool Disponibilidad { get; set; }
+        int Id { get; set; }
         decimal CalcularPrecio();
 
     }
