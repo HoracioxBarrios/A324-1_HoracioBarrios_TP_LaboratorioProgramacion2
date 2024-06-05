@@ -24,7 +24,7 @@ namespace Entidades
         private EClasificacionBebida _ClasificacionDeBebida;
         private ITipoUnidadDeMedida _tipoDeUnidadDeMedida;
         private ETipoDeProducto _tipoDeProducto;
-
+        private bool _disponibilidad;
         private int _id;
         private static int _contadorId = 0;
 
@@ -35,15 +35,17 @@ namespace Entidades
         {
 
             Nombre = nombre;
-            Cantidad = cantidad;
-            EUnidadDeMedida = eUnidadDeMedida;
-            _tipoDeUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(EUnidadDeMedida, Cantidad);
+            _tipoDeUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
             Precio = precio;
             Proveedor = proveedor;
             Categoria = categoriaDeConsumible;
             ClasificacionDeBebida = clasificacionDeBebida;
             TipoDeProducto = ETipoDeProducto.Bebida;            
             Id = ++_contadorId;
+            if (cantidad > 0)
+            {
+                Disponibilidad = true;
+            }
         }
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace Entidades
         }
 
 
-        new public double Cantidad
+        public double Cantidad
         {
             get { return _tipoDeUnidadDeMedida.Cantidad; }
             set { _tipoDeUnidadDeMedida.Cantidad = value; }
@@ -144,7 +146,11 @@ namespace Entidades
         {
             get { return _tipoDeUnidadDeMedida; }
         }
-
+        public bool Disponibilidad
+        {
+            get { return Cantidad > 0; } 
+            private set { _disponibilidad = value; }
+        }
         public int Id
         {
             get { return _id; }

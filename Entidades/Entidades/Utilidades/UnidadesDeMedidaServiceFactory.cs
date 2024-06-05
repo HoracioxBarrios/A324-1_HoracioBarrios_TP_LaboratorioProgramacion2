@@ -16,9 +16,9 @@ namespace Negocio
 
         public static ITipoUnidadDeMedida CrearUnidadDeMedida(EUnidadMedida unidadDeMedida ,double valor) 
         {
-            if(unidadDeMedida <= 0)
+            if(unidadDeMedida < 0)
             {
-                throw new EmpleadoDatosException("El valor es Incorrecto");
+                throw new ValorNegativoEnTipoDeUnidadDeMedidaException("El valor en el tipo de unidad de medida es Incorrecto");
             }
 
             switch(unidadDeMedida)

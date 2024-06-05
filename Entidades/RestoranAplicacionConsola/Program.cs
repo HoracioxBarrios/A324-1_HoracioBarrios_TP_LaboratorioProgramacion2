@@ -34,11 +34,13 @@ namespace RestoranAplicacionConsola
             IProveedor proveedor3 = gestorDeProveedores.GetProveedor(3);
 
             GestorDeProductos gestorDeProductos = new GestorDeProductos();
-            IProducto productoIngrediente1= gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Tomate", 10, EUnidadMedida.Kilo, 600, proveedor1);
+            IProducto productoIngrediente1= gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Tomate", 10, EUnidadMedida.Kilo, 1000, proveedor1);
             //Console.WriteLine(productoIngrediente1);
+            IProducto productoIngrediente2 = gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "pollo", 20, EUnidadMedida.Kilo, 20000, proveedor1);
+            IProducto productoIngrediente3 = gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "lechuga", 6, EUnidadMedida.Kilo, 600, proveedor1);
 
             IProducto productoBebida =gestorDeProductos.CrearProducto(ETipoDeProducto.Bebida, "Coca Cola", 30, EUnidadMedida.Unidad, 1500, proveedor3);
-            //Console.WriteLine(productoBebida);
+            Console.WriteLine(productoBebida);
             Mostrar(gestorDeProductos.GetProductos(), "Productos: ");
             Console.WriteLine("Precio Total en Stock");
             Console.WriteLine(gestorDeProductos.CalcularPrecio());

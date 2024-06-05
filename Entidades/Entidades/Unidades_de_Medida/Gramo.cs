@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entidades.Unidades_de_Medida
 {
-    public class Gramo : IUnidadDeMedida
+    public class Gramo : ITipoUnidadDeMedida
     {
         private double _cantidad;
 

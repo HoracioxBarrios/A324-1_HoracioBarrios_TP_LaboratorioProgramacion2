@@ -28,7 +28,7 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error desconocido: {ex.Message}", ex);
+                throw new Exception($"Error desconocido : {ex.Message}", ex);
             }
             
         }
