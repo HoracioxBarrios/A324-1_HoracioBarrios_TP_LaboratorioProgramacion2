@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Entidades.Unidades_de_Medida
 {
-    public class Kilo : IUnidadDeMedida
+    public class Kilo : ITipoUnidadDeMedida
     {
-        private double _cantidad;
+        public double Cantidad { get; set; }
 
         public Kilo(double cantidad)
         {
@@ -77,12 +77,6 @@ namespace Entidades.Unidades_de_Medida
                 throw new AlConvertirException("La resta da resultado negativo de Kilos.");
             }
             return new Kilo(nuevaCantidad);
-        }
-
-        public double Cantidad
-        {
-            get { return _cantidad; }
-            set { _cantidad = value; }
         }
 
     }

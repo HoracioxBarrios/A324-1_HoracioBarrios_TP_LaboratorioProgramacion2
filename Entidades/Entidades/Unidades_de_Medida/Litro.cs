@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Entidades.Unidades_de_Medida
 {
-    public class Litro : IUnidadDeMedida
+    public class Litro : ITipoUnidadDeMedida
     {
-        private double _cantidad;
+        public double Cantidad { get ; set ; }
 
         public Litro(double cantidad)
         {
@@ -66,12 +66,6 @@ namespace Entidades.Unidades_de_Medida
                 throw new AlRestarException("Error al restar, el resultado da Negativo");
             }
             return new Litro(nuevaCantidad);
-        }
-
-        public double Cantidad
-        {
-            get { return _cantidad; }
-            set { _cantidad = value; }
         }
     }
 }

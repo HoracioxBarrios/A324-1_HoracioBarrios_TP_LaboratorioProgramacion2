@@ -10,6 +10,6 @@ namespace Entidades.Interfaces
         string Nombre { get; set; }
         decimal Precio { get; set; }
         bool Disponibilidad { get; set; }
-        ECategoriaConsumible Categoria { get; set; }
+
     }
 }

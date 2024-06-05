@@ -19,7 +19,7 @@ namespace Entidades
         public string Nombre { get; set; }
         public double Cantidad { get; set; }
         public decimal Precio { get; set; }
-        public IUnidadDeMedida TipoDeUnidadDeMedida { get; set; }
+        public ITipoUnidadDeMedida TipoDeUnidadDeMedida { get; set; }
         public ETipoDeProducto TipoDeProducto { get; set; }
         public bool Disponibilidad { get; set; }
         public EUnidadMedida EUnidadDeMedida { get; set; }

@@ -14,7 +14,7 @@ namespace Negocio
     {
 
 
-        public static IUnidadDeMedida CrearUnidadDeMedida(EUnidadMedida unidadDeMedida ,double valor) 
+        public static ITipoUnidadDeMedida CrearUnidadDeMedida(EUnidadMedida unidadDeMedida ,double valor) 
         {
             if(unidadDeMedida <= 0)
             {

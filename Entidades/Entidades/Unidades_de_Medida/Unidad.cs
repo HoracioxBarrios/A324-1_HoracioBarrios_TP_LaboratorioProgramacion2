@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Entidades.Unidades_de_Medida
 {
-    public class Unidad : IUnidadDeMedida
+    public class Unidad : ITipoUnidadDeMedida
     {
-        private double _cantidad;
+        public double Cantidad { get ; set ; }
 
         public Unidad(double cantidad) 
         { 
@@ -39,12 +39,6 @@ namespace Entidades.Unidades_de_Medida
                 throw new AlSumarException("Error al Restar, el resultado da negativo");
             }
             return new Unidad(nuevaCantidad);
-        }
-
-        public double Cantidad 
-        {
-            get { return _cantidad; }
-            set { _cantidad = value; }
         }
 
     }

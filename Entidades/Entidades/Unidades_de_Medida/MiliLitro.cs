@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Entidades.Unidades_de_Medida
 {
-    public class MiliLitro : IUnidadDeMedida
+    public class MiliLitro : ITipoUnidadDeMedida
     {
-        private double _cantidad;
+        public double Cantidad { get ; set ; }
 
         public MiliLitro(double cantidad) 
         { 
@@ -67,10 +67,6 @@ namespace Entidades.Unidades_de_Medida
             return new MiliLitro(nuevaCantidad);
         }
 
-        public double Cantidad
-        {
-            get { return _cantidad; }
-            set { _cantidad = value; }
-        }
+
     }
 }

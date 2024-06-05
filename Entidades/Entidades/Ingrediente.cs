@@ -1,5 +1,6 @@
 ﻿using Entidades.Enumerables;
 using Entidades.Interfaces;
+using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,44 +16,74 @@ namespace Entidades
     /// </summary>
     public class Ingrediente : Producto, IConsumible
     {
-        private ECategoriaConsumible _eCategoriaConsumible;
+        private string _nombre;
+        private decimal _precio;
+        private IUnidadDeMedida _tipoDeUnidadDeMedida;
+        private IProveedor _proveedor;
+        private ETipoDeProducto _tipoDeProducto;
+        private int _id;
+
 
         public Ingrediente(
             string nombre, double cantidad, EUnidadMedida eUnidadMedida, decimal precio
             , IProveedor proveedor, ETipoDeProducto tipoDeProducto)
         {
             Nombre = nombre;
-            Cantidad = cantidad;
-            UnidadDeMedida = eUnidadMedida;
             Precio = precio;
+            _tipoDeUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadMedida, cantidad);
             Proveedor = proveedor;
             TipoDeProducto = tipoDeProducto;
-            if (cantidad > 0)
-            {
-                Disponibilidad = true;
-            }
+            //if (cantidad > 0)
+            //{
+            //    Disponibilidad = true;
+            //}
+
+
+
 
         }//Tengo que hacer: como con bebida. 1ro poner en orden las Unidades de medida como hice en Bebida. 2do hacer sobrecarga de Ingredientes para que si son de la misma Id se resten entre ellos. de los platos.
 
+        public static Ingrediente operator +(Ingrediente ingrediente, Bebida ingrediente2)
+        {
+            if (ingrediente.Id == ingrediente2.Id)
+            {
+                double nuevaCantidad = ingrediente.Cantidad + ingrediente2.Cantidad;
+                return new Ingrediente(
+                    nombre: ingrediente.Nombre,
+                    cantidad: nuevaCantidad,
+                    eUnidadMedida: ingrediente.EUnidadDeMedida,
+                    precio: ingrediente.Precio,
+                    proveedor: ingrediente.Proveedor
+                    TipoDeProducto = ingrediente.TipoDeProducto
+
+                );
+            }
+            else
+            {
+                throw new InvalidOperationException("No se pueden Restar bebidas con IDs diferentes.");
+            }
+        }
+
+
+
+        public string Nombre
+        {
+            get { return _nombre; }
+            set { _nombre = value; }
+        }
 
         public override decimal CalcularPrecio()
         {
-            return Precio;
+            return Precio / (decimal)_tipoDeUnidadDeMedida.Cantidad;
         }
-        public override void DescontarCantidad(double cantidad)
+
+        
+
+        new public double Cantidad
         {
-            throw new NotImplementedException();
+            get { return _tipoDeUnidadDeMedida.Cantidad; }
+            set { _tipoDeUnidadDeMedida.Cantidad = value; }
         }
-
-        public ECategoriaConsumible Categoria
-        {
-            get { return _eCategoriaConsumible; }
-            set { _eCategoriaConsumible = value; }
-        }
-
-
-
-
 
         public override string ToString()
         {
