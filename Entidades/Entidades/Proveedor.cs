@@ -20,7 +20,7 @@ namespace Entidades
         private string? _cuit;
         private string? _direccion;
         private ETipoDeProducto _tipoDeProductoProveido;
-        private EMediosDePago _medioDePago;
+        private EMediosDePago _medioDePago;// podria ser una lista de IMediosDePago
         private EAcreedor _esAcreedor;
         private EDiaDeLaSemana _diaDeEntrega;
         

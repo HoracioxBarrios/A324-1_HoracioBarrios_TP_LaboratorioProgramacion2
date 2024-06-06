@@ -8,9 +8,8 @@ namespace Entidades
     public class Cocinero : Empleado, ICocinero
     {
        
-        private Cocinero() { }
-
-        public Cocinero(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) 
+        public Cocinero(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :base(
+            rol, nombre, apellido, contacto, direccion, salario)
         {
             this.Nombre = nombre;
             this.Apellido = apellido;

@@ -8,10 +8,9 @@ using Entidades.Interfaces;
 namespace Entidades
 {
     public class Encargado : Empleado
-    {
-        
-        private Encargado(){}
-        public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario):base()
+    {      
+        public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario):base(
+            rol, nombre, apellido, contacto, direccion, salario)
         {
             Nombre = nombre;
             Apellido = apellido;

@@ -12,10 +12,9 @@ namespace Entidades
     public class Mesero : Empleado, ICobrador
     {
         private decimal _montoAcumulado = 0;
-        private Mesa _mesa;
-        private Mesero() { }     
 
-        public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario)
+        public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario): base(
+            rol, nombre, apellido, contacto, direccion, salario)
         {
             this.Nombre = nombre;
             this.Apellido = apellido;
@@ -37,7 +36,7 @@ namespace Entidades
 
         public void ObtenerMesa(Mesa mesa)
         {
-            _mesa = mesa;
+            
         }
         
 
