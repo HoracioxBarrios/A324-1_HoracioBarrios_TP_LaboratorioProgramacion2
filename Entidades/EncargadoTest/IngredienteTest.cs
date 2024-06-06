@@ -197,7 +197,7 @@ namespace TestEntidades
         }
 
         [TestMethod]
-        public void VerElIngredienteEnLitros_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_ALCorroborarDeeQuedar8coma5Litros()
+        public void VerElIngredienteEnLitrosMenosMiliLitros_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_ALCorroborarDeeQuedar8coma5Litros()
         {
 
             //Arrange
