@@ -39,9 +39,9 @@ namespace RestoranAplicacionConsola
 
             //Ingrediente 1
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
-            string nombreDeProducto1 = "Pollo";
-            double cantidad1 = 10;
-            EUnidadMedida unidadDeMedida1 = EUnidadMedida.Kilo;
+            string nombreDeProducto1 = "Aceite";
+            double cantidad1 = 9;
+            EUnidadMedida unidadDeMedida1 = EUnidadMedida.Litro;
             decimal precio1 = 20000;
             //Ingrediente 2
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
@@ -52,9 +52,9 @@ namespace RestoranAplicacionConsola
 
             //Ingrediente 3 que va a ser el mismo que el ingrediente 1 pero se va a usar para descontar
             ETipoDeProducto tipoDeProducto3 = ETipoDeProducto.Ingrediente;
-            string nombreDeProducto3 = "Pollo";
-            double cantidad3 = 200;
-            EUnidadMedida unidadDeMedida3 = EUnidadMedida.Gramo;
+            string nombreDeProducto3 = "Aceite";
+            double cantidad3 = 500;
+            EUnidadMedida unidadDeMedida3 = EUnidadMedida.MiliLitro;
             decimal precio3 = 20000;
 
             gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad1, unidadDeMedida1, precio1, proveedor1);
