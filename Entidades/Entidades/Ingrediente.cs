@@ -43,35 +43,46 @@ namespace Entidades
 
 
         }
-    public static Ingrediente operator +(Ingrediente ingrediente1, Ingrediente ingrediente2)
+
+        public static Ingrediente operator +(Ingrediente ingrediente1, Ingrediente ingrediente2)
         {
             if (ingrediente1.Id == ingrediente2.Id)
             {
-                double nuevaCantidad = ingrediente1.Cantidad + ingrediente2.Cantidad;
+                ITipoUnidadDeMedida nuevaCantidad;
+
+                if (ingrediente1._iTipoUnidadDeMedida is Kilo && ingrediente2._iTipoUnidadDeMedida is Gramo)
+                {
+                    nuevaCantidad = (Kilo)ingrediente1._iTipoUnidadDeMedida + (Gramo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Gramo && ingrediente2._iTipoUnidadDeMedida is Kilo)
+                {
+                    nuevaCantidad = (Gramo)ingrediente1._iTipoUnidadDeMedida + (Kilo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Kilo && ingrediente2._iTipoUnidadDeMedida is Kilo)
+                {
+                    nuevaCantidad = (Kilo)ingrediente1._iTipoUnidadDeMedida + (Kilo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Gramo && ingrediente2._iTipoUnidadDeMedida is Gramo)
+                {
+                    nuevaCantidad = (Gramo)ingrediente1._iTipoUnidadDeMedida + (Gramo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Litro && ingrediente2._iTipoUnidadDeMedida is MiliLitro)
+                {
+                    nuevaCantidad = (Litro)ingrediente1._iTipoUnidadDeMedida + (MiliLitro)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is MiliLitro && ingrediente2._iTipoUnidadDeMedida is Litro)
+                {
+                    nuevaCantidad = (MiliLitro)ingrediente1._iTipoUnidadDeMedida + (Litro)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Tipos de unidad de medida no compatibles.");
+                }
+
                 return new Ingrediente(
                     id: ingrediente1.Id,
                     nombre: ingrediente1.Nombre,
-                    cantidad: nuevaCantidad,
-                    eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
-                    precio: ingrediente1.Precio,
-                    proveedor: ingrediente1.Proveedor,
-                    tipoDeProducto: ingrediente1.ETipoDeProducto
-                );
-            }
-            else
-            {
-                throw new InvalidOperationException("No se pueden sumar ingredientes con IDs diferentes.");
-            }
-        }
-        public static Ingrediente operator -(Ingrediente ingrediente1, Ingrediente ingrediente2)
-        {
-            if (ingrediente1.Id == ingrediente2.Id)
-            {
-                double nuevaCantidad = ingrediente1.Cantidad - ingrediente2.Cantidad;
-                return new Ingrediente(
-                    id: ingrediente1.Id,
-                    nombre: ingrediente1.Nombre,
-                    cantidad: nuevaCantidad,
+                    cantidad: nuevaCantidad.Cantidad,
                     eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
                     precio: ingrediente1.Precio,
                     proveedor: ingrediente1.Proveedor,
@@ -83,6 +94,59 @@ namespace Entidades
                 throw new InvalidOperationException("No se pueden restar ingredientes con IDs diferentes.");
             }
         }
+
+
+        public static Ingrediente operator -(Ingrediente ingrediente1, Ingrediente ingrediente2)
+        {
+            if (ingrediente1.Id == ingrediente2.Id)
+            {
+                ITipoUnidadDeMedida nuevaCantidad;
+
+                if (ingrediente1._iTipoUnidadDeMedida is Kilo && ingrediente2._iTipoUnidadDeMedida is Gramo)
+                {
+                    nuevaCantidad = (Kilo)ingrediente1._iTipoUnidadDeMedida - (Gramo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Gramo && ingrediente2._iTipoUnidadDeMedida is Kilo)
+                {
+                    nuevaCantidad = (Gramo)ingrediente1._iTipoUnidadDeMedida - (Kilo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Kilo && ingrediente2._iTipoUnidadDeMedida is Kilo)
+                {
+                    nuevaCantidad = (Kilo)ingrediente1._iTipoUnidadDeMedida - (Kilo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Gramo && ingrediente2._iTipoUnidadDeMedida is Gramo)
+                {
+                    nuevaCantidad = (Gramo)ingrediente1._iTipoUnidadDeMedida - (Gramo)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is Litro && ingrediente2._iTipoUnidadDeMedida is MiliLitro)
+                {
+                    nuevaCantidad = (Litro)ingrediente1._iTipoUnidadDeMedida - (MiliLitro)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else if (ingrediente1._iTipoUnidadDeMedida is MiliLitro && ingrediente2._iTipoUnidadDeMedida is Litro)
+                {
+                    nuevaCantidad = (MiliLitro)ingrediente1._iTipoUnidadDeMedida - (Litro)ingrediente2._iTipoUnidadDeMedida;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Tipos de unidad de medida no compatibles.");
+                }
+
+                return new Ingrediente(
+                    id: ingrediente1.Id,
+                    nombre: ingrediente1.Nombre,
+                    cantidad: nuevaCantidad.Cantidad,
+                    eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
+                    precio: ingrediente1.Precio,
+                    proveedor: ingrediente1.Proveedor,
+                    tipoDeProducto: ingrediente1.ETipoDeProducto
+                );
+            }
+            else
+            {
+                throw new InvalidOperationException("No se pueden restar ingredientes con IDs diferentes.");
+            }
+        }
+
 
         public override decimal CalcularPrecio()
         {

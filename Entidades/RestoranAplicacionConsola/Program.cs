@@ -53,8 +53,8 @@ namespace RestoranAplicacionConsola
             //Ingrediente 3 que va a ser el mismo que el ingrediente 1 pero se va a usar para descontar
             ETipoDeProducto tipoDeProducto3 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto3 = "Pollo";
-            double cantidad3 = 4;
-            EUnidadMedida unidadDeMedida3 = EUnidadMedida.Kilo;
+            double cantidad3 = 200;
+            EUnidadMedida unidadDeMedida3 = EUnidadMedida.Gramo;
             decimal precio3 = 20000;
 
             gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad1, unidadDeMedida1, precio1, proveedor1);
