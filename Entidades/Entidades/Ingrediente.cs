@@ -29,8 +29,8 @@ namespace Entidades
         private int _id = 0;
 
         //producto (string nombre, double cantidad,  EUnidadMedida eUnidadDeMedida, decimal precio, ITipoUnidadDeMedida iTipoUnidadDeMedida, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
-        public Ingrediente(string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto tipoDeProducto, IProveedor proveedor )
-        : base(nombre, cantidad, eUnidadDeMedida, precio, tipoDeProducto, proveedor)
+        public Ingrediente(int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto tipoDeProducto, IProveedor proveedor )
+        : base(id, nombre, cantidad, eUnidadDeMedida, precio, tipoDeProducto, proveedor)
         {
             _nombre = nombre;
             _eUnidadDeMedida = eUnidadDeMedida;
@@ -39,7 +39,7 @@ namespace Entidades
             _proveedor = proveedor;
             _eTipoDeProducto = tipoDeProducto;
             if (Cantidad > 0) { _disponibilidad = true; }
-            _id = ++_contadorId;
+            _id = id;
 
 
         }
@@ -49,6 +49,7 @@ namespace Entidades
             {
                 double nuevaCantidad = ingrediente1.Cantidad + ingrediente2.Cantidad;
                 return new Ingrediente(
+                    id: ingrediente1.Id,
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad,
                     eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
@@ -68,6 +69,7 @@ namespace Entidades
             {
                 double nuevaCantidad = ingrediente1.Cantidad - ingrediente2.Cantidad;
                 return new Ingrediente(
+                    id: ingrediente1.Id,
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad,
                     eUnidadDeMedida: ingrediente1.EUnidadDeMedida,

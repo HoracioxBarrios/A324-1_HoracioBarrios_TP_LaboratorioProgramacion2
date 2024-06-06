@@ -10,11 +10,14 @@ using Entidades.Excepciones;
 
 namespace Negocio
 {
-    public static class ProductoServiceFactory
+    public static  class ProductoServiceFactory
     {
+        static ProductoServiceFactory(){}
+
+
         //HAY QUE LEER ANTES DE CREAR EL PRODUCTO SI YA HAY UNO CREADO Y PASARLE LA ID AL PRODUCTO.( para crear Iproductos para el stock y para crear Iproductos(ingredientes para el plato)))
         public static IProducto CrearProducto(
-              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
+              ETipoDeProducto tipoProducto,int id, string nombre, double cantidad, EUnidadMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default)
         {
@@ -25,9 +28,9 @@ namespace Negocio
             switch (tipoProducto)
             {
                 case ETipoDeProducto.Bebida:
-                    return new Bebida(nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);
+                    return new Bebida(id, nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);
                 case ETipoDeProducto.Ingrediente:
-                    return new Ingrediente(nombre, cantidad, unidadDeMedida, precio, tipoProducto, proveedor);
+                    return new Ingrediente(id, nombre, cantidad, unidadDeMedida, precio, tipoProducto, proveedor);
                 default:
                     throw new TipoDeProductoDesconocidoException("Tipo de producto no reconocido");
 

@@ -9,25 +9,76 @@ namespace Negocio
 {
     public class GestorDeProductos
     {
-        List<IProducto> _listProductosStock;
+        private List<IProducto> _listaDeProductosEnStock;
         private decimal _precioTotalStock = 0;
 
-        private string _servicioDeGuardado = "";
+        private int _contadorId = 1;
+
+        //definir si aca se instancia el servicio de producto service y si dentro de ese se agregan las id de productos----------------
+
+        //private string _servicioDeGuardado = "";
         public GestorDeProductos() //Puede esperar un servicio a DB o a Archivo? _servicioDeGuardado
         {
-            _listProductosStock = new List<IProducto>();
+            _listaDeProductosEnStock = new List<IProducto>();
+            CorroborarUltimaIdDeProducto();
         }
 
-        public IProducto CrearProducto(
+        /// <summary>
+        /// Verifica la existencia del producto en la lista de productos.
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <param name="tipoDeProducto"></param>
+        /// <returns>si existe ya el producto devuelve su id,sino al corroborar la ultima id (lo actualiza para tenerla disponible) </returns>
+        private int VerificarExistenciaDelProducto(string nombre, ETipoDeProducto tipoDeProducto)
+        {
+            if(_listaDeProductosEnStock.Count > 0)
+            {
+                foreach (IProducto producto in _listaDeProductosEnStock)
+                {
+                    if (producto.Nombre == nombre && producto.ETipoDeProducto == tipoDeProducto)
+                    {
+                        return producto.Id;
+                    }
+                }
+            }
+
+            CorroborarUltimaIdDeProducto();
+            return _contadorId;
+        }
+
+
+
+        /// <summary>
+        /// Corrobora la ultima Id de los productos en la lista, actualiza la: _id (dejando la siguiente id disponible)
+        /// <return>Void</return>
+        /// </summary>
+        private void CorroborarUltimaIdDeProducto()
+        {
+            if (_listaDeProductosEnStock.Count > 0)
+            {
+                int maxId = 0;
+                foreach (var producto in _listaDeProductosEnStock)
+                {
+                    if (producto.Id > maxId)
+                    {
+                        maxId = producto.Id;
+                    }
+                }
+                _contadorId = maxId + 1;
+            }
+        }
+
+
+        public void CrearProducto(
               ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default)
         {
             try
             {
-                IProducto producto = ProductoServiceFactory.CrearProducto(tipoProducto, nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);
-                _listProductosStock.Add(producto);
-                return producto;
+                int idParaAsignar = VerificarExistenciaDelProducto(nombre, tipoProducto);
+                IProducto producto = ProductoServiceFactory.CrearProducto(tipoProducto, idParaAsignar, nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);
+                _listaDeProductosEnStock.Add(producto);
 
             }
             catch (DatosDeProductoException ex)
@@ -46,9 +97,9 @@ namespace Negocio
         }
         public decimal CalcularPrecio()
         {
-            if(_listProductosStock.Count > 0)
+            if(_listaDeProductosEnStock.Count > 0)
             {
-                foreach(IProducto producto in _listProductosStock)
+                foreach(IProducto producto in _listaDeProductosEnStock)
                 {
                     _precioTotalStock += producto.CalcularPrecio();
                 }
@@ -57,24 +108,16 @@ namespace Negocio
         }
 
 
-
-        public static void ActualizarListaOriginal(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> productosActualizados)
-        {
-            for (int i = 0; i < listaDeProductosIngredientesStock.Count; i++)
-            {
-                listaDeProductosIngredientesStock[i] = productosActualizados[i];
-            }
-        }
-
-        public static List<IProducto> DescontarProductos(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> listaDeIngredienteEnElPlato)
+        public bool DescontarProductosDeStock( List<IProducto> listaDeIngredienteEnElPlato)
         {
             List<IProducto> productosActualizados = new List<IProducto>();
+            List<IProducto> listaDeProductosEnStock = GetProductos();
 
-            foreach (IProducto producto in listaDeProductosIngredientesStock)
+
+            foreach (IProducto producto in listaDeProductosEnStock)
             {
                 if (producto is Ingrediente ingrediente)
                 {
-                    bool encontrado = false;
                     foreach (IProducto productoADescontar in listaDeIngredienteEnElPlato)
                     {
                         if (productoADescontar is Ingrediente ingredienteADescontar)
@@ -83,22 +126,31 @@ namespace Negocio
                             {
                                 Ingrediente nuevoIngrediente = ingrediente - (Ingrediente)productoADescontar;
                                 productosActualizados.Add(nuevoIngrediente);
-                                encontrado = true;
-                                break; // Salir del bucle si se encontro el producto a descontar
+                                
+                            }
+                            else
+                            {
+                                productosActualizados.Add(ingrediente);
                             }
                         }
                     }
-                    if (!encontrado)
-                    {
-                        productosActualizados.Add(ingrediente);
-                    }
                 }
             }
-
-            return productosActualizados;
+            if(productosActualizados.Count > 0)
+            {
+                ActualizarListaOriginal(listaDeProductosEnStock, productosActualizados);
+                return true;
+            }
+            return false;
         }
 
-
+        private void ActualizarListaOriginal(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> productosActualizados)
+        {
+            for (int i = 0; i < listaDeProductosIngredientesStock.Count; i++)
+            {
+                listaDeProductosIngredientesStock[i] = productosActualizados[i];
+            }
+        }
 
 
 
@@ -108,20 +160,23 @@ namespace Negocio
 
         public List<IProducto> GetProductos()
         {
-            if(_listProductosStock.Count > 0)
+            List<IProducto> lista = new List<IProducto>();
+            if(_listaDeProductosEnStock.Count > 0)
             {
-                return _listProductosStock;
+                return _listaDeProductosEnStock;
             }
-            throw new ListaVaciaException("La lista esta vacia");
+            return lista;
         }
+        
 
         public IProducto GetProducto(string nombre)
         {
+
             if (string.IsNullOrEmpty(nombre))
             {
                 throw new DatoIncorrectoException("Dato Incorrecto: Nombre");
             }
-            foreach(IProducto producto in _listProductosStock)
+            foreach(IProducto producto in _listaDeProductosEnStock)
             {
                 if(string.Equals(producto.Nombre, nombre, StringComparison.OrdinalIgnoreCase))
                 {

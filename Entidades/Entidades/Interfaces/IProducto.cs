@@ -17,5 +17,6 @@ namespace Entidades.Interfaces
         int Id { get; set; }
         decimal CalcularPrecio();
 
+        ETipoDeProducto ETipoDeProducto { get; set; }
     }
 }

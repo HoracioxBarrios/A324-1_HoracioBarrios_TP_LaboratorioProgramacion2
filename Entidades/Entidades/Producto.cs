@@ -24,12 +24,11 @@ namespace Entidades
         private bool _disponibilidad;
         private EUnidadMedida _eUnidadDeMedidad;
         private IProveedor _proveedor;
-        private int _contadorId = 0;
         private int _id;
 
 
 
-        protected Producto(string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
+        protected Producto(int id,string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
         {
 
             _nombre = nombre;
@@ -39,7 +38,7 @@ namespace Entidades
             _eTipoDeProducto = eTipoDeProducto;            
             _proveedor = iProveedor;
             if (Cantidad > 0) { _disponibilidad = true; }
-            _id = ++_contadorId;
+            _id = id;
         }
 
         public abstract decimal CalcularPrecio();

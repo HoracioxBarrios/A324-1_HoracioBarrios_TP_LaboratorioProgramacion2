@@ -23,7 +23,6 @@ namespace Entidades
         private bool _disponibilidad;
         private EUnidadMedida _eUnidadDeMedidad;
         private IProveedor _proveedor;
-        private int _contadorId = 0;
         private int _id;
 
         private ECategoriaConsumible _eCategoriaConsumible;
@@ -31,15 +30,10 @@ namespace Entidades
 
 
 
-
-
-
-
-
         public Bebida(
-            string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, IProveedor proveedor, 
+            int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, IProveedor proveedor, 
             ECategoriaConsumible categoriaDeConsumible, EClasificacionBebida clasificacionDeBebida) : base(
-                nombre, cantidad, eUnidadDeMedida, precio, ETipoDeProducto.Bebida, proveedor)
+                id, nombre, cantidad, eUnidadDeMedida, precio, ETipoDeProducto.Bebida, proveedor)
         {
 
             _nombre = nombre;
@@ -49,7 +43,7 @@ namespace Entidades
             _eCategoriaConsumible = categoriaDeConsumible;
             _eClasificacionDeBebida = clasificacionDeBebida;
             _eTipoDeProducto = ETipoDeProducto.Bebida;            
-            _id = ++_contadorId;
+            _id = id;
             if (cantidad > 0){Disponibilidad = true;}
         }
 
@@ -69,6 +63,7 @@ namespace Entidades
             {
                 double nuevaCantidad = bebida1.Cantidad + bebida2.Cantidad;
                 return new Bebida(
+                    id: bebida1.Id,
                     nombre: bebida1.Nombre,
                     cantidad: nuevaCantidad,
                     eUnidadDeMedida: bebida1.EUnidadDeMedida,
@@ -90,6 +85,7 @@ namespace Entidades
             {
                 double nuevaCantidad = bebida1.Cantidad - bebida2.Cantidad;
                 return new Bebida(
+                    id: bebida1.Id,
                     nombre: bebida1.Nombre,
                     cantidad: nuevaCantidad,
                     eUnidadDeMedida: bebida1.EUnidadDeMedida,
