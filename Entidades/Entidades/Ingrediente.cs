@@ -100,7 +100,7 @@ namespace Entidades
         {
             if (ingrediente1.Id == ingrediente2.Id)
             {
-                ITipoUnidadDeMedida nuevaCantidad;
+                ITipoUnidadDeMedida nuevaCantidad;// Puede ser kilo, Gramo, Litro, Mililitro (Ver si falta en Unidad como está la bebida)
 
                 if (ingrediente1._iTipoUnidadDeMedida is Kilo && ingrediente2._iTipoUnidadDeMedida is Gramo)
                 {
