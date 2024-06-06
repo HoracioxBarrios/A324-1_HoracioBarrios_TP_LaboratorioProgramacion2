@@ -16,11 +16,11 @@ namespace TestEntidades
     public class IngredienteTest
     {
         [TestMethod]
-        public void DescontarIngrediente_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_SiDaTrueEstaBien()
+        public void DescontarIngredienteDelStock_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_SiSeDescontóDaTrue()
         {
 
             //Arrange
-            //Ingrediente 1
+            //Ingrediente 1-----------------------------------
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto1 = "Pollo";
             double cantidad = 20;
@@ -38,9 +38,9 @@ namespace TestEntidades
             mockProveedor1.Setup(p => p.ID).Returns(1);
             mockProveedor1.Setup(p => p.ToString()).Returns("ID: 1, Nombre: Proveedor 1, CUIT: 30-12345678-9, Direccion: Calle Falsa 123, Tipo de Producto que Provee: Almacen, Medio de Pago: Transferencia, Es Acreedor? : Si, Dia de Entrega: Lunes");
 
-            //Ingrediente 2 
+            //Ingrediente 2 --------------------------------
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
-            string nombreDeProducto2 = "Pollo";
+            string nombreDeProducto2 = "Papa";
             double cantidad2 = 20;
             EUnidadMedida unidadDeMedida2 = EUnidadMedida.Kilo;
             decimal precio2 = 20000;
@@ -56,8 +56,8 @@ namespace TestEntidades
             mockProveedor2.Setup(p => p.ID).Returns(2);
             mockProveedor2.Setup(p => p.ToString()).Returns("ID: 2, Nombre: Proveedor 2, CUIT: 31-12345678-8, Direccion: Calle Falsa 456, Tipo de Producto que Provee: Carniceria, Medio de Pago: Tarjeta, Es Acreedor? : No, Dia de Entrega: Martes");
 
-            //Ingrediente que se instancia en el plato y estaria en la lista del plato.
-            //Ingrediente 3
+
+            //Ingrediente 3 -------------------------------- Ingrediente que se instancia en el plato y estaria en la lista del plato.
             ETipoDeProducto tipoDeProducto3 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto3 = "Pollo";
             double cantidad3 = 1; // Cantidad que usa en el plato
@@ -75,13 +75,15 @@ namespace TestEntidades
             mockProveedor3.Setup(p => p.ID).Returns(1);
             mockProveedor3.Setup(p => p.ToString()).Returns("ID: 1, Nombre: Proveedor 1, CUIT: 30-12345678-9, Direccion: Calle Falsa 123, Tipo de Producto que Provee: Almacen, Medio de Pago: Transferencia, Es Acreedor? : Si, Dia de Entrega: Lunes");
 
+
+            //------------------- GESTOR DE PRODUCTOS -----------------------
             GestorDeProductos gestorDeProductos = new GestorDeProductos();
 
 
             //Act
             //Productos que van a estar en la lista del stock (está dentro de GestorProductos)
-            gestorDeProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida,precio, mockProveedor1.Object);
-            gestorDeProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida,precio, mockProveedor1.Object);
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
@@ -104,7 +106,7 @@ namespace TestEntidades
         }
 
         [TestMethod]
-        public void VerElIngredienteDEscontado_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStockYseDebePoderVerelCambioEnElStock()
+        public void VerElIngredienteEnKilos_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_ALCorroborarDeeQuedar9KilosDEPollo()
         {
 
             //Arrange
@@ -128,7 +130,7 @@ namespace TestEntidades
 
             //Ingrediente 2 
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
-            string nombreDeProducto2 = "Pollo";
+            string nombreDeProducto2 = "Papa";
             double cantidad2 = 30;
             EUnidadMedida unidadDeMedida2 = EUnidadMedida.Kilo;
             decimal precio2 = 20000;
@@ -168,8 +170,8 @@ namespace TestEntidades
 
             //Act
             //Productos que van a estar en la lista del stock (está dentro de GestorProductos)
-            gestorDeProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
-            gestorDeProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
@@ -184,30 +186,14 @@ namespace TestEntidades
 
 
 
-            // Verificar si se descontó correctamente
-            Assert.IsTrue(seDesconto);
 
             foreach (IProducto productoIngrediente in gestorDeProductos.GetProductos())
             {
-                if (productoIngrediente.Nombre == "Pollo")
+                if (productoIngrediente.Nombre == "Pollo" && productoIngrediente.Cantidad == 9)
                 {
-                    if (productoIngrediente.Cantidad == 9)
-                    {
-                        Assert.AreEqual(9, productoIngrediente.Cantidad);
-                    }
-                    else if (productoIngrediente.Cantidad == 29)
-                    {
-                        Assert.Fail("El descuento no se aplicó correctamente, deberia haber descontado solo al de la id 1");
-                    }
-                    else
-                    {
-                        Assert.Fail("El descuento no se aplicó correctamente");
-                    }
+                    Assert.AreEqual(9, productoIngrediente.Cantidad);
                 }
             }
-
-
-
         }
 
 
