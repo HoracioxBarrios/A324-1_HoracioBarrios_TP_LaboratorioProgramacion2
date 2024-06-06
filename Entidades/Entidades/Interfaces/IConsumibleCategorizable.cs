@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface ICategoriaConsumible
+    public interface IConsumibleCategorizable
     {
-        ECategoriaConsumible Categoria { get; set; }
+        ECategoriaConsumible ECategoriaDeConsumible { get; set; }
     }
 }

@@ -19,39 +19,31 @@ namespace Entidades
     public class Ingrediente : Producto, IConsumible
     {
         private string _nombre;
-        private ITipoUnidadDeMedida _tipoDeUnidadDeMedida;
         private decimal _precio;
-        private ETipoDeProducto _tipoDeProducto;
-        private bool _disponibilidad;
+        private ITipoUnidadDeMedida _iTipoUnidadDeMedida;
+        private ETipoDeProducto _eTipoDeProducto;
+        private bool _disponibilidad = false;
         private EUnidadMedida _eUnidadDeMedida;
         private IProveedor _proveedor;
         private int _contadorId = 0;
         private int _id = 0;
 
-
-        public Ingrediente(
-            string nombre, double cantidad, EUnidadMedida eUnidadMedida, decimal precio
-            , IProveedor proveedor, ETipoDeProducto tipoDeProducto)
+        //producto (string nombre, double cantidad,  EUnidadMedida eUnidadDeMedida, decimal precio, ITipoUnidadDeMedida iTipoUnidadDeMedida, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
+        public Ingrediente(string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto tipoDeProducto, IProveedor proveedor )
+        : base(nombre, cantidad, eUnidadDeMedida, precio, tipoDeProducto, proveedor)
         {
-            Nombre = nombre;
-            Precio = precio;
-            _tipoDeUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadMedida, cantidad);
+            _nombre = nombre;
+            _eUnidadDeMedida = eUnidadDeMedida;
+            _iTipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
+            _precio = precio;
+            _proveedor = proveedor;
+            _eTipoDeProducto = tipoDeProducto;
+            if (Cantidad > 0) { _disponibilidad = true; }
+            _id = ++_contadorId;
 
 
-            Proveedor = proveedor;
-            TipoDeProducto = tipoDeProducto;
-
-            Id = ++_contadorId;
-            if (cantidad > 0)
-            {
-                Disponibilidad = true;
-            }
-
-
-
-
-        }//Tengo que hacer: como con bebida. 1ro poner en orden las Unidades de medida como hice en Bebida. 2do hacer sobrecarga de Ingredientes para que si son de la misma Id se resten entre ellos. de los platos.
-        public static Ingrediente operator +(Ingrediente ingrediente1, Ingrediente ingrediente2)
+        }
+    public static Ingrediente operator +(Ingrediente ingrediente1, Ingrediente ingrediente2)
         {
             if (ingrediente1.Id == ingrediente2.Id)
             {
@@ -59,10 +51,10 @@ namespace Entidades
                 return new Ingrediente(
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad,
-                    eUnidadMedida: ingrediente1.EUnidadMedida,
+                    eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
                     precio: ingrediente1.Precio,
                     proveedor: ingrediente1.Proveedor,
-                    tipoDeProducto: ingrediente1.TipoDeProducto
+                    tipoDeProducto: ingrediente1.ETipoDeProducto
                 );
             }
             else
@@ -78,10 +70,10 @@ namespace Entidades
                 return new Ingrediente(
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad,
-                    eUnidadMedida: ingrediente1.EUnidadMedida,
+                    eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
                     precio: ingrediente1.Precio,
                     proveedor: ingrediente1.Proveedor,
-                    tipoDeProducto: ingrediente1.TipoDeProducto
+                    tipoDeProducto: ingrediente1.ETipoDeProducto
                 );
             }
             else
@@ -92,57 +84,13 @@ namespace Entidades
 
         public override decimal CalcularPrecio()
         {
-            return Precio / (decimal)_tipoDeUnidadDeMedida.Cantidad;
+            return Precio / (decimal)_iTipoUnidadDeMedida.Cantidad;
         }
 
-        public string Nombre
-        {
-            get { return _nombre; }
-            set { _nombre = value; }
-        }
-        public double Cantidad
-        {
-            get { return _tipoDeUnidadDeMedida.Cantidad; }
-            set { _tipoDeUnidadDeMedida.Cantidad = value; }
-        }
-        public ETipoDeProducto TipoDeProducto
-        {
-            get { return _tipoDeProducto; }
-            set { _tipoDeProducto = value; }
-        }
-        public ITipoUnidadDeMedida TipoUnidadDeMedida
-        {
-            get { return _tipoDeUnidadDeMedida; }
-            set { _tipoDeUnidadDeMedida = value; }
-        }
-
-
-        public EUnidadMedida EUnidadMedida
-        {
-            get { return _eUnidadDeMedida; }
-            set { _eUnidadDeMedida = value; }
-            
-        }
-        public bool Disponibilidad
-        {
-            get { return _disponibilidad; }
-            set { _disponibilidad = value; }
-        }
-        public IProveedor Proveedor
-        {
-            get { return _proveedor; }
-            set { _proveedor = value; }
-        }
-
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
 
         public override string ToString()
         {
-            return $"Id: {_id}, Nombre: {Nombre}, Cantidad: {Cantidad},Precio {Precio}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadMedida}, Tipo de Producto: {TipoDeProducto}, Proveedor: {Proveedor.Nombre}";
+            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Precio {Precio}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";
         }
     }
 }

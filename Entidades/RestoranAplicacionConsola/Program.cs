@@ -77,10 +77,9 @@ namespace RestoranAplicacionConsola
             IProducto ingrediente3 = ProductoServiceFactory.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, proveedor3);
             ingrediente3.Id = 1;
 
-
-            Console.WriteLine("El ingrediente 1 tiene la ID: " + ingrediente1.Id.ToString());
-            Console.WriteLine("El ingrediente 2 tiene la ID: " + ingrediente2.Id.ToString());
-            Console.WriteLine("El ingrediente 3 tiene la ID: " + ingrediente3.Id.ToString());
+            Console.WriteLine($"{ingrediente1.Nombre} El ingrediente 1 tiene la ID: {ingrediente1.Id}");
+            Console.WriteLine($"{ingrediente2.Nombre} El ingrediente 2 tiene la ID: {ingrediente2.Id}");
+            Console.WriteLine($"{ingrediente3.Nombre} El ingrediente 3 tiene la ID: {ingrediente3.Id}");
 
             //Act
             //Productos que van a estar en la lista del stock
@@ -125,11 +124,11 @@ namespace RestoranAplicacionConsola
             {
                 listaDeProductosIngredientesStock[i] = productosActualizados[i];
             }
-            // Verifica si el ingrediente descontado es el mismo que el ingrediente en la posición 0 de la lista
+            //Verifica si el ingrediente descontado es el mismo que el ingrediente en la posición 0 de la lista
             foreach (IProducto producto in listaDeProductosIngredientesStock)
             {
                 if (producto is Ingrediente ingrediente)
-                    Console.WriteLine(producto);
+                    Console.WriteLine($"Id: {producto.Id}, Nombre: {producto.Nombre} Cantidad: {producto.Cantidad}");
             }
 
 

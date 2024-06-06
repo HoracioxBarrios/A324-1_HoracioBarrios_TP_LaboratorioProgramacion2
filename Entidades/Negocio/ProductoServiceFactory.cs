@@ -27,7 +27,7 @@ namespace Negocio
                 case ETipoDeProducto.Bebida:
                     return new Bebida(nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);
                 case ETipoDeProducto.Ingrediente:
-                    return new Ingrediente(nombre, cantidad, unidadDeMedida, precio, proveedor, ETipoDeProducto.Ingrediente);
+                    return new Ingrediente(nombre, cantidad, unidadDeMedida, precio, tipoProducto, proveedor);
                 default:
                     throw new TipoDeProductoDesconocidoException("Tipo de producto no reconocido");
 

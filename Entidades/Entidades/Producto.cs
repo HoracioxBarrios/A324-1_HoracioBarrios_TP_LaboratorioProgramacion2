@@ -1,5 +1,6 @@
 ﻿using Entidades.Enumerables;
 using Entidades.Interfaces;
+using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,28 +17,88 @@ namespace Entidades
     /// </summary>
     public abstract class Producto : IProducto, IProductoCreable
     {
-
-        public string Nombre { get; set; }
-        public double Cantidad { get; set; }
-        public decimal Precio { get; set; }
-        public ITipoUnidadDeMedida TipoDeUnidadDeMedida { get; set; }
-        public ETipoDeProducto TipoDeProducto { get; set; }
-        public bool Disponibilidad { get; set; }
-        public EUnidadMedida EUnidadDeMedida { get; set; }
-        public IProveedor Proveedor { get; set; }
-        public int Id { get; set; }
-
+        private string _nombre;
+        private decimal _precio;
+        private ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato
+        private ETipoDeProducto _eTipoDeProducto;
+        private bool _disponibilidad;
+        private EUnidadMedida _eUnidadDeMedidad;
+        private IProveedor _proveedor;
         private int _contadorId = 0;
+        private int _id;
 
 
 
-
-        protected Producto()
+        protected Producto(string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
         {
-            Id = ++_contadorId;
+
+            _nombre = nombre;
+            _precio = precio;
+            _eUnidadDeMedidad = eUnidadDeMedida;
+            _iTipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
+            _eTipoDeProducto = eTipoDeProducto;            
+            _proveedor = iProveedor;
+            if (Cantidad > 0) { _disponibilidad = true; }
+            _id = ++_contadorId;
         }
 
         public abstract decimal CalcularPrecio();
+
+        public string Nombre 
+        {
+            get { return _nombre; }
+            set { _nombre = value; }
+        }
+
+        public double Cantidad
+        {
+            get { return _iTipoUnidadDeMedida.Cantidad; }
+            set { _iTipoUnidadDeMedida.Cantidad = value; }
+        }
+        public decimal Precio
+        {
+            get { return _precio; }
+            set { _precio = value; }
+        }
+        
+        public ITipoUnidadDeMedida TipoDeUnidadDeMedida 
+        { 
+            get { return _iTipoUnidadDeMedida; }
+            set { _iTipoUnidadDeMedida = value; }
+        }
+        public ETipoDeProducto ETipoDeProducto 
+        {  
+            get { return _eTipoDeProducto; }
+            set { _eTipoDeProducto = value; }
+        }
+        public bool Disponibilidad
+        {
+            get { return Cantidad > 0; }
+            set { _disponibilidad = value; }
+        }
+        public EUnidadMedida EUnidadDeMedida 
+        {
+            get { return _eUnidadDeMedidad; }
+            set { _eUnidadDeMedidad = value; }
+        }
+        public IProveedor Proveedor 
+        { 
+            get { return _proveedor; }
+            set { _proveedor = value;}
+        }
+        public int Id 
+        {  
+            get { return _id;}
+            set { _id = value; }
+        }
+
+
+
+
+
+
+
+
 
 
 

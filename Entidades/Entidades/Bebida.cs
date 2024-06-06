@@ -14,38 +14,43 @@ namespace Entidades
     /// <summary>
     /// Class Bebida (Hereda de Producto, a su vez por gerarquia de herencia hereda la interface IProducto, e Implementa IConsumible)
     /// </summary>
-    public class Bebida : Producto, IConsumible, ICategoriaConsumible
+    public class Bebida : Producto, IConsumible, IConsumibleCategorizable
     {
         private string _nombre;
         private decimal _precio;
-        private EUnidadMedida _eEnidadMedida;
-        private IProveedor _proveedor;
-        private ECategoriaConsumible _eCategoriaConsumible;
-        private EClasificacionBebida _ClasificacionDeBebida;
-        private ITipoUnidadDeMedida _tipoDeUnidadDeMedida;
-        private ETipoDeProducto _tipoDeProducto;
+        private ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato
+        private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad;
-        private int _id;
+        private EUnidadMedida _eUnidadDeMedidad;
+        private IProveedor _proveedor;
         private int _contadorId = 0;
+        private int _id;
+
+        private ECategoriaConsumible _eCategoriaConsumible;
+        private EClasificacionBebida _eClasificacionDeBebida;
+
+
+
+
+
+
 
 
         public Bebida(
             string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, IProveedor proveedor, 
-            ECategoriaConsumible categoriaDeConsumible, EClasificacionBebida clasificacionDeBebida)
+            ECategoriaConsumible categoriaDeConsumible, EClasificacionBebida clasificacionDeBebida) : base(
+                nombre, cantidad, eUnidadDeMedida, precio, ETipoDeProducto.Bebida, proveedor)
         {
 
-            Nombre = nombre;
-            _tipoDeUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
-            Precio = precio;
-            Proveedor = proveedor;
-            Categoria = categoriaDeConsumible;
-            ClasificacionDeBebida = clasificacionDeBebida;
-            TipoDeProducto = ETipoDeProducto.Bebida;            
-            Id = ++_contadorId;
-            if (cantidad > 0)
-            {
-                Disponibilidad = true;
-            }
+            _nombre = nombre;
+            _iTipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
+            _precio = precio;
+            _proveedor = proveedor;
+            _eCategoriaConsumible = categoriaDeConsumible;
+            _eClasificacionDeBebida = clasificacionDeBebida;
+            _eTipoDeProducto = ETipoDeProducto.Bebida;            
+            _id = ++_contadorId;
+            if (cantidad > 0){Disponibilidad = true;}
         }
 
         /// <summary>
@@ -54,7 +59,7 @@ namespace Entidades
         /// <returns>devuelve el precio de una bebida</returns>
         public override decimal CalcularPrecio()
         {
-            return Precio / (decimal)_tipoDeUnidadDeMedida.Cantidad;
+            return Precio / (decimal)_iTipoUnidadDeMedida.Cantidad;
         }
 
 
@@ -115,13 +120,13 @@ namespace Entidades
 
         public double Cantidad
         {
-            get { return _tipoDeUnidadDeMedida.Cantidad; }
-            set { _tipoDeUnidadDeMedida.Cantidad = value; }
+            get { return _iTipoUnidadDeMedida.Cantidad; }
+            set { _iTipoUnidadDeMedida.Cantidad = value; }
         }
         public EUnidadMedida EUnidadMedida
         {
-            get { return _eEnidadMedida; }
-            set { _eEnidadMedida = value; }
+            get { return _eUnidadDeMedidad; }
+            set { _eUnidadDeMedidad = value; }
         }
         public IProveedor Proveedor
         {
@@ -138,13 +143,13 @@ namespace Entidades
 
         public EClasificacionBebida ClasificacionDeBebida
         {
-            get { return _ClasificacionDeBebida; }
-            set { _ClasificacionDeBebida = value; }
+            get { return _eClasificacionDeBebida; }
+            set { _eClasificacionDeBebida = value; }
         }
 
         public ITipoUnidadDeMedida TipoDeUnidadDeMedida
         {
-            get { return _tipoDeUnidadDeMedida; }
+            get { return _iTipoUnidadDeMedida; }
         }
         public bool Disponibilidad
         {
@@ -156,6 +161,13 @@ namespace Entidades
             get { return _id; }
             private set { _id = value; }
         }
+
+        public ECategoriaConsumible ECategoriaDeConsumible 
+        { 
+            get { return _eCategoriaConsumible; }
+            set { _eCategoriaConsumible= value; }
+        }
+
         public override string ToString()
         {
             return $"ID: {Id}, Nombre: {Nombre}, Cantidad {Cantidad}, Precio: {Precio}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Clasificacion : {ClasificacionDeBebida}";
