@@ -8,8 +8,8 @@ namespace Entidades.Interfaces
 {
     public interface ICocinero
     {
-        Plato CrearPlato();
-        Plato EditarPlato();
-        Plato EliminarPlato();
+        IConsumible CrearPlato();
+        IConsumible EditarPlato();
+        IConsumible EliminarPlato();
     }
 }

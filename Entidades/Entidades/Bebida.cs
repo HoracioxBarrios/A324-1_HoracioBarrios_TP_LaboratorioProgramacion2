@@ -17,7 +17,7 @@ namespace Entidades
     public class Bebida : Producto, IConsumible, IConsumibleCategorizable
     {
         private string _nombre;
-        private decimal _precio;
+        private decimal _precioUnitario;
         private ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad;
@@ -31,14 +31,14 @@ namespace Entidades
 
 
         public Bebida(
-            int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, IProveedor proveedor, 
+            int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precioporCantidad, IProveedor proveedor, 
             ECategoriaConsumible categoriaDeConsumible, EClasificacionBebida clasificacionDeBebida) : base(
-                id, nombre, cantidad, eUnidadDeMedida, precio, ETipoDeProducto.Bebida, proveedor)
+                id, nombre, cantidad, eUnidadDeMedida, precioporCantidad, ETipoDeProducto.Bebida, proveedor)
         {
 
             _nombre = nombre;
             _iTipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
-            _precio = precio;
+            _precioUnitario = (precioporCantidad / (decimal)cantidad);
             _proveedor = proveedor;
             _eCategoriaConsumible = categoriaDeConsumible;
             _eClasificacionDeBebida = clasificacionDeBebida;
@@ -48,12 +48,12 @@ namespace Entidades
         }
 
         /// <summary>
-        /// Calcula el precio Unitario de cada bebida.
+        /// Calcula el precio de las bebidas.
         /// </summary>
         /// <returns>devuelve el precio de una bebida</returns>
         public override decimal CalcularPrecio()
         {
-            return Precio / (decimal)_iTipoUnidadDeMedida.Cantidad;
+            return _precioUnitario * (decimal)_iTipoUnidadDeMedida.Cantidad;
         }
 
 
@@ -62,12 +62,13 @@ namespace Entidades
             if (bebida1.Id == bebida2.Id)
             {
                 double nuevaCantidad = bebida1.Cantidad + bebida2.Cantidad;
+                decimal nuevoPrecio = bebida1._precioUnitario * (decimal)nuevaCantidad;
                 return new Bebida(
                     id: bebida1.Id,
                     nombre: bebida1.Nombre,
                     cantidad: nuevaCantidad,
                     eUnidadDeMedida: bebida1.EUnidadDeMedida,
-                    precio: bebida1.Precio,
+                    precioporCantidad: nuevoPrecio,
                     proveedor: bebida1.Proveedor,
                     categoriaDeConsumible: bebida1.Categoria,
                     clasificacionDeBebida: bebida1.ClasificacionDeBebida
@@ -84,12 +85,13 @@ namespace Entidades
             if (bebida1.Id == bebida2.Id)
             {
                 double nuevaCantidad = bebida1.Cantidad - bebida2.Cantidad;
+                decimal nuevoPrecio = bebida1._precioUnitario * (decimal)nuevaCantidad;
                 return new Bebida(
                     id: bebida1.Id,
                     nombre: bebida1.Nombre,
                     cantidad: nuevaCantidad,
                     eUnidadDeMedida: bebida1.EUnidadDeMedida,
-                    precio: bebida1.Precio,
+                    precioporCantidad: nuevoPrecio,
                     proveedor: bebida1.Proveedor,
                     categoriaDeConsumible: bebida1.Categoria,
                     clasificacionDeBebida: bebida1.ClasificacionDeBebida
@@ -101,16 +103,22 @@ namespace Entidades
             }
         }
 
+
+      
         public string Nombre
         {
             get { return _nombre; }
             set { _nombre = value; }
         }
 
+
+        /// <summary>
+        /// Precio Unitario
+        /// </summary>
         public decimal Precio
         {
-            get { return _precio; }
-            private set { _precio = value; }
+            get { return _precioUnitario; }
+            private set { _precioUnitario = value; }
         }
 
 
@@ -166,7 +174,7 @@ namespace Entidades
 
         public override string ToString()
         {
-            return $"ID: {Id}, Nombre: {Nombre}, Cantidad {Cantidad}, Precio: {Precio}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Clasificacion : {ClasificacionDeBebida}";
+            return $"ID: {Id}, Nombre: {Nombre}, Cantidad {Cantidad},Su Precio: {CalcularPrecio()}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Clasificacion : {ClasificacionDeBebida}";
         }
     }
 }

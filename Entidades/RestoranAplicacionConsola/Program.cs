@@ -40,9 +40,9 @@ namespace RestoranAplicacionConsola
             //Ingrediente 1
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto1 = "Aceite";
-            double cantidad1 = 9;
+            double cantidad1 = 10;
             EUnidadMedida unidadDeMedida1 = EUnidadMedida.Litro;
-            decimal precio1 = 20000;
+            decimal precio1 = 10000;
             //Ingrediente 2
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto2 = "Papa";
@@ -55,7 +55,7 @@ namespace RestoranAplicacionConsola
             string nombreDeProducto3 = "Aceite";
             double cantidad3 = 500;
             EUnidadMedida unidadDeMedida3 = EUnidadMedida.MiliLitro;
-            decimal precio3 = 20000;
+            decimal precio3 = 1000;
 
             gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad1, unidadDeMedida1, precio1, proveedor1);
             gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, proveedor2);

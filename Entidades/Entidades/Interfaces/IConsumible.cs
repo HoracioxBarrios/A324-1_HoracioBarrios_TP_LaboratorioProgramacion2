@@ -10,5 +10,7 @@ namespace Entidades.Interfaces
         string Nombre { get; set; }
         decimal Precio { get; set; }
         bool Disponibilidad { get; set; }
+
+        decimal CalcularPrecio();
     }
 }

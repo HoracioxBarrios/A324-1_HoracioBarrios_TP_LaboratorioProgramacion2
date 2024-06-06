@@ -18,7 +18,7 @@ namespace Entidades
     public abstract class Producto : IProducto, IProductoCreable
     {
         private string _nombre;
-        private decimal _precio;
+        private decimal _precioUnitario;
         private ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad;
@@ -32,7 +32,7 @@ namespace Entidades
         {
 
             _nombre = nombre;
-            _precio = precio;
+            _precioUnitario = precio;
             _eUnidadDeMedidad = eUnidadDeMedida;
             _iTipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
             _eTipoDeProducto = eTipoDeProducto;            
@@ -56,8 +56,8 @@ namespace Entidades
         }
         public decimal Precio
         {
-            get { return _precio; }
-            set { _precio = value; }
+            get { return _precioUnitario; }
+            set { _precioUnitario = value; }
         }
         
         public ITipoUnidadDeMedida TipoDeUnidadDeMedida 

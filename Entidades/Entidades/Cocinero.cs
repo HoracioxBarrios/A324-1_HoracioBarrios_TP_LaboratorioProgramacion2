@@ -39,38 +39,27 @@ namespace Entidades
             return seEncontro;
         }
 
+
         /// <summary>
         /// Crea un Plato (Comida) si no existe aun y lo agrega a listaMenu
         /// </summary>
         /// <param name="nombrePlato"></param>
         /// <param name="listPlatosEnMenu"></param>
-        public void CrearPlato(string nombrePlato,List<Plato> listPlatosEnMenu)
+        public IConsumible CrearPlato()
         {
-            
-            if (ExitePlatoEnLista(nombrePlato, listPlatosEnMenu))
-            {
-                
-                //listPlatosEnMenu.Add();
-            }
-            
+            throw new NotImplementedException();
+
         }
-
-
-
-        public Plato EditarPlato()
+        public IConsumible EditarPlato()
         {
             throw new NotImplementedException();
         }
 
-        public Plato EliminarPlato()
+        public IConsumible EliminarPlato()
         {
             throw new NotImplementedException();
         }
-
-        public Plato CrearPlato()
-        {
-            throw new NotImplementedException();
-        }
+         
 
     }
 }

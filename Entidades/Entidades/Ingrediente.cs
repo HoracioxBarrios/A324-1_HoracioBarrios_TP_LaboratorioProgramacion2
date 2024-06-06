@@ -19,7 +19,7 @@ namespace Entidades
     public class Ingrediente : Producto, IConsumible
     {
         private string _nombre;
-        private decimal _precio;
+        private decimal _precioUnitario;
         private ITipoUnidadDeMedida _iTipoUnidadDeMedida;
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad = false;
@@ -29,13 +29,13 @@ namespace Entidades
         private int _id = 0;
 
         //producto (string nombre, double cantidad,  EUnidadMedida eUnidadDeMedida, decimal precio, ITipoUnidadDeMedida iTipoUnidadDeMedida, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
-        public Ingrediente(int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto tipoDeProducto, IProveedor proveedor )
-        : base(id, nombre, cantidad, eUnidadDeMedida, precio, tipoDeProducto, proveedor)
+        public Ingrediente(int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precioporCantidad, ETipoDeProducto tipoDeProducto, IProveedor proveedor )
+        : base(id, nombre, cantidad, eUnidadDeMedida, precioporCantidad, tipoDeProducto, proveedor)
         {
             _nombre = nombre;
             _eUnidadDeMedida = eUnidadDeMedida;
             _iTipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
-            _precio = precio;
+            _precioUnitario = (precioporCantidad / (decimal)cantidad );
             _proveedor = proveedor;
             _eTipoDeProducto = tipoDeProducto;
             if (Cantidad > 0) { _disponibilidad = true; }
@@ -78,13 +78,13 @@ namespace Entidades
                 {
                     throw new InvalidOperationException("Tipos de unidad de medida no compatibles.");
                 }
-
+                decimal nuevoPrecio = ingrediente1._precioUnitario * (decimal)nuevaCantidad.Cantidad;
                 return new Ingrediente(
                     id: ingrediente1.Id,
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad.Cantidad,
                     eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
-                    precio: ingrediente1.Precio,
+                    precioporCantidad: nuevoPrecio,
                     proveedor: ingrediente1.Proveedor,
                     tipoDeProducto: ingrediente1.ETipoDeProducto
                 );
@@ -131,12 +131,13 @@ namespace Entidades
                     throw new InvalidOperationException("Tipos de unidad de medida no compatibles.");
                 }
 
+                decimal nuevoPrecio = ingrediente1._precioUnitario * (decimal)nuevaCantidad.Cantidad;
                 return new Ingrediente(
                     id: ingrediente1.Id,
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad.Cantidad,
                     eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
-                    precio: ingrediente1.Precio,
+                    precioporCantidad: nuevoPrecio,
                     proveedor: ingrediente1.Proveedor,
                     tipoDeProducto: ingrediente1.ETipoDeProducto
                 );
@@ -150,13 +151,13 @@ namespace Entidades
 
         public override decimal CalcularPrecio()
         {
-            return Precio / (decimal)_iTipoUnidadDeMedida.Cantidad;
+            return _precioUnitario * (decimal)_iTipoUnidadDeMedida.Cantidad;
         }
 
 
         public override string ToString()
         {
-            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Precio {Precio}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";
+            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Su Precio {CalcularPrecio()}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";
         }
     }
 }
