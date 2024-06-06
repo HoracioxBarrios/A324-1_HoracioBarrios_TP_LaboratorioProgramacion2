@@ -85,7 +85,7 @@ namespace TestEntidades
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
-            IProducto ingrediente3 = ProductoServiceFactory.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
+            IProducto ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
 
             List <IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
             listaDeIngredienteEnElPlato.Add(ingrediente3);
@@ -173,12 +173,12 @@ namespace TestEntidades
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
-            IProducto ingrediente3 = ProductoServiceFactory.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
+            IProducto ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
 
             List<IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
             listaDeIngredienteEnElPlato.Add(ingrediente3);
 
-            //Se le pasa la lista de Ingredintes a desconcar
+            //Se le pasa la lista de Ingredintes a descontar
             bool seDesconto = gestorDeProductos.DescontarProductosDeStock(listaDeIngredienteEnElPlato);
 
 

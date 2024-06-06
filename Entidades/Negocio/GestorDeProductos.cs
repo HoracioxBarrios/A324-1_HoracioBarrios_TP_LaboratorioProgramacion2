@@ -68,8 +68,21 @@ namespace Negocio
             }
         }
 
-
-        public void CrearProducto(
+        /// <summary>
+        /// Crea un producto Añadiendolo a la Lista de stock
+        /// </summary>
+        /// <param name="tipoProducto"></param>
+        /// <param name="nombre"></param>
+        /// <param name="cantidad"></param>
+        /// <param name="unidadDeMedida"></param>
+        /// <param name="precio"></param>
+        /// <param name="proveedor"></param>
+        /// <param name="categoria"></param>
+        /// <param name="clasificacionDeBebida"></param>
+        /// <returns>Void</returns>
+        /// <exception cref="AlCrearProductoException"></exception>
+        /// <exception cref="Exception"></exception>
+        public void CrearProductoParaListaDeStock(
               ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default)
@@ -94,6 +107,45 @@ namespace Negocio
                 throw new Exception("Error Inesperado ", ex);
             }
 
+        }
+
+        /// <summary>
+        /// Crear un producto
+        /// </summary>
+        /// <param name="tipoProducto"></param>
+        /// <param name="nombre"></param>
+        /// <param name="cantidad"></param>
+        /// <param name="unidadDeMedida"></param>
+        /// <param name="precio"></param>
+        /// <param name="proveedor"></param>
+        /// <param name="categoria"></param>
+        /// <param name="clasificacionDeBebida"></param>
+        /// <returns>Devuelve el producto creado</returns>
+        /// <exception cref="AlCrearProductoException"></exception>
+        /// <exception cref="Exception"></exception>
+        public IProducto CrearProducto(
+              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida,
+              decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default,
+              EClasificacionBebida clasificacionDeBebida = default)
+        {
+            try
+            {
+                int idParaAsignar = VerificarExistenciaDelProducto(nombre, tipoProducto);
+                IProducto producto = ProductoServiceFactory.CrearProducto(tipoProducto, idParaAsignar, nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);                
+                return producto;
+            }
+            catch (DatosDeProductoException ex)
+            {
+                throw new AlCrearProductoException("Error al crear el Producto ", ex);
+            }
+            catch (TipoDeProductoDesconocidoException ex)
+            {
+                throw new AlCrearProductoException("Error al crear el Producto ", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error Inesperado ", ex);
+            }
         }
         public decimal CalcularPrecio()
         {

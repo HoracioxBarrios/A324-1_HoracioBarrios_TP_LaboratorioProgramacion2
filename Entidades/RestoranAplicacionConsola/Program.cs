@@ -57,62 +57,32 @@ namespace RestoranAplicacionConsola
             EUnidadMedida unidadDeMedida3 = EUnidadMedida.Kilo;
             decimal precio3 = 20000;
 
-            gestorDeProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad1, unidadDeMedida1, precio1, proveedor1);
-            gestorDeProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, proveedor2);
-            gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, proveedor3);
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad1, unidadDeMedida1, precio1, proveedor1);
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, proveedor2);
+
 
             Mostrar(gestorDeProductos.GetProductos(), "Productos Ingredientes");
 
 
-            ////Producto que va a estar en el plato(lo que  usa el plato)
-            //// Configuración del ingrediente3...
+            //Producto que va a estar en el PLATO(lo que  usa el plato) Ingrediente 3   
 
-            //List<IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
-            //listaDeIngredienteEnElPlato.Add(ingrediente3);
+            List<IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
+            IProducto ingrediente3 = gestorDeProductos.CrearProducto(
+                tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, proveedor3);
 
-            //List<IProducto> productosActualizados = new List<IProducto>();
-
-            //foreach (IProducto producto in listaDeProductosIngredientesStock)
-            //{
-            //    if (producto is Ingrediente ingrediente)
-            //    {
-            //        foreach (IProducto productoADescontar in listaDeIngredienteEnElPlato)
-            //        {
-            //            if (productoADescontar is Ingrediente ingredienteADescontar)
-            //            {
-            //                if (ingrediente.Id == ingredienteADescontar.Id)
-            //                {
-            //                    Ingrediente nuevoIngrediente = ingrediente - (Ingrediente)productoADescontar;
-            //                    productosActualizados.Add(nuevoIngrediente);
-            //                }
-            //                else
-            //                {
-            //                    productosActualizados.Add(ingrediente);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// Actualiza la lista original con los productos actualizados
-            //for (int i = 0; i < listaDeProductosIngredientesStock.Count; i++)
-            //{
-            //    listaDeProductosIngredientesStock[i] = productosActualizados[i];
-            //}
-            ////Verifica si el ingrediente descontado es el mismo que el ingrediente en la posición 0 de la lista
-            //foreach (IProducto producto in listaDeProductosIngredientesStock)
-            //{
-            //    if (producto is Ingrediente ingrediente)
-            //        Console.WriteLine($"Id: {producto.Id}, Nombre: {producto.Nombre} Cantidad: {producto.Cantidad}");
-            //}
+            listaDeIngredienteEnElPlato.Add(ingrediente3);
 
 
 
+            List<IProducto> productosActualizados = new List<IProducto>();
 
+            //DESCONTAR
+            bool seDesconto = gestorDeProductos.DescontarProductosDeStock(listaDeIngredienteEnElPlato);
 
-
-
-
+            if (seDesconto)
+            {
+                Mostrar(gestorDeProductos.GetProductos(), "Lista Actualizada: Productos Ingredientes");
+            }
 
 
 
