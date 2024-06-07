@@ -12,13 +12,15 @@ using System.Runtime.CompilerServices;
 namespace Entidades
 {
     /// <summary>
-    /// Class Bebida (Hereda de Producto, a su vez por gerarquia de herencia hereda la interface IProducto, e Implementa IConsumible)
+    /// Class Bebida (Hereda de Producto, a su vez por gerarquia de herencia hereda la interface IProducto, e Implementa IConsumible).  
+    /// _precioUnitario;//Se auto calcula.   
+    /// ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato.
     /// </summary>
     public class Bebida : Producto, IConsumible, IConsumibleCategorizable
     {
         private string _nombre;
         private decimal _precioUnitario;
-        private ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato
+        private ITipoUnidadDeMedida _iTipoUnidadDeMedida;
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad;
         private EUnidadMedida _eUnidadDeMedidad;
@@ -118,7 +120,7 @@ namespace Entidades
         public decimal Precio
         {
             get { return _precioUnitario; }
-            private set { _precioUnitario = value; }
+            set { _precioUnitario = value; }
         }
 
 

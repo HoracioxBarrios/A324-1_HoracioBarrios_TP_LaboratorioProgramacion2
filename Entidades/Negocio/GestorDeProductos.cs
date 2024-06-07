@@ -69,17 +69,26 @@ namespace Negocio
         }
 
         /// <summary>
-        /// Crea un producto Añadiendolo a la Lista de stock
+        /// Crea un producto Añadiendolo a la Lista de stock.
+        /// <para>
+        /// Para Crear un Ingrediente: Recibe (ETipoDeProducto tipoDeProducto, string  nombreDeProducto, double cantidad, EUnidadDeMedida unidadDeMedida, decimal  precio, IProveedor proveedor).    
+        /// </para>
+        /// <para>
+        /// ParaCrear Una Bebida: Recibe (ETipoDeProducto tipoDeProducto, string  nombreDeProducto, double cantidad, EUnidadDeMedida unidadDeMedida, decimal precio, IPproveedor proveedor, ECategoriaDeConsumible categoriaDeConsumible [default], EClasificacionBebida clasificacionDeBebida)[default];
+        /// </para>
         /// </summary>
-        /// <param name="tipoProducto"></param>
-        /// <param name="nombre"></param>
-        /// <param name="cantidad"></param>
-        /// <param name="unidadDeMedida"></param>
-        /// <param name="precio"></param>
-        /// <param name="proveedor"></param>
-        /// <param name="categoria"></param>
-        /// <param name="clasificacionDeBebida"></param>
-        /// <returns>Void</returns>
+        /// <param name="tipoProducto">ETipoDeProducto : tipo de producto: ejemplo Verduleria, Carniceria,Almacen, Bebida, Ingrediente </param>
+        /// <param name="nombre"> String : Tipo de Producto</param>
+        /// <param name="cantidad">Cantidad total</param>
+        /// <param name="unidadDeMedida">EUnidad de medida : Kilo, Gramo, Litro, MiliLitro, Unidad </param>
+        /// <param name="precio">Precio Total (detalle: Dentro de cada Producto se Calcula el precio Unitario en base a la cantidad tambien)</param>
+        /// <param name="proveedor">IProveedor : proveedor</param>
+        /// <param name="categoria">ECategoriaDeConsumible : Comidad , Bebida . ( este Parametro es Obcional solo para BEBIDA)</param>
+        /// <param name="clasificacionDeBebida">EClasificacion Bebida : Con_Alcohol, Sin_Alcohol.  ( este Parametro es Obcional solo para BEBIDA)</param>
+        /// 
+        /// 
+        ///
+        /// 
         /// <exception cref="AlCrearProductoException"></exception>
         /// <exception cref="Exception"></exception>
         public void CrearProductoParaListaDeStock(

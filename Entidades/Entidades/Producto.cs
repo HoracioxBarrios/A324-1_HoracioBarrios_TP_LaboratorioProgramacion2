@@ -59,7 +59,7 @@ namespace Entidades
             get { return _precioUnitario; }
             set { _precioUnitario = value; }
         }
-        
+
         public ITipoUnidadDeMedida TipoDeUnidadDeMedida 
         { 
             get { return _iTipoUnidadDeMedida; }
