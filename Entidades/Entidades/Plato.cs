@@ -102,7 +102,12 @@ namespace Entidades
             set { _disponibilidad = value; } 
         }
 
-
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Nombre: {Nombre}, Precio: {Precio}, Categoria: {Categoria}");
+            return sb.ToString();
+        }
 
     }
 }

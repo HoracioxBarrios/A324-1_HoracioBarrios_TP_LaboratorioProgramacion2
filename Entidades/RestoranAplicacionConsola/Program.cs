@@ -116,8 +116,8 @@ namespace RestoranAplicacionConsola
 
             //----------------------------------Cocinero - Platos - menu - Gestor menú -----------------------------
             // Crear ingredientes
-            IConsumible ingrediente1 = new Ingrediente(1, "Tomate", 1.0, EUnidadMedida.Kilo, 2.0m, ETipoDeProducto.Verduleria, proveedor1);
-            IConsumible ingrediente2 = new Ingrediente(2, "Cebolla", 0.5, EUnidadMedida.Kilo, 1.0m, ETipoDeProducto.Verduleria, proveedor2);
+            IConsumible ingrediente1 = new Ingrediente(1, "Tomate", 1.0, EUnidadMedida.Kilo, 5, ETipoDeProducto.Verduleria, proveedor1);
+            IConsumible ingrediente2 = new Ingrediente(2, "Cebolla", 0.5, EUnidadMedida.Kilo, 3, ETipoDeProducto.Verduleria, proveedor2);
             List<IConsumible> ingredientes = new List<IConsumible>();
             ingredientes.Add(ingrediente1);
             ingredientes.Add(ingrediente2);
@@ -133,12 +133,9 @@ namespace RestoranAplicacionConsola
 
             // Agregar plato al menú
             gestorMenu.AgregarPlatoAMenu("Desayuno", "Pizza", ingredientes);
-
-            // Mostrar precio del menú
-            /*IMenu menu = gestorMenu.GetListaDeMenu().Find(m => m.Nombre == "Pizza")*/;
+           
 
 
-            //Console.WriteLine($"El Nombre del menu es: {menu.Nombre}");
             Mostrar(gestorMenu.GetListaDeMenu(), "Menues");
 
 

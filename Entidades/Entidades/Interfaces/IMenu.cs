@@ -12,5 +12,11 @@ namespace Entidades.Interfaces
         void Agregar(IConsumible consumible);
 
         void Quitar(IConsumible consumible);
+
+        List<IConsumible> ObtenerPlatosInMenu();
+
+        List<IConsumible> ObtenerBebidasInMenu();
+
+        List<IConsumible> ObtenerAllItemsDelMenu();
     }
 }

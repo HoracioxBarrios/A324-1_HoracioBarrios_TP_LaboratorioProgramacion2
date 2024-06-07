@@ -32,7 +32,7 @@ namespace Entidades
         }
 
 
-        public IConsumible ObtenerBebidas()
+        public List<IConsumible> ObtenerBebidasInMenu()
         {
             List<IConsumible> nuevaListaDeBebidas = new List<IConsumible>();
             foreach(IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
@@ -42,9 +42,9 @@ namespace Entidades
                     nuevaListaDeBebidas.Add(consumible);
                 }
             }
-            return (IConsumible)nuevaListaDeBebidas;
+            return nuevaListaDeBebidas;
         }
-        public IConsumible ObtenerPlatos()
+        public List<IConsumible> ObtenerPlatosInMenu()
         {
             List<IConsumible> nuevaListaDePlatos = new List<IConsumible>();
             foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
@@ -54,13 +54,39 @@ namespace Entidades
                     nuevaListaDePlatos.Add(consumible);
                 }
             }
-            return (IConsumible)nuevaListaDePlatos;
+            return nuevaListaDePlatos;
+        }
+        public List<IConsumible> ObtenerAllItemsDelMenu()
+        {
+            return _listaDeConsumiblesBebidasYPlatos;
         }
         public string Nombre
         {
             get { return _nombreDelMenu; }
             set { _nombreDelMenu = value; }
         }
+        public override string ToString() 
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Nombre del Menú: {Nombre}");
+            sb.AppendLine($"------- Los Platos del Menú: --------");
+            foreach(IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
+            {
+                if(consumible is Plato)
+                {
+                    sb.AppendLine($"{consumible}");
+                }
+            }
+            sb.AppendLine("--------- Las Bebidas del Menú: ");
+            foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
+            {
+                if ( consumible is Bebida)
+                {
+                    sb.AppendLine($"{consumible}");
+                }
+            }
 
+            return sb.ToString();
+        }
     }
 }
