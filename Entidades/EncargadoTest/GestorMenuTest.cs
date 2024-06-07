@@ -76,7 +76,7 @@ namespace TestEntidades
         {
             IMenu menu = _gestorMenu.GetListaDeMenu().Find(m => m.Nombre == "Desayuno");
             Plato plato = (Plato)menu.ObtenerPlatosInMenu().Find(p => p.Nombre == "Pizza");
-            Assert.AreEqual(_listaDeIngredientes.Count, plato.GetIngredientesDelPlato().Count, "La cantidad de ingredientes no coincide.");
+            Assert.AreEqual(_listaDeIngredientes.Count, plato.GetIngredientesDelPlato().Count, "La cantidad de ingredientes no coincide.");//OK
         }
 
 
