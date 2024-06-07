@@ -101,6 +101,7 @@ namespace Negocio
             foreach (IConsumible bebida in listaDeBebidasConsumibles)
             {
                 ((Menu)menu).Agregar(bebida);
+
                 _listaDeTodasLasBebidas.Add(bebida);
             }
         }
@@ -122,6 +123,14 @@ namespace Negocio
                 return _listaDeTodosLosPlatos;
             }
             throw new ListaVaciaException("La Lista de todos los Platos está Vacia");
+        }
+        public List<IConsumible> GetAllBebidas()
+        { 
+            if(_listaDeTodasLasBebidas.Count > 0)
+            {
+                return _listaDeTodasLasBebidas;
+            }
+            throw new ListaVaciaException("La lista de bebidas esta Vacia");
         }
 
         public List<IConsumible> GetListaDePlatosDisponibles()

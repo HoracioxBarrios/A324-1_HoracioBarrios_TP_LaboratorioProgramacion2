@@ -13,6 +13,7 @@ namespace Entidades.Interfaces
         void AgregarBebidasAMenu(string nombreDelMenu, List<IProducto> listaDeBebidas);
         List<IMenu> GetListaDeAllMenus();
         List<IConsumible> GetListaDeAllPlatos();
+        List<IConsumible> GetAllBebidas();
         List<IConsumible> GetListaDePlatosDisponibles();
         List<IConsumible> GetListaDePlatosNoDisponibles();
     }
