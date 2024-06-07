@@ -17,7 +17,7 @@ namespace TestEntidades
 
         private IConsumible _ingrediente1;
         private IConsumible _ingrediente2;
-        private List<IConsumible> _listaDeIngredientes;
+        private List<IProducto> _listaDeIngredientes;
         private ICocinero _cocinero;
         private GestorMenu _gestorMenu;
 
@@ -34,9 +34,9 @@ namespace TestEntidades
             _ingrediente1 = new Ingrediente(1, "Tomate", 1.0, EUnidadMedida.Kilo, 5, ETipoDeProducto.Verduleria, mockProveedor1.Object);
             _ingrediente2 = new Ingrediente(2, "Cebolla", 0.5, EUnidadMedida.Kilo, 3, ETipoDeProducto.Verduleria, mockProveedor2.Object);
 
-            _listaDeIngredientes = new List<IConsumible>();
-            _listaDeIngredientes.Add(_ingrediente1);
-            _listaDeIngredientes.Add(_ingrediente2);
+            _listaDeIngredientes = new List<IProducto>();
+            _listaDeIngredientes.Add((IProducto)_ingrediente1);
+            _listaDeIngredientes.Add((IProducto)_ingrediente2);
 
 
             //Creamos el COCINERO
