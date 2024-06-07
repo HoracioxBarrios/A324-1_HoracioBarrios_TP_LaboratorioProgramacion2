@@ -86,39 +86,77 @@ namespace RestoranAplicacionConsola
 
 
 
-            ////IPRODUCTO BEBIDA 1
-            //ETipoDeProducto tipoDeProductoBebida1 = ETipoDeProducto.Bebida;
-            //string nombreBebida1 = "CocaCola";
-            //double cantidadBebida1 = 20;
-            //EUnidadMedida eUnidadDeMedidaBebida1 = EUnidadMedida.Unidad;
-            //decimal precioBebida1 = 20000;
-            //IProveedor proveedorBebida1 = proveedor3;
-            //ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
-            //EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
-            //gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
-            //// Bebida 2
-            //ETipoDeProducto tipoDeProductoBebida2 = ETipoDeProducto.Bebida;
-            //string nombreBebida2 = "Cerveza QUilmes";
-            //double cantidadBebida2 = 10;
-            //EUnidadMedida eUnidadDeMedidaBebida2 = EUnidadMedida.Unidad;
-            //decimal precioBebida2 = 10000;
-            //IProveedor proveedorBebida2 = proveedor3;
-            //ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;
-            //EClasificacionBebida clasificacionBebida2 = EClasificacionBebida.Con_Alcohol;
-            //gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
+            //IPRODUCTO BEBIDA 1
+            ETipoDeProducto tipoDeProductoBebida1 = ETipoDeProducto.Bebida;
+            string nombreBebida1 = "CocaCola";
+            double cantidadBebida1 = 20;
+            EUnidadMedida eUnidadDeMedidaBebida1 = EUnidadMedida.Unidad;
+            decimal precioBebida1 = 20000;
+            IProveedor proveedorBebida1 = proveedor3;
+            ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
+            EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
+            // Bebida 2
+            ETipoDeProducto tipoDeProductoBebida2 = ETipoDeProducto.Bebida;
+            string nombreBebida2 = "Cerveza QUilmes";
+            double cantidadBebida2 = 10;
+            EUnidadMedida eUnidadDeMedidaBebida2 = EUnidadMedida.Unidad;
+            decimal precioBebida2 = 10000;
+            IProveedor proveedorBebida2 = proveedor3;
+            ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;
+            EClasificacionBebida clasificacionBebida2 = EClasificacionBebida.Con_Alcohol;
+            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
 
-            //Mostrar(gestorDeProductos.GetProductos(), "A ver si figuran las Bebidas?");
+            Mostrar(gestorDeProductos.GetAllProductos(), "A ver si figuran las Bebidas?");
 
-            ////VEAMOS SI PODEMOS VER EL PRECIO TOTAL EN PRODUCTOS QUE HAY EN STOCK
-            //decimal precioTotalEnproductos = gestorDeProductos.CalcularPrecio();
-            //Console.WriteLine($"Precio Total entre los productos: {precioTotalEnproductos}");
+            //VEAMOS SI PODEMOS VER EL PRECIO TOTAL EN PRODUCTOS QUE HAY EN STOCK
+            decimal precioTotalEnproductos = gestorDeProductos.CalcularPrecio();
+            Console.WriteLine($"Precio Total entre los productos: {precioTotalEnproductos}");
 
 
+            //----------------------------------Cocinero - Platos - menu - Gestor menú -----------------------------
+            // Crear ingredientes
+            IConsumible ingrediente1 = new Ingrediente(1, "Tomate", 1.0, EUnidadMedida.Kilo, 2.0m, ETipoDeProducto.Verduleria, proveedor1);
+            IConsumible ingrediente2 = new Ingrediente(2, "Cebolla", 0.5, EUnidadMedida.Kilo, 1.0m, ETipoDeProducto.Verduleria, proveedor2);
+            List<IConsumible> ingredientes = new List<IConsumible>();
+            ingredientes.Add(ingrediente1);
+            ingredientes.Add(ingrediente2);
+
+            // Crear cocinero
+            ICocinero cocinero = new Cocinero(ERol.Cocinero, "Crhistof", "hf", "123456789", "Calle 123", 50000M);
+
+            // Crear gestor de menú
+            GestorMenu gestorMenu = new GestorMenu(cocinero);
+
+            // Crear menú
+            gestorMenu.CrearMenu("Desayuno");
+
+            // Agregar plato al menú
+            gestorMenu.AgregarPlatoAMenu("Desayuno", "Pizza", ingredientes);
+
+            // Mostrar precio del menú
+            /*IMenu menu = gestorMenu.GetListaDeMenu().Find(m => m.Nombre == "Pizza")*/;
+
+
+            //Console.WriteLine($"El Nombre del menu es: {menu.Nombre}");
+            Mostrar(gestorMenu.GetListaDeMenu(), "Menues");
 
 
             Console.ReadKey();
         }
+        public static void Mostrar(List<IMenu> menus, string mensage)
+        {
+            if (menus.Count > 0)
+            {
+                Console.WriteLine(mensage);
+                foreach (IMenu menu in menus)
+                {
 
+                    Console.WriteLine(menu);
+                }
+            }
+
+        }
 
         public static void Mostrar(List<IProveedor> proveedores, string mensage)
         {

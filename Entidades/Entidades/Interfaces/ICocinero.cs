@@ -8,7 +8,7 @@ namespace Entidades.Interfaces
 {
     public interface ICocinero
     {
-        IConsumible CrearPlato();
+        IConsumible CrearPlato(string nombre, List<IConsumible> listaDeIngredientes);
         IConsumible EditarPlato();
         IConsumible EliminarPlato();
     }

@@ -11,11 +11,13 @@ namespace Entidades
 {
     public class Plato : IConsumible
     {
-        private List<IConsumible> _ingredientes;// Ingrediente es un iproducto
+        private List<IConsumible> _listaDeIngredientesParaEstePlato;// Ingrediente es un iproducto
         private string _nonbre;
         private decimal _precioDeCosto = 0;
         private decimal _precioDeVenta = 0;
-        private bool _disponibilidad;
+        private ECategoriaConsumible _categoriaDeConsumible;
+        private DateTime _tiempoDePreparacion;
+        private bool _disponibilidad = false;
         
 
         
@@ -24,51 +26,83 @@ namespace Entidades
         public Plato(string nombre, List<IConsumible> listaIngredientes) 
         { 
             Nombre = nombre;
-            _ingredientes = listaIngredientes;
+            _listaDeIngredientesParaEstePlato = listaIngredientes;
+            VerificarDisponibilidad();
         }
 
-     
+
+
         /// <summary>
-        /// Getea el precio de Ventay setea el precio de Venta
+        /// Calcula el precio Base segun el precio de sus ingredientes.
+        /// 
+        /// </summary>
+        /// <returns>devuelve el precio de COSTO del plato</returns>
+        public decimal CalcularPrecio()
+        {
+            decimal precio = 0;
+
+            foreach (IConsumible ingrediente in _listaDeIngredientesParaEstePlato)
+            {
+                precio += ingrediente.CalcularPrecio();
+            }
+            return precio;
+        }
+
+        /// <summary>
+        /// Verifica si el plato tiene Ingredientes disponible.
+        /// </summary>
+        private void VerificarDisponibilidad()
+        {
+            bool estePlatoEstaDisponible = false;
+            if (_listaDeIngredientesParaEstePlato.Count >= 2)
+            {
+                
+                foreach (IConsumible ingrediente in _listaDeIngredientesParaEstePlato)
+                {
+                    Ingrediente ing = ingrediente as Ingrediente;
+                    if(ing.Cantidad > 0)
+                    {
+                        estePlatoEstaDisponible = true;
+                    }
+                    estePlatoEstaDisponible = false;
+                   
+                }
+            }
+            _disponibilidad = estePlatoEstaDisponible;
+        }
+
+        public string Nombre
+        {
+            get { return _nonbre; }
+            set { _nonbre = value; }
+        }
+
+        /// <summary>
+        /// Obtiene o Establece el precio de Venta del plato
         /// </summary>
         public decimal Precio
         {
             get { return _precioDeVenta; }
             set
             {
-                if (value > 0)
+                if (value > _precioDeCosto)
                 { _precioDeVenta = value; }
             }
         }
 
+        public ECategoriaConsumible Categoria
+        {
+            get { return _categoriaDeConsumible; }
+            set { _categoriaDeConsumible = value; }
+        }
 
         public bool Disponibilidad 
         {
-            get {return _disponibilidad; } set { _disponibilidad = value; } 
-        }
-        public ECategoriaConsumible Categoria { get; set; }
-        public string Nombre 
-        { 
-            get { return _nonbre; }
-            set { _nonbre = value; }
+            get {return _disponibilidad; } 
+            set { _disponibilidad = value; } 
         }
 
-        public decimal CalcularPrecio()
-        {
-            decimal precio = 0;
-            if(_ingredientes.Count >= 2)
-            {
-                foreach(IConsumible ingrediente in _ingredientes)
-                {
-                    IConsumible ingrediente1 = ingrediente as Ingrediente;
-                    if(ingrediente1 != null)
-                    {
-                        precio += ingrediente1.CalcularPrecio();
-                    }                 
-                }
-                return precio;
-            }
-            return precio;
-        }
+
+
     }
 }

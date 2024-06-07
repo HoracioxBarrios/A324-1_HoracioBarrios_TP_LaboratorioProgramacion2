@@ -26,10 +26,10 @@ namespace Entidades
         /// </summary>
         /// <param name="nombrePlato"></param>
         /// <returns>Devuelve si existe en la Lista de Platos </returns>
-        private bool ExitePlatoEnLista(string nombrePlato, List<Plato> listPlatosEnMenu)
+        private bool ExitePlatoEnLista(string nombrePlato, List<IConsumible> listaPlatosEnMenu)
         {
             bool seEncontro = false;
-            foreach (Plato plato in listPlatosEnMenu)
+            foreach (IConsumible plato in listaPlatosEnMenu)
             {
                 if (plato.Nombre == nombrePlato)
                 {
@@ -40,23 +40,20 @@ namespace Entidades
             return seEncontro;
         }
 
-
-        /// <summary>
-        /// Crea un Plato (Comida) si no existe aun y lo agrega a listaMenu
-        /// </summary>
-        /// <param name="nombrePlato"></param>
-        /// <param name="listPlatosEnMenu"></param>
-        public IConsumible CrearPlato(List<IConsumible> listaDeProductos, IGestorProducto gestorProductos)
+        public IConsumible CrearPlato(string nombre, List<IConsumible> listaDeIngredientes)
         {
-            List<IConsumible> listaDeIngredientesParaElPlato;
-            if(!listaDeProductos.Any()) 
+            if (listaDeIngredientes == null || listaDeIngredientes.Count < 2)
             {
-                throw new AlObtenerListaDeIngredientesException("Error la lista de ingredientes que viene de stock esta vacia");
+                throw new AlObtenerListaDeIngredientesException("El plato debe tener al menos 2 ingredientes.");
             }
-            
-            return new Plato(Nombre, listaDeProductos);
 
+            return new Plato(nombre, listaDeIngredientes);
         }
+
+
+
+
+
         public IConsumible EditarPlato()
         {
             throw new NotImplementedException();
@@ -66,7 +63,6 @@ namespace Entidades
         {
             throw new NotImplementedException();
         }
-         
 
     }
 }
