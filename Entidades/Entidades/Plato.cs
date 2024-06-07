@@ -1,4 +1,5 @@
 ﻿using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -100,6 +101,14 @@ namespace Entidades
         {
             get {return _disponibilidad; } 
             set { _disponibilidad = value; } 
+        }
+        public List<IConsumible> GetIngredientesDelPlato()
+        {
+            if(_listaDeIngredientesParaEstePlato.Count == 0)
+            {
+                throw new ListaVaciaException("Error: La Lista de Ingredientes esta vacia");
+            }
+            return _listaDeIngredientesParaEstePlato;
         }
 
         public override string ToString()
