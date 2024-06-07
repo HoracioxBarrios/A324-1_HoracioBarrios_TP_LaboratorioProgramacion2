@@ -187,7 +187,7 @@ namespace TestEntidades
 
 
 
-            foreach (IProducto productoIngrediente in gestorDeProductos.GetProductos())
+            foreach (IProducto productoIngrediente in gestorDeProductos.GetAllProductos())
             {
                 if (productoIngrediente.Nombre == "Pollo" && productoIngrediente.Cantidad == 9)
                 {
@@ -278,7 +278,7 @@ namespace TestEntidades
 
 
 
-            foreach (IProducto productoIngrediente in gestorDeProductos.GetProductos())
+            foreach (IProducto productoIngrediente in gestorDeProductos.GetAllProductos())
             {
                 if (productoIngrediente.Nombre == "Aceite" && productoIngrediente.Cantidad == 8.5)
                 {
@@ -369,7 +369,7 @@ namespace TestEntidades
 
 
 
-            foreach (IProducto productoIngrediente in gestorDeProductos.GetProductos())
+            foreach (IProducto productoIngrediente in gestorDeProductos.GetAllProductos())
             {
                 if (productoIngrediente.Nombre == "Aceite" && productoIngrediente.Cantidad == 8.5)
                 {

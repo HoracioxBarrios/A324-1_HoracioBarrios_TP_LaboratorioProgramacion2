@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 
 namespace Entidades
@@ -45,9 +46,15 @@ namespace Entidades
         /// </summary>
         /// <param name="nombrePlato"></param>
         /// <param name="listPlatosEnMenu"></param>
-        public IConsumible CrearPlato()
+        public IConsumible CrearPlato(List<IConsumible> listaDeProductos, IGestorProducto gestorProductos)
         {
-            throw new NotImplementedException();
+            List<IConsumible> listaDeIngredientesParaElPlato;
+            if(!listaDeProductos.Any()) 
+            {
+                throw new AlObtenerListaDeIngredientesException("Error la lista de ingredientes que viene de stock esta vacia");
+            }
+            
+            return new Plato(Nombre, listaDeProductos);
 
         }
         public IConsumible EditarPlato()

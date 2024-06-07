@@ -61,7 +61,7 @@ namespace RestoranAplicacionConsola
             gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, proveedor2);
 
 
-            Mostrar(gestorDeProductos.GetProductos(), "Productos Ingredientes");
+            Mostrar(gestorDeProductos.GetAllProductos(), "Productos Ingredientes");
 
 
             //Producto que va a estar en el PLATO(lo que  usa el plato) Ingrediente 3   
@@ -81,37 +81,37 @@ namespace RestoranAplicacionConsola
 
             if (seDesconto)
             {
-                Mostrar(gestorDeProductos.GetProductos(), "Lista Actualizada: Productos Ingredientes");
+                Mostrar(gestorDeProductos.GetAllProductos(), "Lista Actualizada: Productos Ingredientes");
             }
 
 
 
-            //IPRODUCTO BEBIDA 1
-            ETipoDeProducto tipoDeProductoBebida1 = ETipoDeProducto.Bebida;
-            string nombreBebida1 = "CocaCola";
-            double cantidadBebida1 = 20;
-            EUnidadMedida eUnidadDeMedidaBebida1 = EUnidadMedida.Unidad;
-            decimal precioBebida1 = 20000;
-            IProveedor proveedorBebida1 = proveedor3;
-            ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
-            EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
-            // Bebida 2
-            ETipoDeProducto tipoDeProductoBebida2 = ETipoDeProducto.Bebida;
-            string nombreBebida2 = "Cerveza QUilmes";
-            double cantidadBebida2 = 10;
-            EUnidadMedida eUnidadDeMedidaBebida2 = EUnidadMedida.Unidad;
-            decimal precioBebida2 = 10000;
-            IProveedor proveedorBebida2 = proveedor3;
-            ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;
-            EClasificacionBebida clasificacionBebida2 = EClasificacionBebida.Con_Alcohol;
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
+            ////IPRODUCTO BEBIDA 1
+            //ETipoDeProducto tipoDeProductoBebida1 = ETipoDeProducto.Bebida;
+            //string nombreBebida1 = "CocaCola";
+            //double cantidadBebida1 = 20;
+            //EUnidadMedida eUnidadDeMedidaBebida1 = EUnidadMedida.Unidad;
+            //decimal precioBebida1 = 20000;
+            //IProveedor proveedorBebida1 = proveedor3;
+            //ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
+            //EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
+            //gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
+            //// Bebida 2
+            //ETipoDeProducto tipoDeProductoBebida2 = ETipoDeProducto.Bebida;
+            //string nombreBebida2 = "Cerveza QUilmes";
+            //double cantidadBebida2 = 10;
+            //EUnidadMedida eUnidadDeMedidaBebida2 = EUnidadMedida.Unidad;
+            //decimal precioBebida2 = 10000;
+            //IProveedor proveedorBebida2 = proveedor3;
+            //ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;
+            //EClasificacionBebida clasificacionBebida2 = EClasificacionBebida.Con_Alcohol;
+            //gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
 
-            Mostrar(gestorDeProductos.GetProductos(), "A ver si figuran las Bebidas?");
+            //Mostrar(gestorDeProductos.GetProductos(), "A ver si figuran las Bebidas?");
 
-            //VEAMOS SI PODEMOS VER EL PRECIO TOTAL EN PRODUCTOS QUE HAY EN STOCK
-            decimal precioTotalEnproductos = gestorDeProductos.CalcularPrecio();
-            Console.WriteLine($"Precio Total entre los productos: {precioTotalEnproductos}");
+            ////VEAMOS SI PODEMOS VER EL PRECIO TOTAL EN PRODUCTOS QUE HAY EN STOCK
+            //decimal precioTotalEnproductos = gestorDeProductos.CalcularPrecio();
+            //Console.WriteLine($"Precio Total entre los productos: {precioTotalEnproductos}");
 
 
 

@@ -7,7 +7,7 @@ using Entidades.Interfaces;
 
 namespace Negocio
 {
-    public class GestorDeProductos
+    public class GestorDeProductos :IGestorProducto
     {
         private List<IProducto> _listaDeProductosEnStock;
         private decimal _precioTotalStock = 0;
@@ -172,7 +172,7 @@ namespace Negocio
         public bool DescontarProductosDeStock( List<IProducto> listaDeIngredienteEnElPlato)
         {
             List<IProducto> productosActualizados = new List<IProducto>();
-            List<IProducto> listaDeProductosEnStock = GetProductos();
+            List<IProducto> listaDeProductosEnStock = GetAllProductos();
 
 
             foreach (IProducto producto in listaDeProductosEnStock)
@@ -214,12 +214,29 @@ namespace Negocio
         }
 
 
+        /// <summary>
+        /// GetAllProductosIngredientes (  De una Lista Original de IProductos, separa los ingredientes y lo retorna en una lista de IConsumibles)
+        /// </summary>
+        /// <returns>Devuelve una lista de IConsumibles (Ingredientes) en base a una lista original de IProductos</returns>
+        public List<IConsumible> GetAllProductosIngrediente()
+        {
+            List<IConsumible> nuevaListDeIngrediente = new List<IConsumible>();
+
+            foreach (IProducto producto in _listaDeProductosEnStock)
+            {
+                Producto producto1 = producto as Producto;
+                if (producto1.ETipoDeProducto == ETipoDeProducto.Ingrediente)
+                {
+                    nuevaListDeIngrediente.Add(producto1 as IConsumible);
+
+                }
+            }
+            return nuevaListDeIngrediente;
+        }
 
 
 
-
-
-        public List<IProducto> GetProductos()
+        public List<IProducto> GetAllProductos()
         {
             List<IProducto> lista = new List<IProducto>();
             if(_listaDeProductosEnStock.Count > 0)
@@ -252,7 +269,7 @@ namespace Negocio
             {
                 throw new DatoIncorrectoException("Dato Incorrecto: ID no valida");
             }
-            foreach(Producto producto in GetProductos()) 
+            foreach(Producto producto in GetAllProductos()) 
             { 
                 if(producto.Id == id)
                 {

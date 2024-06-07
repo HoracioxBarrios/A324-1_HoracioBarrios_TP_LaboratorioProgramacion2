@@ -58,7 +58,7 @@ namespace TestEntidades
 
             //Assert
             int contador = 0;
-            foreach (var producto in gestorDeProductos.GetProductos())
+            foreach (var producto in gestorDeProductos.GetAllProductos())
             {                
                 if (producto != null)
                 {
