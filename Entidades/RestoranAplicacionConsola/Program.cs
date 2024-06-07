@@ -9,7 +9,7 @@ namespace RestoranAplicacionConsola
     internal class Program
     {
         static void Main(string[] args)
-        {           
+        {
 
             //EMPLEADOS
             GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados();
@@ -34,8 +34,8 @@ namespace RestoranAplicacionConsola
             IProveedor proveedor3 = gestorDeProveedores.GetProveedor(3);
 
 
-            //PRODUCTOS : INGREDIENTES
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+        // PRODUCTOS: INGREDIENTES
+        GestorDeProductos gestorDeProductos = new GestorDeProductos();
 
             //Ingrediente 1
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
@@ -64,7 +64,7 @@ namespace RestoranAplicacionConsola
             Mostrar(gestorDeProductos.GetAllProductos(), "Productos Ingredientes");
 
 
-            //Producto que va a estar en el PLATO(lo que  usa el plato) Ingrediente 3   
+            //Producto que va a estar en el PLATO(lo que  usa el plato) Ingrediente 3
 
             List<IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
             IProducto ingrediente3 = gestorDeProductos.CrearProducto(
@@ -118,9 +118,9 @@ namespace RestoranAplicacionConsola
             // Crear ingredientes
             IConsumible ingrediente1 = new Ingrediente(1, "Tomate", 1.0, EUnidadMedida.Kilo, 5, ETipoDeProducto.Verduleria, proveedor1);
             IConsumible ingrediente2 = new Ingrediente(2, "Cebolla", 0.5, EUnidadMedida.Kilo, 3, ETipoDeProducto.Verduleria, proveedor2);
-            List<IConsumible> ingredientes = new List<IConsumible>();
-            ingredientes.Add(ingrediente1);
-            ingredientes.Add(ingrediente2);
+            List<IProducto> ingredientes = new List<IProducto>();
+            ingredientes.Add((IProducto)ingrediente1);
+            ingredientes.Add((IProducto)ingrediente2);
 
             // Crear cocinero
             ICocinero cocinero = new Cocinero(ERol.Cocinero, "Crhistof", "hf", "123456789", "Calle 123", 50000M);
@@ -133,10 +133,10 @@ namespace RestoranAplicacionConsola
 
             // Agregar plato al menú
             gestorMenu.AgregarPlatoAMenu("Desayuno", "Pizza", ingredientes);
-           
 
 
-            Mostrar(gestorMenu.GetListaDeMenu(), "Menues");
+
+            Mostrar(gestorMenu.GetListaDeAllMenus(), "Menues");
 
 
             Console.ReadKey();

@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    public class GestorMenu
+    public class GestorMenu : IGestorMenu
     {
         private List<IMenu> _listaDeMenus;
         private List<IConsumible> _listaDeTodosLosPlatos;
+        private List<IConsumible> _listaDeTodasLasBebidas;
         private List<IConsumible> _listaDePlatosDisponibles;
         private List<IConsumible> _listaDePlatosNoDisponibles;
         private ICocinero _cocinero;
@@ -32,12 +33,26 @@ namespace Negocio
             _listaDeMenus.Add(menu);
         }
 
-        public void AgregarPlatoAMenu(string nombreMenu, string nombrePlato, List<IConsumible> listaDeIngredientes)
+        public void AgregarPlatoAMenu(string nombreDelMenu, string nombrePlato, List<IProducto> listaDeIngredientes)
         {
+            // Convertir cada IProducto en IConsumible
+            List<IConsumible> listaDeIngredientesConsumibles = new List<IConsumible>();
+            foreach (var producto in listaDeIngredientes)
+            {
+                if (producto is IConsumible consumible)
+                {
+                    listaDeIngredientesConsumibles.Add(consumible);
+                }
+                else
+                {
+                    throw new InvalidCastException("Un producto en la lista no puede ser convertido a IConsumible.");
+                }
+            }
+
             IMenu menu = null;
             foreach (IMenu m in _listaDeMenus)
             {
-                if (m.Nombre == nombreMenu)
+                if (m.Nombre == nombreDelMenu)
                 {
                     menu = m;
                     break;
@@ -48,12 +63,50 @@ namespace Negocio
                 throw new MenuNoExisteException("El menú no existe.");
             }
 
-            IConsumible plato = _cocinero.CrearPlato(nombrePlato, listaDeIngredientes);
-            ((Menu)menu).Agregar(plato); 
-            _listaDeTodosLosPlatos.Add(plato); 
+            IConsumible plato = _cocinero.CrearPlato(nombrePlato, listaDeIngredientesConsumibles);
+            ((Menu)menu).Agregar(plato);
+            _listaDeTodosLosPlatos.Add(plato);
         }
 
-        public List<IMenu> GetListaDeMenu()
+        public void AgregarBebidasAMenu(string nombreDelMenu, List<IProducto> listaDeBebidas)
+        {
+            // Convertir cada IProducto en IConsumible
+            List<IConsumible> listaDeBebidasConsumibles = new List<IConsumible>();
+            foreach (var producto in listaDeBebidas)
+            {
+                if (producto is IConsumible consumible)
+                {
+                    listaDeBebidasConsumibles.Add(consumible);
+                }
+                else
+                {
+                    throw new InvalidCastException("Un producto en la lista no puede ser convertido a IConsumible.");
+                }
+            }
+
+            IMenu menu = null;
+            foreach (IMenu m in _listaDeMenus)
+            {
+                if (m.Nombre == nombreDelMenu)
+                {
+                    menu = m;
+                    break;
+                }
+            }
+            if (menu == null)
+            {
+                throw new MenuNoExisteException("El menú no existe.");
+            }
+
+            foreach (IConsumible bebida in listaDeBebidasConsumibles)
+            {
+                ((Menu)menu).Agregar(bebida);
+                _listaDeTodasLasBebidas.Add(bebida);
+            }
+        }
+
+
+        public List<IMenu> GetListaDeAllMenus()
         {
             if(_listaDeMenus.Count > 0)
             {

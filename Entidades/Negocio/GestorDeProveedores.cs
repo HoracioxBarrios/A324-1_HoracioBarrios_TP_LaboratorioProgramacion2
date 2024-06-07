@@ -7,7 +7,7 @@ using System;
 
 namespace Negocio
 {
-    public class GestorDeProveedores
+    public class GestorDeProveedores : IGestorDeProveedores
     {
         private List<IProveedor> _listProveedores;
 

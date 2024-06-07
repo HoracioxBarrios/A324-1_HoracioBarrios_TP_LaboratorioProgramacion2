@@ -57,7 +57,7 @@ namespace TestEntidades
         [TestMethod]
         public void TestMenuCreadoCorrectamente_ProbamosSiSeCrea_NoDebeLanzarException()
         {
-            IMenu menu = _gestorMenu.GetListaDeMenu().Find(m => m.Nombre == "Desayuno");
+            IMenu menu = _gestorMenu.GetListaDeAllMenus().Find(m => m.Nombre == "Desayuno");
 
             Assert.IsNotNull(menu, "El menu 'Desayuno' no fue creado correctamente.");
         }
@@ -65,7 +65,7 @@ namespace TestEntidades
         [TestMethod]
         public void TestPlatoAgregadoAlMenuCorrectamente_SeDebePoderCorroborarQueElPlatoSeAgregoAlMenu_NoDebelanzarException()
         {
-            IMenu menu = _gestorMenu.GetListaDeMenu().Find(m => m.Nombre == "Desayuno");
+            IMenu menu = _gestorMenu.GetListaDeAllMenus().Find(m => m.Nombre == "Desayuno");
             Plato plato = (Plato)menu.ObtenerPlatosInMenu().Find(p => p.Nombre == "Pizza");
 
 
@@ -74,7 +74,7 @@ namespace TestEntidades
         [TestMethod]
         public void TestCantidadDeIngredientesEnElPlato_DebeCorroborarLaCantidadDeIngredientesEnElPlato_NoDebeLanzarException()
         {
-            IMenu menu = _gestorMenu.GetListaDeMenu().Find(m => m.Nombre == "Desayuno");
+            IMenu menu = _gestorMenu.GetListaDeAllMenus().Find(m => m.Nombre == "Desayuno");
             Plato plato = (Plato)menu.ObtenerPlatosInMenu().Find(p => p.Nombre == "Pizza");
             Assert.AreEqual(_listaDeIngredientes.Count, plato.GetIngredientesDelPlato().Count, "La cantidad de ingredientes no coincide.");//OK
         }

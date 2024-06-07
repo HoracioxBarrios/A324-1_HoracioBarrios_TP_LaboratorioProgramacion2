@@ -6,7 +6,7 @@ using Entidades.Interfaces;
 
 namespace Negocio
 {
-    public class GestorDeEmpleados
+    public class GestorDeEmpleados : IGestorDeEmpleados
     {
         private List<IEmpleado> _listaDeEmpleados;
 
@@ -38,6 +38,20 @@ namespace Negocio
             if(_listaDeEmpleados.Count > 0)
             {
                 return _listaDeEmpleados;
+            }
+            throw new ListaVaciaException("La lista esta vacia");
+        }
+        public IEmpleado GetEmpleado(string nombreEmpleado)
+        {
+            if (_listaDeEmpleados.Count > 0)
+            {
+                foreach(IEmpleado empleado in _listaDeEmpleados)
+                {
+                    if(empleado.Nombre == nombreEmpleado)
+                    {
+                        return empleado;                        
+                    }
+                }
             }
             throw new ListaVaciaException("La lista esta vacia");
         }

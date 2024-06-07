@@ -7,7 +7,7 @@ using Entidades.Interfaces;
 
 namespace Negocio
 {
-    public class GestorDeProductos :IGestorProducto
+    public class GestorDeProductos :IGestorProductos
     {
         private List<IProducto> _listaDeProductosEnStock;
         private decimal _precioTotalStock = 0;
@@ -22,6 +22,10 @@ namespace Negocio
             _listaDeProductosEnStock = new List<IProducto>();
             CorroborarUltimaIdDeProducto();
         }
+
+
+
+
 
         /// <summary>
         /// Verifica la existencia del producto en la lista de productos.
@@ -234,6 +238,25 @@ namespace Negocio
             return nuevaListDeIngrediente;
         }
 
+        /// <summary>
+        /// GetAllProductosBebidas (  De una Lista Original de IProductos, separa las bebidas y lo retorna en una lista de IConsumibles)
+        /// </summary>
+        /// <returns>Devuelve una lista de IConsumibles (bebidas) en base a una lista original de IProductos</returns>
+        public List<IConsumible> GetAllProductosBebidas()
+        {
+            List<IConsumible> nuevaListDeBebidas = new List<IConsumible>();
+
+            foreach (IProducto producto in _listaDeProductosEnStock)
+            {
+                Producto producto1 = producto as Producto;
+                if (producto1.ETipoDeProducto == ETipoDeProducto.Bebida)
+                {
+                    nuevaListDeBebidas.Add(producto1 as IConsumible);
+
+                }
+            }
+            return nuevaListDeBebidas;
+        }
 
 
         public List<IProducto> GetAllProductos()
