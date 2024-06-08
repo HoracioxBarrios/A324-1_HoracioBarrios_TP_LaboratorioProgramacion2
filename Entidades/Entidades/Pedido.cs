@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Entidades
-{
+{//ver los pedidos para local, y para delivery
     public class Pedido : IPedido
     {
         private List<IConsumible> _listaConLoPedido;
@@ -19,6 +19,7 @@ namespace Entidades
 
         public void Agregar() { }
 
+        //debe haber un editar pedido()
         public void Quitar() { }
 
     }

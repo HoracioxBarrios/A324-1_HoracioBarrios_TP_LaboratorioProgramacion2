@@ -4,7 +4,7 @@ using Entidades.Enumerables;
 using Entidades.Interfaces;
 
 namespace Entidades
-{
+{    //delivery debe de poder entrar y ver los pedidos, seleccionarlo y luego de entregado marcarlo como entregado
     //entregar y cobrar interface.
     public class Delivery : Empleado, ICobrador
     {

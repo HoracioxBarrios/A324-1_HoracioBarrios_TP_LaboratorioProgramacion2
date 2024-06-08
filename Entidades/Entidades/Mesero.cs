@@ -8,7 +8,7 @@ using Entidades.Enumerables;
 using Entidades.Interfaces;
 
 namespace Entidades
-{
+{//meseri debe poder ser pasado a la entidad gestor pedidos y crear los pedidos que luego vera en la cocina para crear los platos(debe tener tiempo de preparacion)
     public class Mesero : Empleado, ICobrador
     {
         private decimal _montoAcumulado = 0;
