@@ -173,7 +173,7 @@ namespace Negocio
         }
 
 
-        public bool DescontarProductosDeStock( List<IProducto> listaDeIngredienteEnElPlato)
+        public bool DescontarProductosDeStock( List<IProducto> listaDeIngredienteEnElPlato)//corregir
         {
             List<IProducto> productosActualizados = new List<IProducto>();
             List<IProducto> listaDeProductosEnStock = GetAllProductos();
@@ -208,7 +208,7 @@ namespace Negocio
             }
             return false;
         }
-
+        //Corregir
         private void ActualizarListaOriginal(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> productosActualizados)
         {
             for (int i = 0; i < listaDeProductosIngredientesStock.Count; i++)

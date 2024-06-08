@@ -5,7 +5,7 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    
+    //entregar y cobrar interface.
     public class Delivery : Empleado, ICobrador
     {
         private decimal _montoAcumulado;
@@ -16,7 +16,7 @@ namespace Entidades
         {
             this.Nombre = nombre;
             this.Apellido = apellido;
-            this.Contacto = contacto;            
+            this.Contacto = contacto;      
             this.Direccion = direccion;
             this.Salario = salario;
             this.Rol = rol;

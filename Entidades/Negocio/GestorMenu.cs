@@ -26,7 +26,7 @@ namespace Negocio
             _listaDePlatosDisponibles = new List<IConsumible>();
             _listaDePlatosNoDisponibles = new List<IConsumible>();
         }
-
+        //agregar actualizazr
         public void CrearMenu(string nombreMenu)
         {
             Menu menu = new Menu(nombreMenu);

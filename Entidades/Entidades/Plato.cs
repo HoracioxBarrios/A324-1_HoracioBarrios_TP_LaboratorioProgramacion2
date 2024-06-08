@@ -14,8 +14,8 @@ namespace Entidades
     {
         private List<IConsumible> _listaDeIngredientesParaEstePlato;// Ingrediente es un iproducto
         private string _nonbre;
-        private decimal _precioDeCosto = 0;
-        private decimal _precioDeVenta = 0;
+        private decimal _precioDeCosto;
+        private decimal _precioDeVenta ;
         private ECategoriaConsumible _categoriaDeConsumible;
         private DateTime _tiempoDePreparacion;
         private bool _disponibilidad = false;
@@ -29,6 +29,8 @@ namespace Entidades
             Nombre = nombre;
             _listaDeIngredientesParaEstePlato = listaIngredientes;
             VerificarDisponibilidad();
+            _precioDeCosto = 0;
+            _precioDeVenta = 0;
         }
 
 

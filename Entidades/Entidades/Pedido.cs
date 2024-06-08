@@ -12,7 +12,7 @@ namespace Entidades
     {
         private List<IConsumible> _listaConLoPedido;
 
-        private ETipoDePedido _petoDePedido;    
+        private ETipoDePedido _tipoDePedido;    
         public ETipoDePedido TipoDePedido { get ; set ; }
         public Pedido() { }
 
