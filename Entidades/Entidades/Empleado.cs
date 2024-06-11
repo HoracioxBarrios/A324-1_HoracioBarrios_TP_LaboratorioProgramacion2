@@ -11,6 +11,7 @@ namespace Entidades
         private ERol _rol;
         private string? _direccion;
         private decimal _salario;
+        private string _password;
 
         protected static int _contadorId = 0;
         private int _id;
@@ -65,6 +66,11 @@ namespace Entidades
         {
             get { return _id; }
             set { _id = value; }
+        }
+        public string Password
+        {
+            get { return _password; }
+            set { Password = value; }
         }
         public override string ToString()
         {

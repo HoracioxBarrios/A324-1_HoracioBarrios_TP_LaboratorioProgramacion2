@@ -15,10 +15,10 @@ namespace Negocio
     /// </summary>
     public class RestoranInicio
     {
-        IGestorDeEmpleados _gestorDeEmpleados;
-        IGestorDeProveedores _gestorDeProveedores;
-        IGestorProductos _gestorDeProductos;
-        IGestorMenu _gestorMenu;
+        public IGestorDeEmpleados _gestorDeEmpleados;
+        public IGestorDeProveedores _gestorDeProveedores;
+        public IGestorProductos _gestorDeProductos;
+        public IGestorMenu _gestorMenu;
 
         public RestoranInicio() 
         {
