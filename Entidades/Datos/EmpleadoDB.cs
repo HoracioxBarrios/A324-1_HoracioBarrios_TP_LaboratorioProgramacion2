@@ -66,7 +66,7 @@ namespace Datos
 
                     using(SqlCommand command = new SqlCommand(QueryChequearTablaEmpleado, conn))
                     {
-                        command.Parameters.AddWithValue("@tablaEmpleado", _tablaEmpleado);// encapsulo la tabla
+                        command.Parameters.AddWithValue("@tablaEmpleado", _tablaEmpleado);// encapsulo la tabla para seguridad
                         int contadorTabla = (int)command.ExecuteScalar();
                         if (contadorTabla > 0 ) 
                         { 
@@ -107,16 +107,17 @@ namespace Datos
                         conn.Open();
                         string QueryCrearTablaEmpleado = @"
                         CREATE TABLE Empleado (
-                        Id INT PRIMARY KEY IDENTITY(1,1),
-                        Nombre VARCHAR(100) NOT NULL,
-                        Apellido VARCHAR(100) NOT NULL,
-                        Contacto VARCHAR(100),
-                        Rol INT,
-                        Direccion VARCHAR(200),
-                        Salario DECIMAL(10, 2) NOT NULL,
-                        Password VARCHAR(100),
-                        Status VARCHAR(50)
+                            Id INT PRIMARY KEY IDENTITY(1,1),
+                            Nombre VARCHAR(100) NOT NULL,
+                            Apellido VARCHAR(100) NOT NULL,
+                            Contacto VARCHAR(100) NOT NULL,
+                            Rol INT NOT NULL,
+                            Direccion VARCHAR(200) NOT NULL,
+                            Salario DECIMAL(10, 2) NOT NULL,
+                            Password VARCHAR(100) NOT NULL,
+                            Status INT NOT NULL
                         )";
+
                         using (SqlCommand command = new SqlCommand(QueryCrearTablaEmpleado, conn))
                         {
                             command.ExecuteNonQuery();
@@ -135,7 +136,7 @@ namespace Datos
                 }
             }
             return false;
-            
+
         }
 
     }

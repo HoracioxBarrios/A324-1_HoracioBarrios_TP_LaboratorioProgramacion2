@@ -11,13 +11,14 @@ namespace TestEntidades
     public class EmpleadoDBTest
     {
 
+        [TestMethod]
         public void CorroborarLaCreacionDeLaTablaEmpleadoEnDb_SiEsFalseEstaOkPorqueSeConsideraCreadaLaTabla()
         {
             // Asegurarse de que la tabla se haya creado (o verificar si ya existe)
             EmpleadoDB.CrearTablaEmpleado();
 
-            // Verificar que intentar crearla nuevamente devuelve false
-            Assert.IsFalse(EmpleadoDB.CrearTablaEmpleado());
+            
+            Assert.IsFalse(EmpleadoDB.CrearTablaEmpleado());// Verificar que intentar crearla nuevamente devuelve false
         }
 
     }
