@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Entidades.Enumerables;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
@@ -19,7 +20,11 @@ namespace Entidades
             this.Salario = salario;
             this.Rol = rol;
         }
-
+        public Cocinero(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
+            rol, nombre, apellido, contacto, direccion, salario)
+        {
+            this.Id = id;
+        }
 
         /// <summary>
         /// Verifica si el plato esta en la lista de Menu

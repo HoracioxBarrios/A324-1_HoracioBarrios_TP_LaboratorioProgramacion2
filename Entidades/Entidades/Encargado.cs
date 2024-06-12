@@ -18,8 +18,12 @@ namespace Entidades
             Direccion = direccion;
             Salario = salario;
             Rol = rol;
-            Id = _contadorId;
+
            
+        }
+        public Encargado(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(rol, nombre, apellido, contacto, direccion, salario)
+        {
+            this.Id = id;
         }
 
         /// <summary>

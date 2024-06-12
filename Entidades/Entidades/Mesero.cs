@@ -23,7 +23,11 @@ namespace Entidades
             this.Salario = salario;
             this.Rol = rol;
         }
-
+        public Mesero(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
+            rol, nombre, apellido, contacto, direccion, salario)
+        {
+            this.Id = id;
+        }
         public void Cobrar(decimal monto)
         {
             _montoAcumulado += monto;

@@ -1,5 +1,6 @@
 ﻿using Entidades.Enumerables;
 using Entidades.Interfaces;
+using System.Net;
 
 namespace Entidades
 {
@@ -12,11 +13,11 @@ namespace Entidades
         private string? _direccion;
         private decimal _salario;
         private string _password;
-
-        protected static int _contadorId = 0;
         private int _id;
+        private EEstado _estado;
 
-        protected Empleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) 
+
+        protected Empleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
         {
             _rol = rol;
             _nombre = nombre;
@@ -24,12 +25,15 @@ namespace Entidades
             _contacto = contacto;
             _direccion = direccion;
             _salario = salario;
-
-            _id = ++_contadorId;
+            _estado = EEstado.Activo;
+        }
+        protected Empleado(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :this(rol, nombre,  apellido,  contacto, direccion,  salario)
+        { 
+            _id = id;        
         }
 
 
-        
+
 
         public string Nombre
         {
@@ -71,6 +75,11 @@ namespace Entidades
         {
             get { return _password; }
             set { Password = value; }
+        }
+        public EEstado Estado
+        {
+            get { return _estado; }
+            set { _estado = value; }
         }
         public override string ToString()
         {

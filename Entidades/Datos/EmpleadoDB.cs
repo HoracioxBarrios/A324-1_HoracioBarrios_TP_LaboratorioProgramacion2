@@ -1,80 +1,141 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Entidades.Excepciones;
+using Entidades.Interfaces;
+using Microsoft.Data.SqlClient;
 using System.Reflection.Metadata.Ecma335;
 
+
+//https://www.connectionstrings.com
+//https://www.connectionstrings.com/sql-server-2019/
 namespace Datos
 {
-    public class EmpleadoDB
+    
+    public static class EmpleadoDB
     {
-        private string _connectionString;
+        private static string _connectionString;
+        private static string _tablaEmpleado;
 
-        public EmpleadoDB(string connectionString)
+        static  EmpleadoDB()
         {
-            _connectionString = connectionString;
+            _connectionString = @"Server=DESKTOP-RF5OK6R\RESTAURANT;Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
+
+            _tablaEmpleado = "Empleado";
+            
         }
 
 
-        public void CrearTablaEnDb(string nombreDeLaTabla) //la tabla puede ser Empleado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Verifica la existencia de la Tabla Empleado
+        /// </summary>
+        /// <returns>Devuelve True si existe y false si No existe</returns>
+        /// <exception cref="ConectarADbException"></exception>
+        private static bool VerificarExistenciaDeTabla()
         {
-            SqlConnection connection = null;
             try
             {
-                connection = new SqlConnection(_connectionString);
-                connection.Open();
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    conn.Open();
 
-                string checkTableQuery = $@"
-                    SELECT COUNT(*)
+                    string QueryChequearTablaEmpleado = @" 
+                    SELECT COUNT(*) 
                     FROM INFORMATION_SCHEMA.TABLES
                     WHERE TABLE_SCHEMA = 'dbo'
-                    AND TABLE_NAME = '{nombreDeLaTabla}'
-                ";
+                    AND TABLE_NAME = @tablaEmpleado"
+                    ;
 
-
-                using(var command  = new SqlCommand(checkTableQuery,connection))
-                {
-                    int contadorTable = (int)command.ExecuteScalar();
-                    if (contadorTable > 0)
+                    using(SqlCommand command = new SqlCommand(QueryChequearTablaEmpleado, conn))
                     {
-                        throw new Exception("La Tabla ya existe");
-                    }
-                    else
-                    {
-                        string createTableQuery = $@"
-                            CREATE TABLE {nombreDeLaTabla} (
-                                Id INT PRIMARY KEY IDENTITY(1,1),
-                                Nombre NVARCHAR(100) NOT NULL,
-                                Apellido NVARCHAR(100) NOT NULL,
-                                Contacto NVARCHAR(100),
-                                Rol NVARCHAR(50) NOT NULL,
-                                Direccion NVARCHAR(200),
-                                Salario DECIMAL(10, 2) NOT NULL,
-                                Password NVARCHAR(100)
-                            )
-                        ";
-
-
-                        using (var createCommand = new SqlCommand(createTableQuery, connection))
-                        {
-                            createCommand.ExecuteNonQuery();
+                        command.Parameters.AddWithValue("@tablaEmpleado", _tablaEmpleado);// encapsulo la tabla
+                        int contadorTabla = (int)command.ExecuteScalar();
+                        if (contadorTabla > 0 ) 
+                        { 
+                            return true; 
                         }
+                        else
+                        {
+                            return false;
+                        }
+                        
                     }
                 }
-
-
             }
-            catch (Exception e)
+            catch( ArgumentException e)
             {
-
+                throw new ConectarADbException($"Error al Verificar la Existencia De Tabla Empleado en la Db: {e.Message}", e);
             }
-            finally
+            catch ( Exception e )
             {
-                if (connection != null)
+                throw new ConectarADbException($"Error Desconocido al Verificar la Existencia De Tabla Empleado en la Db:: {e.Message}", e );
+            }
+        }
+
+
+        /// <summary>
+        /// Crea la Tabla Empleado en la Db (Antes verifica si existe)
+        /// </summary>
+        /// <returns>Devuelve True: si pudo crear la Tabla Empleado, False: No se creo la Tabla porque se considera que ya existe</returns>
+        /// <exception cref="AlCrearTablaEmpleadoException"></exception>
+        public static bool CrearTablaEmpleado()
+        {
+            if (!VerificarExistenciaDeTabla())
+            {
+                try
                 {
-                    connection.Close();
+                    using (SqlConnection conn = new SqlConnection(_connectionString))
+                    {
+                        conn.Open();
+                        string QueryCrearTablaEmpleado = @"
+                        CREATE TABLE Empleado (
+                        Id INT PRIMARY KEY IDENTITY(1,1),
+                        Nombre VARCHAR(100) NOT NULL,
+                        Apellido VARCHAR(100) NOT NULL,
+                        Contacto VARCHAR(100),
+                        Rol INT,
+                        Direccion VARCHAR(200),
+                        Salario DECIMAL(10, 2) NOT NULL,
+                        Password VARCHAR(100),
+                        Status VARCHAR(50)
+                        )";
+                        using (SqlCommand command = new SqlCommand(QueryCrearTablaEmpleado, conn))
+                        {
+                            command.ExecuteNonQuery();
+                            return true;
+                        }
+
+                    }
+                }
+                catch (ArgumentException e)
+                {
+                    throw new AlCrearTablaEmpleadoException($"Error al querer Crear tabla de empleado en la DB: {e.Message}", e);
+                }
+                catch (Exception e)
+                {
+                    throw new AlCrearTablaEmpleadoException($"Error Desconocido al querer Crear la tabla de empleado en la Db: {e.Message}", e);
                 }
             }
-
-
-        
+            return false;
+            
         }
 
     }
