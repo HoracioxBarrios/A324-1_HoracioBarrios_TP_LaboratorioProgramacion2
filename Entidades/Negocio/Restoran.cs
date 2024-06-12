@@ -13,14 +13,14 @@ namespace Negocio
     /// Class Restoran
     /// 
     /// </summary>
-    public class RestoranInicio
+    public class Restoran
     {
-        public IGestorDeEmpleados _gestorDeEmpleados;
-        public IGestorDeProveedores _gestorDeProveedores;
-        public IGestorProductos _gestorDeProductos;
-        public IGestorMenu _gestorMenu;
+        private IGestorDeEmpleados _gestorDeEmpleados;
+        private IGestorDeProveedores _gestorDeProveedores;
+        private IGestorProductos _gestorDeProductos;
+        private IGestorMenu _gestorMenu;
 
-        public RestoranInicio() 
+        public Restoran() 
         {
 
             _gestorDeEmpleados = new GestorDeEmpleados();
@@ -98,6 +98,27 @@ namespace Negocio
 
 
 
+        }
+        public IGestorDeEmpleados GestorEmpleados
+        {
+            get { return _gestorDeEmpleados; }
+            set {_gestorDeEmpleados = value;}
+        }
+        public IGestorDeProveedores GestorDeProveedores
+        {
+            get { return _gestorDeProveedores; }
+            set { _gestorDeProveedores = value; }
+        }
+
+        public IGestorProductos GestorProductos
+        {
+            get { return _gestorDeProductos; }
+            set { _gestorDeProductos = value;}
+        }
+        public IGestorMenu GestorMenu
+        {
+            get { return _gestorMenu; }
+            set { _gestorMenu = value; }
         }
     }
 }

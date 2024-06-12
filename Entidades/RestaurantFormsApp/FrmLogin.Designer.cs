@@ -41,7 +41,7 @@
             btnLogin.Cursor = Cursors.Hand;
             btnLogin.Font = new Font("Candara", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             btnLogin.ForeColor = SystemColors.WindowFrame;
-            btnLogin.Location = new Point(226, 552);
+            btnLogin.Location = new Point(157, 433);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(168, 34);
             btnLogin.TabIndex = 0;
@@ -51,7 +51,7 @@
             // 
             // txtPassword
             // 
-            txtPassword.Location = new Point(205, 446);
+            txtPassword.Location = new Point(140, 359);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
             txtPassword.PlaceholderText = "Contraseña";
@@ -61,7 +61,7 @@
             // 
             // txtUser
             // 
-            txtUser.Location = new Point(205, 365);
+            txtUser.Location = new Point(140, 298);
             txtUser.Name = "txtUser";
             txtUser.PlaceholderText = "Usuario";
             txtUser.Size = new Size(211, 23);
@@ -74,7 +74,7 @@
             labelUser.BackColor = Color.Transparent;
             labelUser.Font = new Font("Cambria", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
             labelUser.ForeColor = SystemColors.ButtonFace;
-            labelUser.Location = new Point(220, 151);
+            labelUser.Location = new Point(157, 138);
             labelUser.Name = "labelUser";
             labelUser.Size = new Size(194, 32);
             labelUser.TabIndex = 3;
@@ -87,7 +87,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaptionText;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(600, 725);
+            ClientSize = new Size(492, 593);
             Controls.Add(labelUser);
             Controls.Add(txtUser);
             Controls.Add(txtPassword);

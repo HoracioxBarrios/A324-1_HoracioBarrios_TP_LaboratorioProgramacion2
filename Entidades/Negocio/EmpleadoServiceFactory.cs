@@ -22,7 +22,8 @@ namespace Negocio
         /// <returns>Devuelve un IEmpleado</returns>
         /// <exception cref="EmpleadoDatosException">Lanza una excecion si los datos no son Validos</exception>
         /// <exception cref="EmpleadoRolNoExistenteException">Lanza una excepcion si el rol es incorrecto</exception>
-        public static IEmpleado CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
+        public static IEmpleado CrearEmpleado(ERol rol, string nombre, string apellido, string contacto
+            , string direccion, decimal salario)
         {
             if ((string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido)
                 || string.IsNullOrEmpty(contacto) || string.IsNullOrEmpty(direccion) ||salario <= 0))
@@ -44,6 +45,7 @@ namespace Negocio
                     throw new EmpleadoRolNoExistenteException("El rol de empleado es Incorrecto");
             }
         }
+  
     }
 
 }

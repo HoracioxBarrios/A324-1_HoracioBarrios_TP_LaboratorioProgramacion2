@@ -3,18 +3,19 @@ namespace RestaurantFormsApp
 {
     public partial class FrmLogin : Form
     {
+        private Restoran _restoran;
         public FrmLogin()
         {
             InitializeComponent();
-            RestoranInicio restoranInicio = new RestoranInicio();
+            _restoran = new Restoran();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
             if (!(string.IsNullOrWhiteSpace(txtUser.Text) && string.IsNullOrWhiteSpace(txtPassword.Text)))
             { 
-                //restoran
                 
+                //_restoran.GestorEmpleados.
             
             }
             else

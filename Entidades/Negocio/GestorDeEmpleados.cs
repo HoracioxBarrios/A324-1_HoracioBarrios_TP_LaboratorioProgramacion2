@@ -33,6 +33,16 @@ namespace Negocio
             
         }
 
+        public void EditarEmpleado()
+        {
+
+        }
+
+        public void EliminarEmpleado()
+        {
+
+        }
+
         public List<IEmpleado> GetEmpleados()
         {
             if(_listaDeEmpleados.Count > 0)
