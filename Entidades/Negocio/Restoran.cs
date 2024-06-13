@@ -37,7 +37,7 @@ namespace Negocio
             bool seCreoEmpleado4 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
             bool seCreoEmpleado5 = _gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
 
-            Console.WriteLine("Se crearon los empleados en el Gestor");
+            
 
             _gestorDeProveedores = new GestorDeProveedores();
 
