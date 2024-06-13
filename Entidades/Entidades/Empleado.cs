@@ -14,9 +14,9 @@ namespace Entidades
         private decimal _salario;
         private string _password;
         private int _id;
-        private EEstado _estado;
+        private EStatus _status;
 
-
+        
         protected Empleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
         {
             _rol = rol;
@@ -25,13 +25,20 @@ namespace Entidades
             _contacto = contacto;
             _direccion = direccion;
             _salario = salario;
-            _estado = EEstado.Activo;
+            _status = EStatus.Activo;
+            _password = "123456";
         }
         protected Empleado(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :this(rol, nombre,  apellido,  contacto, direccion,  salario)
         { 
             _id = id;        
         }
 
+        protected Empleado(int id,string password, EStatus status,  ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this (
+            id, rol, nombre, apellido, contacto, direccion, salario)
+        {
+            _password = password;
+            _status = status;
+        }
 
 
 
@@ -76,10 +83,10 @@ namespace Entidades
             get { return _password; }
             set { Password = value; }
         }
-        public EEstado Estado
+        public EStatus Status
         {
-            get { return _estado; }
-            set { _estado = value; }
+            get { return _status; }
+            set { _status = value; }
         }
         public override string ToString()
         {

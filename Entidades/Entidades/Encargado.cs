@@ -26,6 +26,15 @@ namespace Entidades
             this.Id = id;
         }
 
+        public Encargado(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
+            id, rol, nombre, apellido, contacto, direccion, salario)
+        {
+            this.Password = password;
+            this.Status = status;
+        }
+
+
+
         /// <summary>
         /// Se encarga de ejecutar una accion pasada por parametro.-
         /// Basado en el Patron de Diseño Command

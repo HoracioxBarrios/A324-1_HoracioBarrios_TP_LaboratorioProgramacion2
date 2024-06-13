@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Datos;
+using Entidades;
 using Entidades.Enumerables;
 using Entidades.Interfaces;
 using System;
@@ -20,17 +21,21 @@ namespace Negocio
         private IGestorProductos _gestorDeProductos;
         private IGestorMenu _gestorMenu;
 
+        IOperacionesDeBaseDeDatos<IEmpleado> _operacionesDeBaseDatosEmpleados;
+
         public Restoran() 
         {
+            IOperacionesDeBaseDeDatos<IEmpleado> operacionesDeBaseDeDatosEmpleados = new EmpleadoDB();
+            _operacionesDeBaseDatosEmpleados = operacionesDeBaseDeDatosEmpleados;
 
-            _gestorDeEmpleados = new GestorDeEmpleados();
+            _gestorDeEmpleados = new GestorDeEmpleados(_operacionesDeBaseDatosEmpleados);
 
             //----- instancio los EMPLEADOS -------
-            _gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
-            _gestorDeEmpleados.CrearEmpleado(ERol.Encargado, "Mar", "Ruy", "1156202", "Principio Solid 5", 30000m);
-            _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
-            _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
-            _gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
+            bool seCreoEmpleado1 = _gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
+            bool seCreoEmpleado2 = _gestorDeEmpleados.CrearEmpleado(ERol.Encargado, "Mar", "Ruy", "1156202", "Principio Solid 5", 30000m);
+            bool seCreoEmpleado3 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
+            bool seCreoEmpleado4 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
+            bool seCreoEmpleado5 = _gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
 
 
             _gestorDeProveedores = new GestorDeProveedores();

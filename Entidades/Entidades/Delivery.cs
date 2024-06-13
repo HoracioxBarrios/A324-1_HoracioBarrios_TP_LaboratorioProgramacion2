@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 using Entidades.Enumerables;
 using Entidades.Interfaces;
 
@@ -21,11 +23,21 @@ namespace Entidades
             this.Salario = salario;
             this.Rol = rol;
         }
+
+
         public Delivery(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
             rol, nombre, apellido, contacto, direccion, salario)
         {
             this.Id = id;
         }
+
+        public Delivery(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
+            id, rol, nombre, apellido, contacto, direccion, salario)
+        {
+            this.Password = password;
+            this.Status = status;
+        }
+
 
         public void Cobrar(decimal monto)
         {

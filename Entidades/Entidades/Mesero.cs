@@ -28,6 +28,15 @@ namespace Entidades
         {
             this.Id = id;
         }
+        public Mesero(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
+            id, rol, nombre, apellido, contacto, direccion, salario)
+        {
+            this.Password = password;
+            this.Status = status;
+        }
+
+
+
         public void Cobrar(decimal monto)
         {
             _montoAcumulado += monto;

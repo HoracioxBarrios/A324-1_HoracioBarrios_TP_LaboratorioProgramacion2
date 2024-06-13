@@ -1,5 +1,8 @@
-﻿using Entidades.Excepciones;
+﻿using Entidades;
+using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
+using Negocio;
 using Microsoft.Data.SqlClient;
 using System.Reflection.Metadata.Ecma335;
 
@@ -9,18 +12,144 @@ using System.Reflection.Metadata.Ecma335;
 namespace Datos
 {
     
-    public static class EmpleadoDB
+    public class EmpleadoDB : IOperacionesDeBaseDeDatos<IEmpleado>
     {
-        private static string _connectionString;
-        private static string _tablaEmpleado;
+        private string _connectionString;
+        private string _tablaEmpleado;
+        private string _baseDeDatosPcEscritorio;
+        private string _baseDeDatosPcEscritorioOfi;
 
-        static  EmpleadoDB()
+        public EmpleadoDB()
         {
-            _connectionString = @"Server=DESKTOP-RF5OK6R\RESTAURANT;Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
+            _baseDeDatosPcEscritorio = @"";
+            _baseDeDatosPcEscritorioOfi = @"DESKTOP-RF5OK6R\RESTAURANT";
+
+            _connectionString = $"Server={_baseDeDatosPcEscritorioOfi};Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
 
             _tablaEmpleado = "Empleado";
             
         }
+
+
+        /// <summary>
+        /// Crea el empleado en la Base de datos
+        /// </summary>
+        /// <param name="empleado"></param>
+        /// <returns>Devuelve true si fue exitoso, sino False</returns>
+        /// <exception cref="AlCrearEmpleadoEnDBException"></exception>
+        public bool Create(IEmpleado empleado)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(_connectionString)) 
+                { 
+                    conn.Open();
+                    string queryInsertEmpleado = @"
+                    INSERT INTO Empleado (Nombre, Apellido, Contacto, Rol, Direccion, Salario, Password, Status)
+                    VALUES (@Nombre, @Apellido, @Contacto, @Rol, @Direccion, @Salario, @Password, @Status)";
+
+                    using (SqlCommand command = new SqlCommand(queryInsertEmpleado, conn))
+                    {
+                        command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
+                        command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
+                        command.Parameters.AddWithValue("@Contacto", empleado.Contacto);
+                        command.Parameters.AddWithValue("@Rol", (int)empleado.Rol);
+                        command.Parameters.AddWithValue("@Direccion", empleado.Direccion);
+                        command.Parameters.AddWithValue("@Salario", empleado.Salario);
+                        command.Parameters.AddWithValue("@Password", empleado.Password);
+                        command.Parameters.AddWithValue("@Status", (int)empleado.Status);
+
+                        int filas = command.ExecuteNonQuery();
+                        if (filas > 0)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                
+                }
+            }
+            catch (ArgumentException e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error al crear el empleado en la Base de Datos: {e.Message}", e);
+            }
+            catch(Exception e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error desconocido al crear el empleado en la Base de datos: {e.Message}", e);
+            }
+        }
+
+        public List<IEmpleado> ReadAll()
+        {
+            List<IEmpleado> empleados = new List<IEmpleado>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    conn.Open();
+
+                    string querySelectAll = @"
+                    SELECT Id, Nombre, Apellido, Contacto, Rol, Direccion, Salario, Password, Status
+                    FROM Empleado";
+
+                    using(SqlCommand command = new SqlCommand(querySelectAll, conn))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                
+                                int id = Convert.ToInt32(reader["Id"]);
+                                string nombre = Convert.ToString(reader["Nombre"]);
+                                string apellido = Convert.ToString(reader["Apellido"]);                                
+                                string contacto = Convert.ToString(reader["Contacto"]);
+                                ERol rol = (ERol)Convert.ToInt32(reader["Rol"]);
+                                string direccion = Convert.ToString(reader["Direccion"]);
+                                decimal salario = Convert.ToDecimal(reader["Salario"]);
+                                string password = Convert.ToString(reader["Password"]);
+                                EStatus status = (EStatus)Convert.ToInt32(reader["Status"]);
+
+                                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(id, password,status,rol, nombre, apellido, contacto, direccion, salario);
+                                if(empleado != null) 
+                                {
+                                    empleados.Add(empleado);
+                                }
+                            }                            
+                        }
+                    }                    
+                }
+                return empleados;
+            }
+            catch(Exception e)
+            {
+                throw new ReadAllEnDbException($"Error al Leer los Empleados de la Base de Datos {e.Message}", e);
+            }
+        }
+        public IEmpleado ReadOne(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEmpleado ReadOne(string nombre, string apellido0)
+        {
+            throw new NotImplementedException();
+        }
+        public bool Update(int id, IEmpleado entidad)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(string nombre, string apellido)
+        {
+            throw new NotImplementedException();
+        }
+
 
 
 
@@ -49,7 +178,7 @@ namespace Datos
         /// </summary>
         /// <returns>Devuelve True si existe y false si No existe</returns>
         /// <exception cref="ConectarADbException"></exception>
-        private static bool VerificarExistenciaDeTabla()
+        private bool VerificarExistenciaDeTabla()
         {
             try
             {
@@ -96,7 +225,7 @@ namespace Datos
         /// </summary>
         /// <returns>Devuelve True: si pudo crear la Tabla Empleado, False: No se creo la Tabla porque se considera que ya existe</returns>
         /// <exception cref="AlCrearTablaEmpleadoException"></exception>
-        public static bool CrearTablaEmpleado()
+        public bool CrearTabla()
         {
             if (!VerificarExistenciaDeTabla())
             {
@@ -138,6 +267,7 @@ namespace Datos
             return false;
 
         }
+
 
     }
 }

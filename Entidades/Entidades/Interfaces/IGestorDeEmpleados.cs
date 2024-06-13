@@ -10,7 +10,7 @@ namespace Entidades.Interfaces
     public interface IGestorDeEmpleados
     {
 
-        void CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario);
+        bool CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario);
         List<IEmpleado> GetEmpleados();
         IEmpleado GetEmpleado(string nombre);
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entidades.Enumerables
 {
-    public enum EEstado
+    public enum EStatus
     {        
         Inactivo = 0,
         Activo = 1

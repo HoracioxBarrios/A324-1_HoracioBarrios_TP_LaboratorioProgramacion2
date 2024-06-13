@@ -1,4 +1,5 @@
 ﻿using Datos;
+using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace TestEntidades
         [TestMethod]
         public void CorroborarLaCreacionDeLaTablaEmpleadoEnDb_SiEsFalseEstaOkPorqueSeConsideraCreadaLaTabla()
         {
+            IOperacionesDeBaseDeDatos<IEmpleado> enpleadoDb = new EmpleadoDB();
+
             // Asegurarse de que la tabla se haya creado (o verificar si ya existe)
-            EmpleadoDB.CrearTablaEmpleado();
+            enpleadoDb.CrearTabla();
 
             
-            Assert.IsFalse(EmpleadoDB.CrearTablaEmpleado());// Verificar que intentar crearla nuevamente devuelve false
+            Assert.IsFalse(enpleadoDb.CrearTabla());// Verificar que intentar crearla nuevamente devuelve false
         }
 
     }

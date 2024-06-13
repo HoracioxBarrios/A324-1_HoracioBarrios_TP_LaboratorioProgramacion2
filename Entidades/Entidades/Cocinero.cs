@@ -25,6 +25,12 @@ namespace Entidades
         {
             this.Id = id;
         }
+        public Cocinero(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
+            id, rol, nombre, apellido, contacto, direccion, salario)
+        {
+            this.Password = password;
+            this.Status = status;
+        }
 
         /// <summary>
         /// Verifica si el plato esta en la lista de Menu

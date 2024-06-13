@@ -45,7 +45,50 @@ namespace Negocio
                     throw new EmpleadoRolNoExistenteException("El rol de empleado es Incorrecto");
             }
         }
-  
+
+
+
+
+
+        /// <summary>
+        /// Sobrecarga para crear el empleado en la consula a DB - (Dentro de EmpleadoDB)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="rol"></param>
+        /// <param name="nombre"></param>
+        /// <param name="apellido"></param>
+        /// <param name="contacto"></param>
+        /// <param name="direccion"></param>
+        /// <param name="salario"></param>
+        /// <param name="password"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        /// <exception cref="EmpleadoDatosException"></exception>
+        /// <exception cref="EmpleadoRolNoExistenteException"></exception>
+        public static IEmpleado CrearEmpleado(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto
+           , string direccion, decimal salario)
+        {
+            if ((string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido)
+                || string.IsNullOrEmpty(contacto) || string.IsNullOrEmpty(direccion) || salario <= 0 || id < 0 || string.IsNullOrEmpty(password)))
+            {
+                throw new EmpleadoDatosException("Datos de empleado Invalido");
+
+            }
+            switch (rol)
+            {
+                case ERol.Encargado:
+                    return new Encargado(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
+                case ERol.Mesero:
+                    return new Mesero(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
+                case ERol.Cocinero:
+                    return new Cocinero(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
+                case ERol.Delivery:
+                    return new Delivery(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
+                default:
+                    throw new EmpleadoRolNoExistenteException("El rol de empleado es Incorrecto");
+            }
+        }
+
     }
 
 }

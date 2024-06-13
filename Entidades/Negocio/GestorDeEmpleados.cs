@@ -9,18 +9,33 @@ namespace Negocio
     public class GestorDeEmpleados : IGestorDeEmpleados
     {
         private List<IEmpleado> _listaDeEmpleados;
+        private IOperacionesDeBaseDeDatos<IEmpleado> _operacionesDeBaseDeDatos;
 
-        public GestorDeEmpleados()
+        public GestorDeEmpleados(IOperacionesDeBaseDeDatos<IEmpleado> operacionesDeBaseDeDatos)
         {
             _listaDeEmpleados = new List<IEmpleado>();
+            _operacionesDeBaseDeDatos = operacionesDeBaseDeDatos;
         }
 
-        public void CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
+        public bool CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
         {
+            bool seCreo = false;
             try
             {
+                //EL EMPLEADO SERVICE FACTORY PODRIA ESTAR EN _operacionesDeBaseDeDatos?
+
                 IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
-                _listaDeEmpleados.Add(empleado);
+                if (empleado != null)
+                {
+                    seCreo = _operacionesDeBaseDeDatos.Create(empleado);                    
+                    if (seCreo)
+                    {
+                        _listaDeEmpleados.Add(empleado);
+                        return seCreo;
+                    }
+                    
+                }
+                return seCreo;
             }
             catch (EmpleadoDatosException ex)
             {
@@ -35,55 +50,41 @@ namespace Negocio
 
         public void EditarEmpleado()
         {
-
+            _operacionesDeBaseDeDatos
         }
 
         public void EliminarEmpleado()
         {
-
+            _operacionesDeBaseDeDatos
         }
 
-        public List<IEmpleado> GetEmpleados()
-        {
-            if(_listaDeEmpleados.Count > 0)
-            {
-                return _listaDeEmpleados;
-            }
-            throw new ListaVaciaException("La lista esta vacia");
-        }
-        public IEmpleado GetEmpleado(string nombreEmpleado)
-        {
-            if (_listaDeEmpleados.Count > 0)
-            {
-                foreach(IEmpleado empleado in _listaDeEmpleados)
-                {
-                    if(empleado.Nombre == nombreEmpleado)
-                    {
-                        return empleado;                        
-                    }
-                }
-            }
-            throw new ListaVaciaException("La lista esta vacia");
-        }
+        //public List<IEmpleado> GetEmpleados()
+        //{
+        //    if(_listaDeEmpleados.Count > 0)
+        //    {
+        //        return _listaDeEmpleados;
+        //    }
+        //    throw new ListaVaciaException("La lista esta vacia");
+        //}
+        //public IEmpleado GetEmpleado(string nombreEmpleado)
+        //{
+        //    if (_listaDeEmpleados.Count > 0)
+        //    {
+        //        foreach(IEmpleado empleado in _listaDeEmpleados)
+        //        {
+        //            if(empleado.Nombre == nombreEmpleado)
+        //            {
+        //                return empleado;                        
+        //            }
+        //        }
+        //    }
+        //    throw new ListaVaciaException("La lista esta vacia");
+        //}
 
-        private int VerificarExistenciaDeEmpleado(string nombre)
-        {
-            if (string.IsNullOrEmpty(nombre))
-            {
-                throw new DatoIncorrectoException("El Dato es invalido");
-            }
-            foreach(IEmpleado empleado in GetEmpleados())
-            {
-                if(string.Equals(empleado.Nombre, nombre, StringComparison.OrdinalIgnoreCase))
-                {
-                    Empleado? emp = empleado as Empleado;
-                    {
-                        return emp.Id;
-                    }
-                }
-            }
-            throw new AlObtenerIDException("Error al obtener la Id");
-        }
+        //private int VerificarExistenciaDeEmpleado(string nombre, string apellido)
+        //{
+
+        //}
 
     }
 }

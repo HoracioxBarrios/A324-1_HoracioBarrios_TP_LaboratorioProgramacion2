@@ -15,5 +15,9 @@ namespace Entidades.Interfaces
         ERol Rol { get; set; }
         string Direccion { get; set; }
         decimal Salario { get; set; }
+        string Password {  get; set; }
+        int Id { get; set; }
+        EStatus Status { get; set; }
+
     }
 }
