@@ -11,8 +11,8 @@ namespace Entidades.Interfaces
     {
 
         bool CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario);
-        List<IEmpleado> GetEmpleados();
-        IEmpleado GetEmpleado(string nombre);
+        List<IEmpleado> GetEmpleadosEnList();
+        IEmpleado GetEmpleadoEnList(string nombre);
 
 
 

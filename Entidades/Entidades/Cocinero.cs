@@ -9,7 +9,7 @@ namespace Entidades
 {
     public class Cocinero : Empleado, ICocinero
     {
-       
+
         public Cocinero(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :base(
             rol, nombre, apellido, contacto, direccion, salario)
         {
@@ -31,6 +31,9 @@ namespace Entidades
             this.Password = password;
             this.Status = status;
         }
+
+
+
 
         /// <summary>
         /// Verifica si el plato esta en la lista de Menu

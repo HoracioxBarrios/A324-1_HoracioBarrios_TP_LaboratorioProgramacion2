@@ -78,15 +78,17 @@ namespace Entidades
             get { return _id; }
             set { _id = value; }
         }
-        public string Password
-        {
-            get { return _password; }
-            set { Password = value; }
-        }
+
         public EStatus Status
         {
             get { return _status; }
             set { _status = value; }
+        }
+
+        public string Password
+        {
+            get { return _password; }
+            set { _password = value; }
         }
         public override string ToString()
         {

@@ -21,11 +21,11 @@ namespace Negocio
         private IGestorProductos _gestorDeProductos;
         private IGestorMenu _gestorMenu;
 
-        IOperacionesDeBaseDeDatos<IEmpleado> _operacionesDeBaseDatosEmpleados;
+        IOperacionesEmpleadoDB _operacionesDeBaseDatosEmpleados;
 
         public Restoran() 
         {
-            IOperacionesDeBaseDeDatos<IEmpleado> operacionesDeBaseDeDatosEmpleados = new EmpleadoDB();
+            IOperacionesEmpleadoDB operacionesDeBaseDeDatosEmpleados = new EmpleadoDB();
             _operacionesDeBaseDatosEmpleados = operacionesDeBaseDeDatosEmpleados;
 
             _gestorDeEmpleados = new GestorDeEmpleados(_operacionesDeBaseDatosEmpleados);
@@ -37,6 +37,7 @@ namespace Negocio
             bool seCreoEmpleado4 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
             bool seCreoEmpleado5 = _gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
 
+            Console.WriteLine("Se crearon los empleados en el Gestor");
 
             _gestorDeProveedores = new GestorDeProveedores();
 
@@ -93,7 +94,7 @@ namespace Negocio
             listaDeIngredienteParaElPlato2.Add(ingrediente2ParaPlato2);
 
             //para EL PLATO (Necesitamos el Cocinero) , Crea El PLATO, LO AGREGA A UN MENU Y ESTE SE GUARDA EN UNA LISTA DE MENUES EN EL GESTOR
-            IEmpleado cocinero = _gestorDeEmpleados.GetEmpleado("Gille");
+            IEmpleado cocinero = _gestorDeEmpleados.GetEmpleadoEnList("Gille");
 
             _gestorMenu = new GestorMenu((ICocinero)cocinero);
 

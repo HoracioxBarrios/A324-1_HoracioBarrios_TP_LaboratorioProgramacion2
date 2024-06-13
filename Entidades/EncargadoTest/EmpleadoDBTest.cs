@@ -15,7 +15,7 @@ namespace TestEntidades
         [TestMethod]
         public void CorroborarLaCreacionDeLaTablaEmpleadoEnDb_SiEsFalseEstaOkPorqueSeConsideraCreadaLaTabla()
         {
-            IOperacionesDeBaseDeDatos<IEmpleado> enpleadoDb = new EmpleadoDB();
+            IOperacionesEmpleadoDB enpleadoDb = new EmpleadoDB();
 
             // Asegurarse de que la tabla se haya creado (o verificar si ya existe)
             enpleadoDb.CrearTabla();

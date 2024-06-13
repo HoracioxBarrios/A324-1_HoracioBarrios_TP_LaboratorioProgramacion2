@@ -12,7 +12,7 @@ using System.Reflection.Metadata.Ecma335;
 namespace Datos
 {
     
-    public class EmpleadoDB : IOperacionesDeBaseDeDatos<IEmpleado>
+    public class EmpleadoDB :IOperacionesEmpleadoDB
     {
         private string _connectionString;
         private string _tablaEmpleado;
@@ -37,42 +37,44 @@ namespace Datos
         /// <param name="empleado"></param>
         /// <returns>Devuelve true si fue exitoso, sino False</returns>
         /// <exception cref="AlCrearEmpleadoEnDBException"></exception>
-        public bool Create(IEmpleado empleado)
+        public bool Create(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
         {
             try
             {
-                using(SqlConnection conn = new SqlConnection(_connectionString)) 
-                { 
-                    conn.Open();
-                    string queryInsertEmpleado = @"
+                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
+                bool seCreo = false;
+                if(empleado != null )
+                {
+                    using (SqlConnection conn = new SqlConnection(_connectionString))
+                    {
+                        conn.Open();
+                        string queryInsertEmpleado = @"
                     INSERT INTO Empleado (Nombre, Apellido, Contacto, Rol, Direccion, Salario, Password, Status)
                     VALUES (@Nombre, @Apellido, @Contacto, @Rol, @Direccion, @Salario, @Password, @Status)";
 
-                    using (SqlCommand command = new SqlCommand(queryInsertEmpleado, conn))
-                    {
-                        command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
-                        command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
-                        command.Parameters.AddWithValue("@Contacto", empleado.Contacto);
-                        command.Parameters.AddWithValue("@Rol", (int)empleado.Rol);
-                        command.Parameters.AddWithValue("@Direccion", empleado.Direccion);
-                        command.Parameters.AddWithValue("@Salario", empleado.Salario);
-                        command.Parameters.AddWithValue("@Password", empleado.Password);
-                        command.Parameters.AddWithValue("@Status", (int)empleado.Status);
-
-                        int filas = command.ExecuteNonQuery();
-                        if (filas > 0)
+                        using (SqlCommand command = new SqlCommand(queryInsertEmpleado, conn))
                         {
-                            return true;
+                            command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
+                            command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
+                            command.Parameters.AddWithValue("@Contacto", empleado.Contacto);
+                            command.Parameters.AddWithValue("@Rol", (int)empleado.Rol);
+                            command.Parameters.AddWithValue("@Direccion", empleado.Direccion);
+                            command.Parameters.AddWithValue("@Salario", empleado.Salario);
+                            command.Parameters.AddWithValue("@Password", empleado.Password);
+                            command.Parameters.AddWithValue("@Status", (int)empleado.Status);
+
+                            int filas = command.ExecuteNonQuery();
+                            return seCreo;
                         }
-                        return false;
-                    }
-                
+                    }                    
                 }
+                return seCreo;
             }
             catch (ArgumentException e)
             {
                 throw new AlCrearEmpleadoEnDBException($"Error al crear el empleado en la Base de Datos: {e.Message}", e);
             }
+            
             catch(Exception e)
             {
                 throw new AlCrearEmpleadoEnDBException($"Error desconocido al crear el empleado en la Base de datos: {e.Message}", e);
@@ -128,27 +130,239 @@ namespace Datos
         }
         public IEmpleado ReadOne(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    conn.Open();
+
+                    string querySelectOneById = @"
+                        SELECT Id, Nombre, Apellido, Contacto, Rol, Direccion, Salario, Password, Status
+                        FROM Empleado
+                        WHERE Id = @Id";
+
+                    using (SqlCommand command = new SqlCommand(querySelectOneById, conn))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                int empleadoId = Convert.ToInt32(reader["Id"]);
+                                string nombre = Convert.ToString(reader["Nombre"]);
+                                string apellido = Convert.ToString(reader["Apellido"]);
+                                string contacto = Convert.ToString(reader["Contacto"]);
+                                ERol rol = (ERol)Convert.ToInt32(reader["Rol"]);
+                                string direccion = Convert.ToString(reader["Direccion"]);
+                                decimal salario = Convert.ToDecimal(reader["Salario"]);
+                                string password = Convert.ToString(reader["Password"]);
+                                EStatus status = (EStatus)Convert.ToInt32(reader["Status"]);
+
+                                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(
+                                    empleadoId, password, status, rol, nombre, apellido, contacto, direccion, salario);
+
+                                return empleado;
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw new ReadOneEnDbException($"Error al Leer el Empleado de la Base de Datos: {e.Message}", e);
+            }
         }
 
-        public IEmpleado ReadOne(string nombre, string apellido0)
+
+        public IEmpleado ReadOne(string nombre, string apellido)
         {
-            throw new NotImplementedException();
-        }
-        public bool Update(int id, IEmpleado entidad)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    conn.Open();
+
+                    string querySelectOne = @"
+                        SELECT Id, Nombre, Apellido, Contacto, Rol, Direccion, Salario, Password, Status
+                        FROM Empleado
+                        WHERE Nombre = @Nombre AND Apellido = @Apellido";
+
+                    using (SqlCommand command = new SqlCommand(querySelectOne, conn))
+                    {
+                        command.Parameters.AddWithValue("@Nombre", nombre);
+                        command.Parameters.AddWithValue("@Apellido", apellido);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                int id = Convert.ToInt32(reader["Id"]);
+                                string nombreEmpleado = Convert.ToString(reader["Nombre"]);
+                                string apellidoEmpleado = Convert.ToString(reader["Apellido"]);
+                                string contacto = Convert.ToString(reader["Contacto"]);
+                                ERol rol = (ERol)Convert.ToInt32(reader["Rol"]);
+                                string direccion = Convert.ToString(reader["Direccion"]);
+                                decimal salario = Convert.ToDecimal(reader["Salario"]);
+                                string password = Convert.ToString(reader["Password"]);
+                                EStatus status = (EStatus)Convert.ToInt32(reader["Status"]);
+
+                                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(
+                                    id, password, status, rol, nombreEmpleado, apellidoEmpleado, contacto, direccion, salario);
+
+                                return empleado;
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw new ReadOneEnDbException($"Error al Leer el Empleado de la Base de Datos: {e.Message}", e);
+            }
         }
 
+        public bool Update(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
+        {
+            bool seActualizo = false;
+            try
+            {
+                // Crear el objeto empleado
+                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
+
+                if (empleado != null)
+                {
+                    using (SqlConnection conn = new SqlConnection(_connectionString))
+                    {
+                        conn.Open();
+
+                        // Definir la consulta SQL para actualizar
+                        string queryUpdateEmpleado = @"
+                                UPDATE Empleado
+                                SET Nombre = @Nombre,
+                                    Apellido = @Apellido,
+                                    Contacto = @Contacto,
+                                    Rol = @Rol,
+                                    Direccion = @Direccion,
+                                    Salario = @Salario,
+                                    Password = @Password,
+                                    Status = @Status
+                                WHERE Id = @Id";
+
+                        using (SqlCommand command = new SqlCommand(queryUpdateEmpleado, conn))
+                        {
+                            command.Parameters.AddWithValue("@Id", empleado.Id);
+                            command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
+                            command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
+                            command.Parameters.AddWithValue("@Contacto", empleado.Contacto);
+                            command.Parameters.AddWithValue("@Rol", (int)empleado.Rol);
+                            command.Parameters.AddWithValue("@Direccion", empleado.Direccion);
+                            command.Parameters.AddWithValue("@Salario", empleado.Salario);
+                            command.Parameters.AddWithValue("@Password", empleado.Password);
+                            command.Parameters.AddWithValue("@Status", (int)empleado.Status);
+
+                            int filas = command.ExecuteNonQuery();
+                            if (filas > 0)
+                            {
+                                return seActualizo;
+                            }
+                        }
+                    }
+                    return seActualizo;
+                }
+                else
+                {
+                    throw new AlCrearEmpleadoEsNullException("Error el empleado no se pudo crear por ende es null, y por eso no se guardo en la Base de Datos");
+                }
+            }
+            catch (AlCrearEmpleadoEsNullException e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error al actualizar el empleado en la Base de Datos: {e.Message}", e);
+            }
+            catch (ArgumentException e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error al actualizar el empleado en la Base de Datos: {e.Message}", e);
+            }
+            catch (Exception e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error desconocido al actualizar el empleado en la Base de datos: {e.Message}", e);
+            }
+        }
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            bool seElimino = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    conn.Open();
+
+                    // Definir la consulta SQL para actualizar el estado a Inactivo
+                    string queryUpdateStatus = @"
+                    UPDATE Empleado
+                    SET Status = @Status
+                    WHERE Id = @Id";
+
+                    using (SqlCommand command = new SqlCommand(queryUpdateStatus, conn))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@Status", (int)EStatus.Inactivo);
+
+                        int filas = command.ExecuteNonQuery();
+                        if (filas > 0)
+                        {
+                            return seElimino;
+                        }
+                    }
+                }
+                return seElimino;
+            }
+            catch (Exception e)
+            {
+                throw new AlEliminarDeFormaLogicaEnDBException($"Error al Eliminar de Forma Logica al empleado en la Base de Datos: {e.Message}", e);
+            }
         }
+
 
         public bool Delete(string nombre, string apellido)
         {
-            throw new NotImplementedException();
+            bool seElimino = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_connectionString))
+                {
+                    conn.Open();
+
+                    // Definir la consulta SQL para actualizar el estado a Inactivo basado en nombre y apellido
+                    string queryUpdateStatus = @"
+                        UPDATE Empleado
+                        SET Status = @Status
+                        WHERE Nombre = @Nombre AND Apellido = @Apellido";
+
+                    using (SqlCommand command = new SqlCommand(queryUpdateStatus, conn))
+                    {
+                        command.Parameters.AddWithValue("@Nombre", nombre);
+                        command.Parameters.AddWithValue("@Apellido", apellido);
+                        command.Parameters.AddWithValue("@Status", (int)EStatus.Inactivo);
+
+                        int filas = command.ExecuteNonQuery();
+                        if (filas > 0)
+                        {
+                            return seElimino;
+                        }
+                    }
+                }
+                return seElimino;
+            }
+            
+            catch (Exception e)
+            {
+                throw new AlEliminarDeFormaLogicaEnDBException($"Error al Eliminar de Forma Logica al empleado en la Base de Datos: {e.Message}", e);
+            }
         }
+
 
 
 

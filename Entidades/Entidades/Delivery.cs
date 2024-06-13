@@ -10,6 +10,7 @@ namespace Entidades
     //entregar y cobrar interface.
     public class Delivery : Empleado, ICobrador
     {
+
         private decimal _montoAcumulado;
 
    

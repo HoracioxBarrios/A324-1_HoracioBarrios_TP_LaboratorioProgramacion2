@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Entidades\Entidades.csproj" />
-    <ProjectReference Include="..\Negocio\Negocio.csproj" />
   </ItemGroup>
 
 </Project>
