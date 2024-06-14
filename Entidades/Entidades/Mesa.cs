@@ -4,37 +4,83 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades.Enumerables;
+using Entidades.Excepciones;
+using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Mesa
+    public class Mesa : IMesa
     {
-        private static int _id = 0;
-        private int _cantidadComnsales;
-        private Mesero _mozo;
+        private int _cantidadComensales;
         private EStateMesa _estado = EStateMesa.Cerrada;
+        private int _id;
+        private List<IPedido> _pedidos;
+
+
+
+        public Mesa()
+        {
+            _cantidadComensales = 4;
+            _estado = EStateMesa.Cerrada;
+        }
+        public Mesa(int id) : this()
+        {
+            _id = id;
+        }
+        public Mesa(int id, int cantidadDeComensales) : this(id)
+        {
+            _cantidadComensales = cantidadDeComensales;
+        }
         
-        static Mesa()
+        public Mesa(int id, int cantidadDeComensales, EStateMesa estado) : this(id, cantidadDeComensales)
         {
-            _id = 1;
-        }
-        public Mesa(int cantidadComnsales) 
-        {
-            _cantidadComnsales = cantidadComnsales;
+            _estado = estado;
+        }        
 
 
-        }
-        public Mesa(int cantidadComnsales, Mesero mozo) : this(cantidadComnsales)
-        {            
-            _mozo = mozo;
-        }
+
+
 
         public int Id
         {
             get { return _id; }
-            private set { _id = value; }
+            set { _id = value; }
         }
 
+        public int CantidadComensales
+        {
+            get { return _cantidadComensales; }
+            set { _cantidadComensales = value; }
+        }
+        public EStateMesa Estado
+        {
+            get { return _estado; }
+            set { _estado = value; }
+        }
 
+        public void AgregarPedidoAMesa(IPedido pedido)
+        {
+            _pedidos.Add(pedido);
+        }
+
+        public void AgregarPedidosAMesa(List<IPedido> pedidos)
+        {
+            _pedidos = pedidos;
+        }
+
+        public List<IPedido> ObtenerPedidosDeLaMesa()
+        {
+            if(_pedidos.Count > 0)
+            {
+                return _pedidos;
+            }
+            throw new AlObtenerPedidosDeLaMesaException("Error la lista de pedidos esta vacia");
+        }
     }
 }
+        
+
+
+     
+
+
