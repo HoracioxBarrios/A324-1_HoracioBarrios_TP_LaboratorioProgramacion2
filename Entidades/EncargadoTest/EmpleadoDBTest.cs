@@ -79,16 +79,11 @@ namespace TestEntidades
         {
             List<IEmpleado> empleados = new List<IEmpleado>();
             IOperacionesEmpleadoDB empleadoDb = new EmpleadoDB();
-            int contadorEmpleados = 0;
+
             empleados = empleadoDb.ReadAll();
 
-            foreach(IEmpleado empleado in empleados)
-            {
-                contadorEmpleados++;
-            }
 
-
-            Assert.IsTrue(contadorEmpleados > 0);
+            Assert.IsTrue(empleados.Count > 0);
             
         }
         //READ ONE EMPLEADO DE LA DB
