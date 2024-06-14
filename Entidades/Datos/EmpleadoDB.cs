@@ -64,7 +64,7 @@ namespace Datos
                             command.Parameters.AddWithValue("@Status", (int)empleado.Status);
 
                             int filas = command.ExecuteNonQuery();
-                            return seCreo;
+                            seCreo = true;
                         }
                     }                    
                 }
@@ -136,12 +136,12 @@ namespace Datos
                 {
                     conn.Open();
 
-                    string querySelectOneById = @"
+                    string querySelectOneforId = @"
                         SELECT Id, Nombre, Apellido, Contacto, Rol, Direccion, Salario, Password, Status
                         FROM Empleado
                         WHERE Id = @Id";
 
-                    using (SqlCommand command = new SqlCommand(querySelectOneById, conn))
+                    using (SqlCommand command = new SqlCommand(querySelectOneforId, conn))
                     {
                         command.Parameters.AddWithValue("@Id", id);
 
@@ -229,7 +229,7 @@ namespace Datos
             bool seActualizo = false;
             try
             {
-                // Crear el objeto empleado
+                
                 IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
 
                 if (empleado != null)
@@ -238,7 +238,7 @@ namespace Datos
                     {
                         conn.Open();
 
-                        // Definir la consulta SQL para actualizar
+                        
                         string queryUpdateEmpleado = @"
                                 UPDATE Empleado
                                 SET Nombre = @Nombre,
@@ -266,7 +266,7 @@ namespace Datos
                             int filas = command.ExecuteNonQuery();
                             if (filas > 0)
                             {
-                                return seActualizo;
+                                seActualizo = true;
                             }
                         }
                     }
@@ -299,7 +299,7 @@ namespace Datos
                 {
                     conn.Open();
 
-                    // Definir la consulta SQL para actualizar el estado a Inactivo
+                    
                     string queryUpdateStatus = @"
                     UPDATE Empleado
                     SET Status = @Status
@@ -313,7 +313,7 @@ namespace Datos
                         int filas = command.ExecuteNonQuery();
                         if (filas > 0)
                         {
-                            return seElimino;
+                            seElimino = true;
                         }
                     }
                 }
@@ -335,11 +335,12 @@ namespace Datos
                 {
                     conn.Open();
 
-                    // Definir la consulta SQL para actualizar el estado a Inactivo basado en nombre y apellido
+                    
                     string queryUpdateStatus = @"
                         UPDATE Empleado
                         SET Status = @Status
-                        WHERE Nombre = @Nombre AND Apellido = @Apellido";
+                        WHERE Nombre = @Nombre 
+                        AND Apellido = @Apellido";
 
                     using (SqlCommand command = new SqlCommand(queryUpdateStatus, conn))
                     {
@@ -350,7 +351,7 @@ namespace Datos
                         int filas = command.ExecuteNonQuery();
                         if (filas > 0)
                         {
-                            return seElimino;
+                            seElimino = true;
                         }
                     }
                 }
