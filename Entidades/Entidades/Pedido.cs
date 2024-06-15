@@ -10,42 +10,42 @@ namespace Entidades
 {
     public class Pedido : IPedido
     {
-        private List<IConsumible> _listaConLoPedido;
+        private List<IConsumible> _listaDeConsumiblesConLoPedido;
         private decimal _precioDeloPedido;
         private int _idDePedido;
         private ETipoDePedido _tipoDePedido;//Para Local o Para Delivery     
         
 
 
-        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumibles) 
+        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesParaElPedido) 
         {
             _tipoDePedido = tipoDePedido;
-            _listaConLoPedido = consumibles;
+            _listaDeConsumiblesConLoPedido = consumiblesParaElPedido;
         }
 
         public decimal CalcularPrecio()
         {
             _precioDeloPedido = 0;
-            foreach(IConsumible consumible in _listaConLoPedido)
+            foreach(IConsumible consumible in _listaDeConsumiblesConLoPedido)
             {
                 _precioDeloPedido += consumible.CalcularPrecio();
             }
             return _precioDeloPedido;
         }
 
-        public void Agregar(IConsumible consumible) 
+        public void Agregar(IConsumible consumibleParaPedido) 
         { 
-            _listaConLoPedido.Add(consumible);
+            _listaDeConsumiblesConLoPedido.Add(consumibleParaPedido);
         }
 
         //debe haber un editar pedido()
         public void Quitar(IConsumible consumible) 
         { 
-            foreach(IConsumible consumibleEnPedido in _listaConLoPedido)
+            foreach(IConsumible consumibleEnPedido in _listaDeConsumiblesConLoPedido)
             {
                 if(consumible == consumibleEnPedido)
                 {
-                    _listaConLoPedido.Remove(consumibleEnPedido);
+                    _listaDeConsumiblesConLoPedido.Remove(consumibleEnPedido);
                 }
             }        
         }

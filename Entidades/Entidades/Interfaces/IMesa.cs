@@ -11,7 +11,9 @@ namespace Entidades.Interfaces
     {
         int CantidadComensales { get; set; }
         EStateMesa Estado { get; set; }
+        int IdDelMesero {  get; set; }
         int Id { get; set; }
+        bool EstaMesaEstaAsignadaAMesero();
         void AgregarPedidoAMesa(IPedido pedido);
         void AgregarPedidosAMesa(List<IPedido> pedidos);
         List<IPedido> ObtenerPedidosDeLaMesa();

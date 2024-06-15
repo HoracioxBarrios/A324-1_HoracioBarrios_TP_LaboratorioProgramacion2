@@ -7,7 +7,7 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Encargado : Empleado
+    public class Encargado : Empleado, IEncargado
     {      
         public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario):base(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -33,24 +33,18 @@ namespace Entidades
             this.Status = status;
         }
 
-        //public void AsignarMeseroAMesa(IMesa mesa, IMesero Mesero)
-        //{
-        //    if(mesa != null && Mesero != null)
-        //    {
-        //        return Mesero.CobrarMesa();
-        //    }
-        //}
 
         /// <summary>
-        /// Se encarga de ejecutar una accion pasada por parametro.-
-        /// Basado en el Patron de Diseño Command
+        /// Asigna Mesero a Mesa
         /// </summary>
-        /// <param name="command"></param>
-        public void EjecutarCommando(ICommand<string> command)
+        /// <param name="mesa"></param>
+        /// <param name="mesero"></param>
+        public void AsignarMesaAMesero(IMesa mesa, IMesero mesero)
         {
-            var resultado = command.EjecutarAccion();
-            
+            mesa.IdDelMesero = mesero.Id;
+            mesero.AgregarMesa(mesa);
         }
+
 
     }
 }

@@ -17,7 +17,7 @@ namespace Negocio
 
 
         //public GestorDeMesas() { }//debe recibir MesaDB
-        public GestorDeMesas(int cantidadDeMesas, List<IMesero> listaDeMeseros)
+        public GestorDeMesas(int cantidadDeMesas, List<IMesero> listaDeMeseros, IEncargado)
         {
             _listaDeMesas = new List<IMesa>();
             for (int i = 0; i < cantidadDeMesas;  i++)

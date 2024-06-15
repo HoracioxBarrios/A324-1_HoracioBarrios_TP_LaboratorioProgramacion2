@@ -13,6 +13,7 @@ namespace Entidades
     {
         private int _cantidadComensales;
         private EStateMesa _estado = EStateMesa.Cerrada;
+        private int _idDelMesero;
         private int _id;
         private List<IPedido> _pedidos;
 
@@ -35,28 +36,8 @@ namespace Entidades
         public Mesa(int id, int cantidadDeComensales, EStateMesa estado) : this(id, cantidadDeComensales)
         {
             _estado = estado;
-        }        
-
-
-
-
-
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
         }
 
-        public int CantidadComensales
-        {
-            get { return _cantidadComensales; }
-            set { _cantidadComensales = value; }
-        }
-        public EStateMesa Estado
-        {
-            get { return _estado; }
-            set { _estado = value; }
-        }
 
         public void AgregarPedidoAMesa(IPedido pedido)
         {
@@ -75,6 +56,40 @@ namespace Entidades
                 return _pedidos;
             }
             throw new AlObtenerPedidosDeLaMesaException("Error la lista de pedidos esta vacia");
+        }
+        public bool EstaMesaEstaAsignadaAMesero()
+        {
+            bool estaAsignada = false;
+            if(_idDelMesero != 0)
+            {
+                estaAsignada = true;
+            }
+            return estaAsignada;
+        }
+
+
+        public int IdDelMesero
+        {
+            get { return _idDelMesero; }
+            set { _idDelMesero = value; }
+        }
+
+
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public int CantidadComensales
+        {
+            get { return _cantidadComensales; }
+            set { _cantidadComensales = value; }
+        }
+        public EStateMesa Estado
+        {
+            get { return _estado; }
+            set { _estado = value; }
         }
     }
 }

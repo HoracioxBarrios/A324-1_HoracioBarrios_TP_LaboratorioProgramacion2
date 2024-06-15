@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 
 namespace Entidades
@@ -37,6 +38,14 @@ namespace Entidades
         }
 
 
+        /// <summary>
+        /// agrega la mesa que va a atender
+        /// </summary>
+        /// <param name="mesa"></param>
+        public void AgregarMesa(IMesa mesa)
+        {
+            _mesasAsignada.Add(mesa);
+        }
 
 
         public void CobrarMesa(int idMesa)
@@ -62,10 +71,6 @@ namespace Entidades
 
 
 
-        //public void CerrarMesa(Mesa.Id)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public List<IMesa> MesasAsignada 
         { 
