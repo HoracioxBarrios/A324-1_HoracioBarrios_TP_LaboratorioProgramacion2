@@ -18,7 +18,6 @@ namespace Negocio
 
 
 
-        //public GestorDeMesas() { }//debe recibir MesaDB
         public GestorDeMesas(int cantidadDeMesas, List<IMesero> listaDeMeseros, IEncargado encargado)
         {
             _listaDeMesas = new List<IMesa>();
@@ -53,15 +52,6 @@ namespace Negocio
                 }
             }
         }
-
-
-        //public List<IMesero> GetMeserosConMesaAsignada() 
-        //{ 
-        //    if(_listaDeMesasConMeseroAsignado.Count > 0)
-        //    {
-        //        return _listaDeMesasConMeseroAsignado;
-        //    }
-        //    throw new Exception("La lista de mesas con mesero asignado esta vacia. Hay que asignar mesas a los ");
-        //}
+            
     }
 }
