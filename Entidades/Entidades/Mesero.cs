@@ -9,9 +9,10 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {//meseri debe poder ser pasado a la entidad gestor pedidos y crear los pedidos que luego vera en la cocina para crear los platos(debe tener tiempo de preparacion)
-    public class Mesero : Empleado, ICobrador
+    public class Mesero : Empleado, ICobrador, IMesero
     {
         private decimal _montoAcumulado = 0;
+        private List<IMesa> _mesasAsignada;
 
         public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario): base(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -37,21 +38,41 @@ namespace Entidades
 
 
 
-        public void Cobrar(decimal monto)
+
+        public void CobrarMesa(int idMesa)
         {
-            _montoAcumulado += monto;
+            foreach(IMesa mesa in _mesasAsignada) 
+            { 
+                if(mesa.Id == idMesa)
+                {
+                    List<IPedido> pedidosDeLaMesa = mesa.ObtenerPedidosDeLaMesa();
+                    foreach(IPedido pedido in pedidosDeLaMesa)
+                    {
+                        _montoAcumulado = pedido.CalcularPrecio();
+                    }
+                }
+            
+            }
         }
+
+        public void CerrarMesa(int idMesa)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         //public void CerrarMesa(Mesa.Id)
         //{
         //    throw new NotImplementedException();
         //}
 
-        public void ObtenerMesa(Mesa mesa)
-        {
-            
+        public List<IMesa> MesasAsignada 
+        { 
+            get { return _mesasAsignada; }
+            set { _mesasAsignada = value;}
         }
-        
+
 
         public decimal MontoAcumulado
         {
@@ -68,5 +89,6 @@ namespace Entidades
             }
         }
 
+        
     }
 }

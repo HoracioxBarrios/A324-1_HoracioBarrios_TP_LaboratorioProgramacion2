@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface ICobrador
+    public interface IMesero
     {
-        decimal MontoAcumulado { get; set; }        
+        List<IMesa> MesasAsignada { get; set; }
+        void CobrarMesa(int idMesa);
+
+        void CerrarMesa(int idMesa);
     }
 }

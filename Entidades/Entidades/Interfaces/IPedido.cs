@@ -10,5 +10,6 @@ namespace Entidades.Interfaces
     public interface IPedido
     {
         ETipoDePedido TipoDePedido { get; set;}
+        decimal CalcularPrecio();
     }
 }

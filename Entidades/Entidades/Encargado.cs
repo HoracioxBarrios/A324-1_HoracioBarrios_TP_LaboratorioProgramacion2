@@ -33,7 +33,13 @@ namespace Entidades
             this.Status = status;
         }
 
-
+        //public void AsignarMeseroAMesa(IMesa mesa, IMesero Mesero)
+        //{
+        //    if(mesa != null && Mesero != null)
+        //    {
+        //        return Mesero.CobrarMesa();
+        //    }
+        //}
 
         /// <summary>
         /// Se encarga de ejecutar una accion pasada por parametro.-

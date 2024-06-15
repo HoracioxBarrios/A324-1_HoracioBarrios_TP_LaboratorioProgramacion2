@@ -5,15 +5,15 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Entidades.csproj", "{50460C73-636B-4045-8A0C-E0C576A50C1A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestEntidades", "EncargadoTest\TestEntidades.csproj", "{6D7140C8-10A5-42A2-BDEB-33A331CB87BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "EncargadoTest\Test.csproj", "{6D7140C8-10A5-42A2-BDEB-33A331CB87BF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestoranConsoleApp", "RestoranAplicacionConsola\RestoranConsoleApp.csproj", "{56C58F77-B95E-45FA-AFC8-FE456E3F5569}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Negocio", "Negocio\Negocio.csproj", "{CD70630C-67BF-481D-9BA4-5A656CCEE177}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantFormsApp", "RestaurantFormsApp\RestaurantFormsApp.csproj", "{F1F78030-DF9B-4676-8729-B9705F58458A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantFormsApp", "RestaurantFormsApp\RestaurantFormsApp.csproj", "{F1F78030-DF9B-4676-8729-B9705F58458A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datos", "Datos\Datos.csproj", "{3650B9E2-BB0C-4F47-9B0E-FC36D7E30CC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datos", "Datos\Datos.csproj", "{3650B9E2-BB0C-4F47-9B0E-FC36D7E30CC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

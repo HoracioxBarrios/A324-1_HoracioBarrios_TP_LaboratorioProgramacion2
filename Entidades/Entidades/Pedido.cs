@@ -7,20 +7,59 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Entidades
-{//ver los pedidos para local, y para delivery
+{
     public class Pedido : IPedido
     {
         private List<IConsumible> _listaConLoPedido;
+        private decimal _precioDeloPedido;
+        private int _idDePedido;
+        private ETipoDePedido _tipoDePedido;//Para Local o Para Delivery     
+        
 
-        private ETipoDePedido _tipoDePedido;    
-        public ETipoDePedido TipoDePedido { get ; set ; }
-        public Pedido() { }
 
+        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumibles) 
+        {
+            _tipoDePedido = tipoDePedido;
+            _listaConLoPedido = consumibles;
+        }
 
-        public void Agregar() { }
+        public decimal CalcularPrecio()
+        {
+            _precioDeloPedido = 0;
+            foreach(IConsumible consumible in _listaConLoPedido)
+            {
+                _precioDeloPedido += consumible.CalcularPrecio();
+            }
+            return _precioDeloPedido;
+        }
+
+        public void Agregar(IConsumible consumible) 
+        { 
+            _listaConLoPedido.Add(consumible);
+        }
 
         //debe haber un editar pedido()
-        public void Quitar() { }
+        public void Quitar(IConsumible consumible) 
+        { 
+            foreach(IConsumible consumibleEnPedido in _listaConLoPedido)
+            {
+                if(consumible == consumibleEnPedido)
+                {
+                    _listaConLoPedido.Remove(consumibleEnPedido);
+                }
+            }        
+        }
+
+        public ETipoDePedido TipoDePedido 
+        {          
+            get { return _tipoDePedido;}
+            set {  _tipoDePedido = value;}
+        }
+        public int ID
+        {
+            get { return _idDePedido;}
+            set { _idDePedido = value;}
+        }
 
     }
 }
