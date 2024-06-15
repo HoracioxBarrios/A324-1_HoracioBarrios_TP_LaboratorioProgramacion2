@@ -8,6 +8,6 @@ namespace Entidades.Interfaces
 {
     public interface ICobrador
     {
-        decimal MontoAcumulado { get; set; }        
+        decimal MontoAcumulado { get; }        
     }
 }

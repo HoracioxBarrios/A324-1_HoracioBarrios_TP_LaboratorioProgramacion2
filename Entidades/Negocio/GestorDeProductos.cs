@@ -14,10 +14,10 @@ namespace Negocio
 
         private int _contadorId = 1;
 
-        //definir si aca se instancia el servicio de producto service y si dentro de ese se agregan las id de productos----------------
+    
 
-        //private string _servicioDeGuardado = "";
-        public GestorDeProductos() //Puede esperar un servicio a DB o a Archivo? _servicioDeGuardado
+
+        public GestorDeProductos() //Puede esperar un servicio a DB.
         {
             _listaDeProductosEnStock = new List<IProducto>();
             CorroborarUltimaIdDeProducto();
@@ -73,7 +73,7 @@ namespace Negocio
         }
 
         /// <summary>
-        /// Crea un producto Añadiendolo a la Lista de stock.
+        /// Crea un producto Agregandolo a la Lista de stock.
         /// <para>
         /// Para Crear un Ingrediente: Recibe (ETipoDeProducto tipoDeProducto, string  nombreDeProducto, double cantidad, EUnidadDeMedida unidadDeMedida, decimal  precio, IProveedor proveedor).    
         /// </para>
@@ -123,7 +123,7 @@ namespace Negocio
         }
 
         /// <summary>
-        /// Crear un producto
+        /// Crea un Producto
         /// </summary>
         /// <param name="tipoProducto"></param>
         /// <param name="nombre"></param>
@@ -173,43 +173,32 @@ namespace Negocio
         }
 
 
-        public bool DescontarProductosDeStock( List<IProducto> listaDeIngredienteEnElPlato)//corregir
+        public bool DescontarProductosDeStock(List<IProducto> listaDeIngredienteEnElPlato)
         {
-            List<IProducto> productosActualizados = new List<IProducto>();
             List<IProducto> listaDeProductosEnStock = GetAllProductos();
+            bool seActualizo = false;
 
-
-            foreach (IProducto producto in listaDeProductosEnStock)
+            foreach (IProducto productoADescontar in listaDeIngredienteEnElPlato)
             {
-                if (producto is Ingrediente ingrediente)
+                if (productoADescontar is Ingrediente ingredienteADescontar)
                 {
-                    foreach (IProducto productoADescontar in listaDeIngredienteEnElPlato)
+                    for (int i = 0; i < listaDeProductosEnStock.Count; i++)
                     {
-                        if (productoADescontar is Ingrediente ingredienteADescontar)
+                        if (listaDeProductosEnStock[i] is Ingrediente ingredienteEnStock && ingredienteEnStock.Id == ingredienteADescontar.Id)
                         {
-                            if (ingrediente.Id == ingredienteADescontar.Id)
-                            {
-                                Ingrediente nuevoIngrediente = ingrediente - (Ingrediente)productoADescontar;
-                                productosActualizados.Add(nuevoIngrediente);
-                                
-                            }
-                            else
-                            {
-                                productosActualizados.Add(ingrediente);
-                            }
+                            Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
+                            listaDeProductosEnStock[i] = nuevoIngrediente;//modificamos por referencia
+                            seActualizo = true;
+                            break;
                         }
                     }
                 }
             }
-            if(productosActualizados.Count > 0)
-            {
-                ActualizarListaOriginal(listaDeProductosEnStock, productosActualizados);
-                return true;
-            }
-            return false;
+
+            return seActualizo;
         }
-        //Corregir
-        private void ActualizarListaOriginal(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> productosActualizados)
+
+        private void ActualizarListaOriginalDeproductos(List<IProducto> listaDeProductosIngredientesStock, List<IProducto> productosActualizados)
         {
             for (int i = 0; i < listaDeProductosIngredientesStock.Count; i++)
             {

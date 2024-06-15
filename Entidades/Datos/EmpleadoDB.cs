@@ -21,10 +21,10 @@ namespace Datos
 
         public EmpleadoDB()
         {
-            _baseDeDatosPcEscritorio = @"";
-            _baseDeDatosPcEscritorioOfi = @"DESKTOP-RF5OK6R\RESTAURANT";
+            _baseDeDatosPcEscritorio = "Hora\\SERVER_PRUEBA";
+            _baseDeDatosPcEscritorioOfi = "DESKTOP-RF5OK6R\\RESTAURANT";
 
-            _connectionString = $"Server={_baseDeDatosPcEscritorioOfi};Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
+            _connectionString = $"Server={_baseDeDatosPcEscritorio};Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
 
             _tablaEmpleado = "Empleado";
             

@@ -12,7 +12,7 @@ namespace Entidades
     {
         private List<IConsumible> _listaDeConsumiblesConLoPedido;
         private decimal _precioDeloPedido;
-        private int _idDePedido;
+        private int _id;
         private ETipoDePedido _tipoDePedido;//Para Local o Para Delivery     
         
 
@@ -38,17 +38,31 @@ namespace Entidades
             _listaDeConsumiblesConLoPedido.Add(consumibleParaPedido);
         }
 
-        //debe haber un editar pedido()
-        public void Quitar(IConsumible consumible) 
-        { 
-            foreach(IConsumible consumibleEnPedido in _listaDeConsumiblesConLoPedido)
+        public void Editar(IConsumible consumibleConLaCantidadCorregida)
+        {
+            for (int i = 0; i < _listaDeConsumiblesConLoPedido.Count; i++)
             {
-                if(consumible == consumibleEnPedido)
+                if (_listaDeConsumiblesConLoPedido[i].Nombre == consumibleConLaCantidadCorregida.Nombre)
                 {
-                    _listaDeConsumiblesConLoPedido.Remove(consumibleEnPedido);
+                    _listaDeConsumiblesConLoPedido[i] = consumibleConLaCantidadCorregida;
+                    break;
                 }
-            }        
+            }
         }
+
+
+        public void Quitar(IConsumible consumible)
+        {
+            for (int i = 0; i < _listaDeConsumiblesConLoPedido.Count; i++)
+            {
+                if (_listaDeConsumiblesConLoPedido[i].Nombre == consumible.Nombre)
+                {
+                    _listaDeConsumiblesConLoPedido.RemoveAt(i);
+                    break; 
+                }
+            }
+        }
+
 
         public ETipoDePedido TipoDePedido 
         {          
@@ -57,8 +71,8 @@ namespace Entidades
         }
         public int ID
         {
-            get { return _idDePedido;}
-            set { _idDePedido = value;}
+            get { return _id;}
+            set { _id = value;}
         }
 
     }

@@ -12,7 +12,8 @@ namespace Entidades
 {//meseri debe poder ser pasado a la entidad gestor pedidos y crear los pedidos que luego vera en la cocina para crear los platos(debe tener tiempo de preparacion)
     public class Mesero : Empleado, ICobrador, IMesero
     {
-        private decimal _montoAcumulado = 0;
+        private decimal _montoAcumuladoDeTodasLasMesas;
+        private decimal _montoMesaActual;
         private List<IMesa> _mesasAsignada;
 
         public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario): base(
@@ -24,6 +25,9 @@ namespace Entidades
             this.Direccion = direccion;
             this.Salario = salario;
             this.Rol = rol;
+
+            _montoAcumuladoDeTodasLasMesas = 0;
+            _montoMesaActual = 0;
         }
         public Mesero(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -50,6 +54,7 @@ namespace Entidades
 
         public void CobrarMesa(int idMesa)
         {
+            decimal montoMesaActual = 0;
             foreach(IMesa mesa in _mesasAsignada) 
             { 
                 if(mesa.Id == idMesa)
@@ -57,20 +62,31 @@ namespace Entidades
                     List<IPedido> pedidosDeLaMesa = mesa.ObtenerPedidosDeLaMesa();
                     foreach(IPedido pedido in pedidosDeLaMesa)
                     {
-                        _montoAcumulado = pedido.CalcularPrecio();
+                        _montoMesaActual = pedido.CalcularPrecio();
+                        _montoAcumuladoDeTodasLasMesas += _montoMesaActual;
+                        CerrarMesa(idMesa);
                     }
                 }
             
             }
         }
 
-        public void CerrarMesa(int idMesa)
+        private void CerrarMesa(int idMesa)
+        {
+            for (int i = 0; i < _mesasAsignada.Count; i++)
+            {
+                if (_mesasAsignada[i].Id == idMesa)
+                {
+                    _mesasAsignada[i].Estado = EStateMesa.Cerrada;
+                }            
+            }
+
+        }
+
+        public void Cobrar(decimal monto)
         {
             throw new NotImplementedException();
         }
-
-
-
 
         public List<IMesa> MesasAsignada 
         { 
@@ -83,15 +99,8 @@ namespace Entidades
         {
             get
             {
-                return _montoAcumulado;
-            }
-            set
-            {
-                if (value > 0)
-                {
-                    _montoAcumulado += value;
-                }
-            }
+                return _montoAcumuladoDeTodasLasMesas;
+            }     
         }
 
         

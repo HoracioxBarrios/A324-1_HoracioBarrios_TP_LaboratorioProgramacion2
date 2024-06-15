@@ -11,8 +11,6 @@ namespace Entidades.Interfaces
         int Id { get; }
         List<IMesa> MesasAsignada { get; set; }
         void AgregarMesa(IMesa mesa);
-        void CobrarMesa(int idMesa);
-
-        void CerrarMesa(int idMesa);
+        void CobrarMesa(int idMesa);       
     }
 }

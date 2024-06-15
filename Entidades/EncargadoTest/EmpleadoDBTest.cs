@@ -1,11 +1,7 @@
 ﻿using Datos;
 using Entidades.Enumerables;
 using Entidades.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Negocio;
 
 namespace TestEntidades
 {
@@ -47,7 +43,26 @@ namespace TestEntidades
 
             Assert.IsTrue(enpleadoDb.Create(rol, nombre, apellido, contacto, direccion, salario));
         }
+        //CREACION DE EMPLEADO EN DB
+        [TestMethod]
+        public void CorroboraLaCreacionDeVariosEmpleadoEnLaDB_DaTrueSiSeCrearonLosEmpleadosEnLaDB()
+        {
+            EmpleadoDB operacionesDeBaseDeDatosEmpleados = new EmpleadoDB();
 
+
+            GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados(operacionesDeBaseDeDatosEmpleados);
+
+            //----- instancio los EMPLEADOS y se crean en la DB -------
+            bool seCreoEmpleado1 = gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
+            bool seCreoEmpleado2 = gestorDeEmpleados.CrearEmpleado(ERol.Encargado, "Mar", "Ruy", "1156202", "Principio Solid 5", 30000m);
+            bool seCreoEmpleado3 = gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
+            bool seCreoEmpleado4 = gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
+            bool seCreoEmpleado5 = gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
+
+            Assert.IsNotNull(gestorDeEmpleados.GetEmpleadosEnList());
+
+            
+        }
         //MODIFICACION DE EMPLEADO EN DB
         [TestMethod]
         public void CorroboraLaModificacionDeUnEmpleadoPorIdEnLaDB_DaTrueSiSeModificoElEmpleadoEnLaDB()
