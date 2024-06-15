@@ -9,7 +9,7 @@ namespace Entidades.Interfaces
     public interface ICocinero
     {
         IConsumible CrearPlato(string nombre, List<IConsumible> listaDeIngredientes);
-        IConsumible EditarPlato();
-        IConsumible EliminarPlato();
+        IConsumible EditarPlato(IConsumible plato, List<IConsumible> ingredientesActualizacion);
+        void EliminarPlato(string nombre, List<IConsumible> listaDePlatos);
     }
 }

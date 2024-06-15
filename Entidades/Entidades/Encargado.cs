@@ -7,7 +7,7 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Encargado : Empleado, IEncargado
+    public class Encargado : Empleado, IEncargado, ICreadorDePedidos
     {      
         public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario):base(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -45,6 +45,10 @@ namespace Entidades
             mesero.AgregarMesa(mesa);
         }
 
+        public void CrearPedido(ETipoDePedido tipoDePedido)
+        {
+
+        }
 
     }
 }

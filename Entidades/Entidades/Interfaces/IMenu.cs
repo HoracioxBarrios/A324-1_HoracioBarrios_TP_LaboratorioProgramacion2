@@ -13,9 +13,9 @@ namespace Entidades.Interfaces
 
         void Quitar(IConsumible consumible);
 
-        List<IConsumible> ObtenerPlatosInMenu();
+        List<IConsumible> GetPlatosInMenu();
 
-        List<IConsumible> ObtenerBebidasInMenu();
+        List<IConsumible> GetBebidasInMenu();
 
         List<IConsumible> ObtenerAllItemsDelMenu();
     }

@@ -248,6 +248,8 @@ namespace Negocio
         }
 
 
+
+
         public List<IProducto> GetAllProductos()
         {
             List<IProducto> lista = new List<IProducto>();

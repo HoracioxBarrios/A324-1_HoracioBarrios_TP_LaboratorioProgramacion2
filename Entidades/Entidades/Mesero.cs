@@ -10,7 +10,7 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {//meseri debe poder ser pasado a la entidad gestor pedidos y crear los pedidos que luego vera en la cocina para crear los platos(debe tener tiempo de preparacion)
-    public class Mesero : Empleado, ICobrador, IMesero
+    public class Mesero : Empleado, ICobrador, IMesero, ICreadorDePedidos
     {
         private decimal _montoAcumuladoDeTodasLasMesas;
         private decimal _montoMesaActual;
@@ -40,6 +40,23 @@ namespace Entidades
             this.Password = password;
             this.Status = status;
         }
+
+
+
+        public void CrearPedido(ETipoDePedido tipoDePedido)
+        {
+
+        }
+
+
+
+
+
+
+
+
+
+
 
 
         /// <summary>

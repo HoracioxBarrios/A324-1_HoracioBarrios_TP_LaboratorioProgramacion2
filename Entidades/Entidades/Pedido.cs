@@ -10,54 +10,75 @@ namespace Entidades
 {
     public class Pedido : IPedido
     {
-        private List<IConsumible> _listaDeConsumiblesConLoPedido;
-        private decimal _precioDeloPedido;
         private int _id;
+        private List<IConsumible> _consumiblesPedidos; // Bebidas o Platos
+        private decimal _precioDeloPedido;
+
         private ETipoDePedido _tipoDePedido;//Para Local o Para Delivery     
-        
+        private bool _isEntregable;
 
 
-        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesParaElPedido) 
+        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos) 
         {
             _tipoDePedido = tipoDePedido;
-            _listaDeConsumiblesConLoPedido = consumiblesParaElPedido;
+            _isEntregable = false;
+            _consumiblesPedidos = consumiblesPedidos;
+        }
+
+
+
+        /// <summary>
+        /// Verifica SiEl Pedido esta Listo para la entrega, si hay uno de los que integran el pedido que no esta  disponible, el pedido NO esta disponible (Todos deben ser disponibles Bebidas y Comidas)
+        /// </summary>
+        /// <returns> True si ya se puede entregar</returns>
+        public bool VerificarSiEsEntregable() // estaria bueno que sea evaluable en base a un evento
+        {
+            _isEntregable = true;
+            foreach(IConsumible consumible in _consumiblesPedidos)
+            {
+                if(consumible.Disponibilidad == false)
+                {
+                    _isEntregable = false;
+                    break;
+                }
+            }
+            return _isEntregable;
         }
 
         public decimal CalcularPrecio()
         {
             _precioDeloPedido = 0;
-            foreach(IConsumible consumible in _listaDeConsumiblesConLoPedido)
+            foreach(IConsumible consumible in _consumiblesPedidos)
             {
                 _precioDeloPedido += consumible.CalcularPrecio();
             }
             return _precioDeloPedido;
         }
 
-        public void Agregar(IConsumible consumibleParaPedido) 
-        { 
-            _listaDeConsumiblesConLoPedido.Add(consumibleParaPedido);
+        public void Agregar(IConsumible consumible) 
+        {
+            _consumiblesPedidos.Add(consumible);
         }
 
         public void Editar(IConsumible consumibleConLaCantidadCorregida)
         {
-            for (int i = 0; i < _listaDeConsumiblesConLoPedido.Count; i++)
+            for (int i = 0; i < _consumiblesPedidos.Count; i++)
             {
-                if (_listaDeConsumiblesConLoPedido[i].Nombre == consumibleConLaCantidadCorregida.Nombre)
+                if (_consumiblesPedidos[i].Nombre == consumibleConLaCantidadCorregida.Nombre)
                 {
-                    _listaDeConsumiblesConLoPedido[i] = consumibleConLaCantidadCorregida;
+                    _consumiblesPedidos[i] = consumibleConLaCantidadCorregida;
                     break;
                 }
             }
         }
 
-
-        public void Quitar(IConsumible consumible)
+        public void Eliminar(IConsumible consumible)
         {
-            for (int i = 0; i < _listaDeConsumiblesConLoPedido.Count; i++)
+            for (int i = 0; i < _consumiblesPedidos.Count; i++)
             {
-                if (_listaDeConsumiblesConLoPedido[i].Nombre == consumible.Nombre)
+                if (_consumiblesPedidos[i].Nombre == consumible.Nombre)
                 {
-                    _listaDeConsumiblesConLoPedido.RemoveAt(i);
+                    _consumiblesPedidos.RemoveAt(i);
                     break; 
                 }
             }

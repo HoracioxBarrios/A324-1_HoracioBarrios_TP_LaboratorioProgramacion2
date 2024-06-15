@@ -112,7 +112,10 @@ namespace Entidades
             }
             return _listaDeIngredientesParaEstePlato;
         }
-
+        public void SetIngredientesDelPlato(List<IConsumible> ingredientes)
+        {
+            _listaDeIngredientesParaEstePlato = ingredientes;
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

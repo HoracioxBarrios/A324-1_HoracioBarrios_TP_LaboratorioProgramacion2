@@ -65,18 +65,37 @@ namespace Entidades
         }
 
 
-
-
-
-        public IConsumible EditarPlato()
+        public IConsumible EditarPlato(IConsumible plato, List<IConsumible> ingredientesActualizacion)
         {
-            throw new NotImplementedException();
+            if (ingredientesActualizacion == null || ingredientesActualizacion.Count < 2)
+            {
+                throw new AlObtenerListaDeIngredientesException("El plato debe tener al menos 2 ingredientes.");
+            }
+
+            Plato platoActualizado = plato as Plato;
+            if (platoActualizado == null)
+            {
+                throw new InvalidCastException("El objeto plato no puede ser convertido a Plato.");
+            }
+
+            platoActualizado.SetIngredientesDelPlato(ingredientesActualizacion);
+
+            return platoActualizado as IConsumible;
         }
 
-        public IConsumible EliminarPlato()
+
+        public void EliminarPlato(string nombre, List<IConsumible> listaDePlatos)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < listaDePlatos.Count; i++)
+            {
+                if (listaDePlatos[i].Nombre == nombre)
+                {
+                    listaDePlatos.RemoveAt(i);
+                    break; 
+                }
+            }
         }
+
 
     }
 }
