@@ -10,6 +10,13 @@ namespace Entidades.Interfaces
     public interface IPedido
     {
         ETipoDePedido TipoDePedido { get; set;}
+        int Id { get; set; }
+        void AgregarConsumible(IConsumible consumible);
+        void EditarConsumible(IConsumible consumibleConLaCantidadCorregida);
+        void EliminarConsumible(IConsumible consumible);
         decimal CalcularPrecio();
+        bool VerificarSiEsEntregable();
+
+
     }
 }

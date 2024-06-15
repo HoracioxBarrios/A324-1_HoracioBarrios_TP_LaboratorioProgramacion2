@@ -55,12 +55,12 @@ namespace Entidades
             return _precioDeloPedido;
         }
 
-        public void Agregar(IConsumible consumible) 
+        public void AgregarConsumible(IConsumible consumible) 
         {
             _consumiblesPedidos.Add(consumible);
         }
 
-        public void Editar(IConsumible consumibleConLaCantidadCorregida)
+        public void EditarConsumible(IConsumible consumibleConLaCantidadCorregida)
         {
             for (int i = 0; i < _consumiblesPedidos.Count; i++)
             {
@@ -72,7 +72,7 @@ namespace Entidades
             }
         }
 
-        public void Eliminar(IConsumible consumible)
+        public void EliminarConsumible(IConsumible consumible)
         {
             for (int i = 0; i < _consumiblesPedidos.Count; i++)
             {
@@ -90,7 +90,7 @@ namespace Entidades
             get { return _tipoDePedido;}
             set {  _tipoDePedido = value;}
         }
-        public int ID
+        public int Id
         {
             get { return _id;}
             set { _id = value;}
