@@ -79,29 +79,39 @@ namespace Negocio
 
 
             //-------- Instancio INGREDIENTES PARA CREAR LOS PLATOS (ICONSUMIBLE)
-            //Ingredientes para el Plato 1
+            // Ingredientes para el Plato 1
             List<IConsumible> listaDeIngredienteParaElPlato1 = new List<IConsumible>();
             IConsumible ingrediente1ParaPlato1 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Carne", 1, EUnidadDeMedida.Kilo, 1000M, proveedor2);
             IConsumible ingrediente2ParaPlato1 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Papa", 1, EUnidadDeMedida.Kilo, 1000M, proveedor4);
             listaDeIngredienteParaElPlato1.Add(ingrediente2ParaPlato1);
             listaDeIngredienteParaElPlato1.Add(ingrediente1ParaPlato1);
 
-            //Ingredientes para el plato 2
+            // Ingredientes para el Plato 2
             List<IConsumible> listaDeIngredienteParaElPlato2 = new List<IConsumible>();
             IConsumible ingrediente1ParaPlato2 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Carne", 1, EUnidadDeMedida.Kilo, 1000M, proveedor2);
             IConsumible ingrediente2ParaPlato2 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Tomate", 1, EUnidadDeMedida.Kilo, 1000M, proveedor3);
             listaDeIngredienteParaElPlato2.Add(ingrediente1ParaPlato2);
             listaDeIngredienteParaElPlato2.Add(ingrediente2ParaPlato2);
 
-            //para EL PLATO (Necesitamos el Cocinero) , Crea El PLATO, LO AGREGA A UN MENU Y ESTE SE GUARDA EN UNA LISTA DE MENUES EN EL GESTOR
+            // Para el PLATO (Necesitamos el Cocinero), Crea El PLATO, LO AGREGA A UN MENU Y ESTE SE GUARDA EN UNA LISTA DE MENUES EN EL GESTOR
             IEmpleado cocinero = _gestorDeEmpleados.GetEmpleadoEnList("Gille");
-
             _gestorMenu = new GestorDeMenu((ICocinero)cocinero);
 
             _gestorMenu.CrearMenu("Almuerzo");
-            _gestorMenu.AgregarPlatoAMenu("Almuerzo", "Milanesa con papas");
-            _gestorMenu.AgregarPlatoAMenu("Almuerzo", "Ensalada");
 
+            // Selecciona ingredientes para el primer plato
+            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato1, "Carne", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato1, "Papa", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.AgregarPlatoAMenu("Almuerzo", "Milanesa con papas");
+
+
+
+
+
+            // Selecciona ingredientes para el segundo plato // AL MENOS DEBE HABER 2 INGREDIENTES PARA EL PLATO EN LA LISTA DE INGREDIENTES
+            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato2, "Carne", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato2, "Tomate", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.AgregarPlatoAMenu("Almuerzo", "Ensalada");
 
 
         }

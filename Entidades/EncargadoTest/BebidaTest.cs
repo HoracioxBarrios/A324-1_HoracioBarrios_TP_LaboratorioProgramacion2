@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestEntidades
+namespace Test
 {
     [TestClass]
     public class BebidaTest

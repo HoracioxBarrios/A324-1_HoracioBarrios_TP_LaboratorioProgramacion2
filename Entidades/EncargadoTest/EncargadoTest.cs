@@ -1,7 +1,7 @@
 using Entidades;
 using Entidades.Enumerables;
 using Entidades.Interfaces;
-namespace EncargadoTest
+namespace Test
 {
     [TestClass]
     public class EncargadoTest

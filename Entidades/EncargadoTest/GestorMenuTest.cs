@@ -9,7 +9,7 @@ using Entidades;
 using Moq;
 using Negocio;
 
-namespace TestEntidades
+namespace Test
 {
     [TestClass]
     public class GestorMenuTest

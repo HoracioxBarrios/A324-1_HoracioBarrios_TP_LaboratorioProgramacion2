@@ -3,7 +3,7 @@ using Entidades.Enumerables;
 using Entidades.Interfaces;
 using Negocio;
 
-namespace TestEntidades
+namespace Test
 {
     [TestClass]
     public class EmpleadoDBTest

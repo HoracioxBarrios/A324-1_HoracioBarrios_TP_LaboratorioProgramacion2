@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Entidades.Interfaces;
 using Entidades.Excepciones;
-namespace EntidadTest
+namespace Test
 {
     [TestClass]
     public class EmpleadosTest
