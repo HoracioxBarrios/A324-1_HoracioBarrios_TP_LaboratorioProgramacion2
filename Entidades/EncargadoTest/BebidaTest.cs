@@ -32,7 +32,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProductoBebida1 = ETipoDeProducto.Bebida;
             string nombreBebida1 = "CocaCola";
             double cantidadBebida1 = 20;
-            EUnidadMedida eUnidadDeMedidaBebida1 = EUnidadMedida.Unidad;
+            EUnidadDeMedida eUnidadDeMedidaBebida1 = EUnidadDeMedida.Unidad;
             decimal precioBebida1 = 20000;
             IProveedor proveedorBebida1 = mockProveedor4.Object;
             ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
@@ -42,7 +42,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProductoBebida2 = ETipoDeProducto.Bebida;
             string nombreBebida2 = "Cerveza QUilmes";
             double cantidadBebida2 = 10;
-            EUnidadMedida eUnidadDeMedidaBebida2 = EUnidadMedida.Unidad;
+            EUnidadDeMedida eUnidadDeMedidaBebida2 = EUnidadDeMedida.Unidad;
             decimal precioBebida2 = 10000;
             IProveedor proveedorBebida2 = mockProveedor4.Object;
             ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;
@@ -98,7 +98,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProductoBebida1 = ETipoDeProducto.Bebida;
             string nombreBebida1 = "CocaCola";
             double cantidadBebida1 = 20;
-            EUnidadMedida eUnidadDeMedidaBebida1 = EUnidadMedida.Unidad;
+            EUnidadDeMedida eUnidadDeMedidaBebida1 = EUnidadDeMedida.Unidad;
             decimal precioBebida1 = 20000;
             IProveedor proveedorBebida1 = mockProveedor4.Object;
             ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
@@ -108,7 +108,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProductoBebida2 = ETipoDeProducto.Bebida;
             string nombreBebida2 = "Cerveza QUilmes";
             double cantidadBebida2 = 10;
-            EUnidadMedida eUnidadDeMedidaBebida2 = EUnidadMedida.Unidad;
+            EUnidadDeMedida eUnidadDeMedidaBebida2 = EUnidadDeMedida.Unidad;
             decimal precioBebida2 = 10000;
             IProveedor proveedorBebida2 = mockProveedor4.Object;
             ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;

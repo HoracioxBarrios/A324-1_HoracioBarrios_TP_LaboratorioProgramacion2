@@ -22,13 +22,13 @@ namespace Entidades
         private ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad;
-        private EUnidadMedida _eUnidadDeMedidad;
+        private EUnidadDeMedida _eUnidadDeMedidad;
         private IProveedor _proveedor;
         private int _id;
 
 
 
-        protected Producto(int id,string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precio, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
+        protected Producto(int id,string nombre, double cantidad, EUnidadDeMedida eUnidadDeMedida, decimal precio, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
         {
 
             _nombre = nombre;
@@ -75,7 +75,7 @@ namespace Entidades
             get { return Cantidad > 0; }
             set { _disponibilidad = value; }
         }
-        public EUnidadMedida EUnidadDeMedida 
+        public EUnidadDeMedida EUnidadDeMedida 
         {
             get { return _eUnidadDeMedidad; }
             set { _eUnidadDeMedidad = value; }

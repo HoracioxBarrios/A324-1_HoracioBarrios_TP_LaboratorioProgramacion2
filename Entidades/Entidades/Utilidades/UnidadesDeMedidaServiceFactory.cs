@@ -14,7 +14,7 @@ namespace Negocio
     {
 
 
-        public static ITipoUnidadDeMedida CrearUnidadDeMedida(EUnidadMedida unidadDeMedida ,double valor) 
+        public static ITipoUnidadDeMedida CrearUnidadDeMedida(EUnidadDeMedida unidadDeMedida ,double valor) 
         {
             if(unidadDeMedida < 0)
             {
@@ -23,15 +23,15 @@ namespace Negocio
 
             switch(unidadDeMedida)
             {
-                case EUnidadMedida.Kilo:
+                case EUnidadDeMedida.Kilo:
                     return new Kilo(valor);
-                case EUnidadMedida.Gramo:
+                case EUnidadDeMedida.Gramo:
                     return new Gramo(valor);                    
-                case EUnidadMedida.Litro:
+                case EUnidadDeMedida.Litro:
                     return new Litro(valor);              
-                case EUnidadMedida.MiliLitro:
+                case EUnidadDeMedida.MiliLitro:
                     return new MiliLitro(valor);
-                case EUnidadMedida.Unidad:
+                case EUnidadDeMedida.Unidad:
                     return new Unidad(valor);
                 default: 
                     throw new UnidadDeMedidaDesconocidaException("Unidad de Medida Desconocida");

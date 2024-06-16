@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Entidades.Enumerables;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
 using System;
@@ -9,21 +10,22 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    public class GestorMenu : IGestorMenu
+    public class GestorDeMenu : IGestorMenu
     {
-        private List<IMenu> _listaDeMenus;//Se va a ofrecer solo si esta disponible
+        
         private List<IConsumible> _listaDeConsumiblesDisponiblesGeneral; // Bebidas y Comidas Sin Importar Disponibilidad.
         private List<IConsumible> _listaDeTodosLosPlatosDisponibles;
         private List<IConsumible> _listaDeTodasLasBebidasDisponibles;
         private List<IConsumible> _listaDeTodosLosPlatosNoDisponibles;
         private List<IConsumible> _listaDeTodasLasBebidasNoDisponibles;
-
+        private List<IMenu> _listaDeMenus;//Se va a ofrecer solo si esta disponible
         private ICocinero _cocinero;
         private IGestorProductos _gestorproductos;
 
+        private List<IConsumible> _ingredientes;
 
 
-        public GestorMenu(ICocinero cocinero)
+        public GestorDeMenu(ICocinero cocinero)
         {
             
             _listaDeMenus = new List<IMenu>();
@@ -33,10 +35,11 @@ namespace Negocio
             _listaDeTodosLosPlatosNoDisponibles = new List<IConsumible>();
             _listaDeTodasLasBebidasNoDisponibles = new List<IConsumible>();
             _cocinero = cocinero;
-    
+
+            _ingredientes = new List<IConsumible>();
 
         }
-        public GestorMenu(ICocinero cocinero, IGestorProductos gestorDeproductosStock): this(cocinero)
+        public GestorDeMenu(ICocinero cocinero, IGestorProductos gestorDeproductosStock): this(cocinero)
         {
             _gestorproductos = gestorDeproductosStock;
         }
@@ -95,7 +98,7 @@ namespace Negocio
             }
         }
 
-        public void Eliminarmenu(string nombreMenu)
+        public void EliminarMenu(string nombreMenu)
         {
             for(int i = 0; i < _listaDeMenus.Count; i++)
             {
@@ -110,52 +113,47 @@ namespace Negocio
 
 
 
-
-
-
-
-        /// <summary>
-        /// Agrega un Plato a un Menu existente
-        /// </summary>
-        /// <param name="nombreDelMenu"></param>
-        /// <param name="nombrePlato"></param>
-        /// <param name="listaDeIngredientes"></param>
-        /// <exception cref="InvalidCastException"></exception>
-        /// <exception cref="MenuNoExisteException"></exception>
-        public void AgregarPlatoAMenu(string nombreDelMenu, string nombrePlato, List<IProducto> listaDeIngredientes)
+        public void AgregarPlatoAMenu(string nombreDelMenu, string nombrePlato)
         {
-            // Convertir cada IProducto en IConsumible
-            List<IConsumible> listaDeIngredientesConsumibles = new List<IConsumible>();
-            foreach (var producto in listaDeIngredientes)
+            if (_ingredientes == null || _ingredientes.Count < 2)
             {
-                if (producto is IConsumible consumible)
-                {
-                    listaDeIngredientesConsumibles.Add(consumible);
-                }
-                else
-                {
-                    throw new InvalidCastException("Un producto en la lista no puede ser convertido a IConsumible.");
-                }
+                throw new ListaVaciaException("Debe seleccionar al menos 2 ingredientes para crear el plato.");
             }
 
-            IMenu menu = null;
-            foreach (IMenu m in _listaDeMenus)
-            {
-                if (m.Nombre == nombreDelMenu)
-                {
-                    menu = m;
-                    break;
-                }
-            }
+            IMenu menu = _listaDeMenus.FirstOrDefault(m => m.Nombre == nombreDelMenu);
             if (menu == null)
             {
                 throw new MenuNoExisteException("El menú no existe.");
             }
 
-            IConsumible plato = _cocinero.CrearPlato(nombrePlato, listaDeIngredientesConsumibles);
-            ((Menu)menu).Agregar(plato);
+
+            List<IConsumible> ingredientes = _ingredientes; // NO LE PASO LA MISMA LISTA PORQUE DESPUES LA VOY A BORRAA Y ME DA ERROR QUE NUNCA TIENE 2 O MAS INGREDIENTES EN EL TEST
+            IConsumible plato = _cocinero.CrearPlato(nombrePlato, new List<IConsumible>(ingredientes));
+            ((Menu)menu).Agregar(plato); 
             _listaDeConsumiblesDisponiblesGeneral.Add(plato);
+
+            
+            _ingredientes.Clear();// Limpiar la lista de ingredientes utilizados
         }
+
+
+
+
+
+
+
+        public void SeleccionarIngredienteParaElPlato(List<IConsumible> listaDeConsumiblesEnStock, string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida)
+        {
+            IConsumible ingrediente = IngredienteService.ObtenerIngredienteParaPlato(listaDeConsumiblesEnStock, nombreDelIngrediente, cantidadNecesaria, unidadDeMedida);
+            if (ingrediente != null)
+            {
+                _ingredientes.Add(ingrediente);
+            }
+        }
+
+
+
+
 
 
         /// <summary>
@@ -165,22 +163,8 @@ namespace Negocio
         /// <param name="listaDeBebidas"></param>
         /// <exception cref="InvalidCastException"></exception>
         /// <exception cref="MenuNoExisteException"></exception>
-        public void AgregarBebidasAMenu(string nombreDelMenu, List<IProducto> listaDeBebidas)
+        public void AgregarBebidasAMenu(string nombreDelMenu, List<IConsumible> listaDeBebidas)
         {
-            // Convertir cada IProducto en IConsumible
-            List<IConsumible> listaDeBebidasConsumibles = new List<IConsumible>();
-            foreach (var producto in listaDeBebidas)
-            {
-                if (producto is IConsumible consumible)
-                {
-                    listaDeBebidasConsumibles.Add(consumible);
-                }
-                else
-                {
-                    throw new InvalidCastException("Un producto en la lista no puede ser convertido a IConsumible.");
-                }
-            }
-
             IMenu menu = null;
             foreach (IMenu m in _listaDeMenus)
             {
@@ -196,7 +180,7 @@ namespace Negocio
             }
             else
             {
-                foreach (IConsumible bebida in listaDeBebidasConsumibles)
+                foreach (IConsumible bebida in listaDeBebidas)
                 {
                     if(bebida.Disponibilidad == true && bebida is Bebida)
                     {

@@ -17,7 +17,7 @@ namespace Negocio
 
         //HAY QUE LEER ANTES DE CREAR EL PRODUCTO SI YA HAY UNO CREADO Y PASARLE LA ID AL PRODUCTO.( para crear Iproductos para el stock y para crear Iproductos(ingredientes para el plato)))
         public static IProducto CrearProducto(
-              ETipoDeProducto tipoProducto,int id, string nombre, double cantidad, EUnidadMedida unidadDeMedida
+              ETipoDeProducto tipoProducto,int id, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default)
         {

@@ -9,7 +9,7 @@ namespace Entidades.Enumerables
     /// <summary>
     /// Enumerable Unidades de Medida: Kilo, Gramo, Litro, MiliLitro, Unidad
     /// </summary>
-    public enum EUnidadMedida
+    public enum EUnidadDeMedida
     {
         Kilo,
         Gramo,

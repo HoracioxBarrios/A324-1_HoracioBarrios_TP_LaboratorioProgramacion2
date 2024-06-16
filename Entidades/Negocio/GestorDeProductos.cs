@@ -96,7 +96,7 @@ namespace Negocio
         /// <exception cref="AlCrearProductoException"></exception>
         /// <exception cref="Exception"></exception>
         public void CrearProductoParaListaDeStock(
-              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
+              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default)
         {
@@ -122,30 +122,17 @@ namespace Negocio
 
         }
 
-        /// <summary>
-        /// Crea un Producto
-        /// </summary>
-        /// <param name="tipoProducto"></param>
-        /// <param name="nombre"></param>
-        /// <param name="cantidad"></param>
-        /// <param name="unidadDeMedida"></param>
-        /// <param name="precio"></param>
-        /// <param name="proveedor"></param>
-        /// <param name="categoria"></param>
-        /// <param name="clasificacionDeBebida"></param>
-        /// <returns>Devuelve el producto creado</returns>
-        /// <exception cref="AlCrearProductoException"></exception>
-        /// <exception cref="Exception"></exception>
-        public IProducto CrearProducto(
-              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida,
-              decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default,
-              EClasificacionBebida clasificacionDeBebida = default)
+   
+        public IConsumible CrearProducto(
+      ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida,
+      decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default,
+      EClasificacionBebida clasificacionDeBebida = default)
         {
             try
             {
                 int idParaAsignar = VerificarExistenciaDelProducto(nombre, tipoProducto);
-                IProducto producto = ProductoServiceFactory.CrearProducto(tipoProducto, idParaAsignar, nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);                
-                return producto;
+                IProducto producto = ProductoServiceFactory.CrearProducto(tipoProducto, idParaAsignar, nombre, cantidad, unidadDeMedida, precio, proveedor, categoria, clasificacionDeBebida);
+                return (IConsumible)producto;
             }
             catch (DatosDeProductoException ex)
             {
@@ -162,9 +149,9 @@ namespace Negocio
         }
         public decimal CalcularPrecio()
         {
-            if(_listaDeProductosEnStock.Count > 0)
+            if (_listaDeProductosEnStock.Count > 0)
             {
-                foreach(IProducto producto in _listaDeProductosEnStock)
+                foreach (IProducto producto in _listaDeProductosEnStock)
                 {
                     _precioTotalStock += producto.CalcularPrecio();
                 }
@@ -173,7 +160,7 @@ namespace Negocio
         }
 
 
-        public bool DescontarProductosDeStock(List<IProducto> listaDeIngredienteEnElPlato)
+        public bool DescontarProductosDeStock(List<IConsumible> listaDeIngredienteEnElPlato)
         {
             List<IProducto> listaDeProductosEnStock = GetAllProductos();
             bool seActualizo = false;

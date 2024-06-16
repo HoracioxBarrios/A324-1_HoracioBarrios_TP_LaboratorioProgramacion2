@@ -9,7 +9,7 @@ namespace Entidades.Interfaces
 {
     public interface IProductoCreable
     {
-        EUnidadMedida EUnidadDeMedida { get; set; }
+        EUnidadDeMedida EUnidadDeMedida { get; set; }
         IProveedor Proveedor { get; set; }
     }
 }

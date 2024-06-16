@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades.Enumerables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,10 @@ namespace Entidades.Interfaces
     public interface IGestorMenu
     {
         void CrearMenu(string nombreMenu);
-        void AgregarPlatoAMenu(string nombreMenu, string nombrePlato, List<IProducto> listaDeIngredientes);
-        void AgregarBebidasAMenu(string nombreDelMenu, List<IProducto> listaDeBebidas);
+        void AgregarPlatoAMenu(string nombreMenu, string nombrePlato);
+        void AgregarBebidasAMenu(string nombreDelMenu, List<IConsumible> listaDeBebidas);
 
+        void SeleccionarIngredienteParaElPlato(List<IConsumible> listaDeConsumiblesEnStock, string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida);
         List<IMenu> GetListaDeMenusQueSeOfrecen();
         List<IConsumible> GetListaDeTodosLosPlatosDisponibles();
         List<IConsumible> GetListaDeTodasLasBebidasDisponibles();

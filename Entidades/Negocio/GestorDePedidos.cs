@@ -28,7 +28,7 @@ namespace Negocio
         /// Crea un pedido en base a un menu
         /// </summary>
         /// <param name="menu"></param>
-        public void Crearpedido(IMenu menu)
+        public void CrearPedido(IMenu menu)
         {
 
         }

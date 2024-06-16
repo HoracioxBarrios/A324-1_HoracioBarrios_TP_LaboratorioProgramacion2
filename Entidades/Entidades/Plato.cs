@@ -12,7 +12,7 @@ namespace Entidades
 {
     public class Plato : IConsumible
     {
-        private List<IConsumible> _listaDeIngredientesParaEstePlato;// Ingrediente es un iproducto
+        private List<IConsumible> _listaDeIngredientesParaEstePlato;// Ingrediente es un IConsumible
         private string _nonbre;
         private decimal _precioDeCosto;
         private decimal _precioDeVenta ;
@@ -51,26 +51,21 @@ namespace Entidades
             return precio;
         }
 
-        /// <summary>
-        /// Verifica si el plato tiene Ingredientes disponible.
-        /// </summary>
-        private void VerificarDisponibilidad()
+
+        public void VerificarDisponibilidad()
         {
-            bool estePlatoEstaDisponible = false;
-            if (_listaDeIngredientesParaEstePlato.Count >= 2)
+            bool estePlatoEstaDisponible = true; // Comenzamos asumiendo que el plato está disponible
+
+            foreach (IConsumible ingrediente in _listaDeIngredientesParaEstePlato)
             {
-                
-                foreach (IConsumible ingrediente in _listaDeIngredientesParaEstePlato)
+                Ingrediente ing = ingrediente as Ingrediente;
+                if (ing.Cantidad <= 0)
                 {
-                    Ingrediente ing = ingrediente as Ingrediente;
-                    if(ing.Cantidad > 0)
-                    {
-                        estePlatoEstaDisponible = true;
-                    }
                     estePlatoEstaDisponible = false;
-                   
+                    break; // Si encontramos un ingrediente no disponible, salimos del bucle
                 }
             }
+
             _disponibilidad = estePlatoEstaDisponible;
         }
 
@@ -106,15 +101,23 @@ namespace Entidades
         }
         public List<IConsumible> GetIngredientesDelPlato()
         {
-            if(_listaDeIngredientesParaEstePlato.Count == 0)
-            {
-                throw new ListaVaciaException("Error: La Lista de Ingredientes esta vacia");
-            }
             return _listaDeIngredientesParaEstePlato;
         }
-        public void SetIngredientesDelPlato(List<IConsumible> ingredientes)
+        public void AgregarIngredienteAListaDeIngredientes(IConsumible ingrediente)
+        {            
+            if (ingrediente != null)
+            {
+                _listaDeIngredientesParaEstePlato.Add(ingrediente);
+            }
+
+        }
+
+        public void ReemplazarIngredientes(List<IConsumible> ingredientes)
         {
-            _listaDeIngredientesParaEstePlato = ingredientes;
+            if(ingredientes.Count > 0)
+            {
+                _listaDeIngredientesParaEstePlato = ingredientes;
+            }            
         }
         public override string ToString()
         {

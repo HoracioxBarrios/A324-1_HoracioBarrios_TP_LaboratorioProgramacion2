@@ -23,13 +23,13 @@ namespace Entidades
         private ITipoUnidadDeMedida _iTipoUnidadDeMedida;
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad = false;
-        private EUnidadMedida _eUnidadDeMedida;
+        private EUnidadDeMedida _eUnidadDeMedida;
         private IProveedor _proveedor;
         private int _contadorId = 0;
         private int _id = 0;
 
         //producto (string nombre, double cantidad,  EUnidadMedida eUnidadDeMedida, decimal precio, ITipoUnidadDeMedida iTipoUnidadDeMedida, ETipoDeProducto eTipoDeProducto,  IProveedor iProveedor)
-        public Ingrediente(int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precioporCantidad, ETipoDeProducto tipoDeProducto, IProveedor proveedor )
+        public Ingrediente(int id, string nombre, double cantidad, EUnidadDeMedida eUnidadDeMedida, decimal precioporCantidad, ETipoDeProducto tipoDeProducto, IProveedor proveedor )
         : base(id, nombre, cantidad, eUnidadDeMedida, precioporCantidad, tipoDeProducto, proveedor)
         {
             _nombre = nombre;
@@ -43,6 +43,7 @@ namespace Entidades
 
 
         }
+
 
         public static Ingrediente operator +(Ingrediente ingrediente1, Ingrediente ingrediente2)
         {
@@ -152,6 +153,35 @@ namespace Entidades
         public override decimal CalcularPrecio()
         {
             return _precioUnitario * (decimal)_iTipoUnidadDeMedida.Cantidad;
+        }
+
+
+
+        /// <summary>
+        /// Crea una copia con la cantidad y tipo de unidad de medida que necesita el plato
+        /// </summary>
+        /// <param name="cantidadNecesaria"></param>
+        /// <param name="nuevaUnidadDeMedida"></param>
+        /// <returns></returns>
+        public Ingrediente CrearCopiaConCantidadNecesariaParaElPlato(double cantidadNecesaria, EUnidadDeMedida nuevaUnidadDeMedida)
+        {
+            
+            ITipoUnidadDeMedida nuevaITipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(nuevaUnidadDeMedida, cantidadNecesaria);
+
+            
+            return new Ingrediente(
+                id: this.Id,
+                nombre: this.Nombre,
+                cantidad: cantidadNecesaria,
+                eUnidadDeMedida: nuevaUnidadDeMedida,
+                precioporCantidad: this._precioUnitario * (decimal)cantidadNecesaria,
+                tipoDeProducto: this.ETipoDeProducto,
+                proveedor: this.Proveedor
+            )
+            {
+                _iTipoUnidadDeMedida = nuevaITipoUnidadDeMedida, // Asigna la nueva unidad de medida
+                _precioUnitario = this._precioUnitario // Mantiene el precio unitario original
+            };
         }
 
 

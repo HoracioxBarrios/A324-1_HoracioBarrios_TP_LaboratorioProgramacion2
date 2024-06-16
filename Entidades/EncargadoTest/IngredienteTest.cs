@@ -24,7 +24,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto1 = "Pollo";
             double cantidad = 20;
-            EUnidadMedida unidadDeMedida = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida = EUnidadDeMedida.Kilo;
             decimal precio = 20000;
 
             var mockProveedor1 = new Mock<IProveedor>();
@@ -42,7 +42,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto2 = "Papa";
             double cantidad2 = 20;
-            EUnidadMedida unidadDeMedida2 = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida2 = EUnidadDeMedida.Kilo;
             decimal precio2 = 20000;
 
             var mockProveedor2 = new Mock<IProveedor>();
@@ -61,7 +61,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto3 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto3 = "Pollo";
             double cantidad3 = 1; // Cantidad que usa en el plato
-            EUnidadMedida unidadDeMedida3 = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida3 = EUnidadDeMedida.Kilo;
             decimal precio3 = 1000;
 
             var mockProveedor3 = new Mock<IProveedor>();
@@ -87,9 +87,9 @@ namespace TestEntidades
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
-            IProducto ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
+            IConsumible ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
 
-            List <IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
+            List <IConsumible> listaDeIngredienteEnElPlato = new List<IConsumible>();
             listaDeIngredienteEnElPlato.Add(ingrediente3);
 
             //Se le pasa la lista de Ingredintes a desconcar
@@ -114,7 +114,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto1 = "Pollo";
             double cantidad = 10;
-            EUnidadMedida unidadDeMedida = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida = EUnidadDeMedida.Kilo;
             decimal precio = 20000;
 
             var mockProveedor1 = new Mock<IProveedor>();
@@ -132,7 +132,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto2 = "Papa";
             double cantidad2 = 30;
-            EUnidadMedida unidadDeMedida2 = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida2 = EUnidadDeMedida.Kilo;
             decimal precio2 = 20000;
 
             var mockProveedor2 = new Mock<IProveedor>();
@@ -151,7 +151,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto3 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto3 = "Pollo";
             double cantidad3 = 1; // Cantidad que usa en el plato
-            EUnidadMedida unidadDeMedida3 = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida3 = EUnidadDeMedida.Kilo;
             decimal precio3 = 1000;
 
             var mockProveedor3 = new Mock<IProveedor>();
@@ -174,10 +174,10 @@ namespace TestEntidades
             gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
 
 
-            //Producto que va a estar en el plato(lo que  usa el plato)
-            IProducto ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
+            //Producto IConsumubleque va a estar en el plato(lo que  usa el plato)
+            IConsumible ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
 
-            List<IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
+            List<IConsumible> listaDeIngredienteEnElPlato = new List<IConsumible>();
             listaDeIngredienteEnElPlato.Add(ingrediente3);
 
             //Se le pasa la lista de Ingredintes a descontar
@@ -205,7 +205,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto1 = "Aceite";
             double cantidad = 9;
-            EUnidadMedida unidadDeMedida = EUnidadMedida.Litro;
+            EUnidadDeMedida unidadDeMedida = EUnidadDeMedida.Litro;
             decimal precio = 20000;
 
             var mockProveedor1 = new Mock<IProveedor>();
@@ -223,7 +223,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto2 = "Carne";
             double cantidad2 = 50;
-            EUnidadMedida unidadDeMedida2 = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida2 = EUnidadDeMedida.Kilo;
             decimal precio2 = 20000;
 
             var mockProveedor2 = new Mock<IProveedor>();
@@ -242,7 +242,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto3 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto3 = "Aceite";
             double cantidad3 = 500; // Cantidad que usa en el plato
-            EUnidadMedida unidadDeMedida3 = EUnidadMedida.MiliLitro;
+            EUnidadDeMedida unidadDeMedida3 = EUnidadDeMedida.MiliLitro;
             decimal precio3 = 1000;
 
             var mockProveedor3 = new Mock<IProveedor>();
@@ -266,9 +266,9 @@ namespace TestEntidades
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
-            IProducto ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
+            IConsumible ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
 
-            List<IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
+            List<IConsumible> listaDeIngredienteEnElPlato = new List<IConsumible>();
             listaDeIngredienteEnElPlato.Add(ingrediente3);
 
             //Se le pasa la lista de Ingredintes a descontar
@@ -296,7 +296,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto1 = "Aceite";
             double cantidad = 10;
-            EUnidadMedida unidadDeMedida = EUnidadMedida.Litro;
+            EUnidadDeMedida unidadDeMedida = EUnidadDeMedida.Litro;
             decimal precio = 10000;
 
             var mockProveedor1 = new Mock<IProveedor>();
@@ -314,7 +314,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto2 = "Carne";
             double cantidad2 = 50;
-            EUnidadMedida unidadDeMedida2 = EUnidadMedida.Kilo;
+            EUnidadDeMedida unidadDeMedida2 = EUnidadDeMedida.Kilo;
             decimal precio2 = 20000;
 
             var mockProveedor2 = new Mock<IProveedor>();
@@ -333,7 +333,7 @@ namespace TestEntidades
             ETipoDeProducto tipoDeProducto3 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto3 = "Aceite";
             double cantidad3 = 500; // Cantidad que usa en el plato
-            EUnidadMedida unidadDeMedida3 = EUnidadMedida.MiliLitro;
+            EUnidadDeMedida unidadDeMedida3 = EUnidadDeMedida.MiliLitro;
             decimal precio3 = 1000;
 
             var mockProveedor3 = new Mock<IProveedor>();
@@ -357,9 +357,9 @@ namespace TestEntidades
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
-            IProducto ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
+            IConsumible ingrediente3 = gestorDeProductos.CrearProducto(tipoDeProducto3, nombreDeProducto3, cantidad3, unidadDeMedida3, precio3, mockProveedor3.Object);
 
-            List<IProducto> listaDeIngredienteEnElPlato = new List<IProducto>();
+            List<IConsumible> listaDeIngredienteEnElPlato = new List<IConsumible>();
             listaDeIngredienteEnElPlato.Add(ingrediente3);
 
             //Se le pasa la lista de Ingredintes a descontar

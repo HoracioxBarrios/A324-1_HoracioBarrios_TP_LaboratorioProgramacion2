@@ -23,7 +23,7 @@ namespace Entidades
         private ITipoUnidadDeMedida _iTipoUnidadDeMedida;
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad;
-        private EUnidadMedida _eUnidadDeMedidad;
+        private EUnidadDeMedida _eUnidadDeMedidad;
         private IProveedor _proveedor;
         private int _id;
 
@@ -33,7 +33,7 @@ namespace Entidades
 
 
         public Bebida(
-            int id, string nombre, double cantidad, EUnidadMedida eUnidadDeMedida, decimal precioporCantidad, IProveedor proveedor, 
+            int id, string nombre, double cantidad, EUnidadDeMedida eUnidadDeMedida, decimal precioporCantidad, IProveedor proveedor, 
             ECategoriaConsumible categoriaDeConsumible, EClasificacionBebida clasificacionDeBebida) : base(
                 id, nombre, cantidad, eUnidadDeMedida, precioporCantidad, ETipoDeProducto.Bebida, proveedor)
         {
@@ -129,7 +129,7 @@ namespace Entidades
             get { return _iTipoUnidadDeMedida.Cantidad; }
             set { _iTipoUnidadDeMedida.Cantidad = value; }
         }
-        public EUnidadMedida EUnidadMedida
+        public EUnidadDeMedida EUnidadMedida
         {
             get { return _eUnidadDeMedidad; }
             set { _eUnidadDeMedidad = value; }

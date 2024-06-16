@@ -9,7 +9,6 @@ namespace Entidades
 {
     public class Cocinero : Empleado, ICocinero
     {
-
         public Cocinero(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :base(
             rol, nombre, apellido, contacto, direccion, salario)
         {
@@ -40,7 +39,7 @@ namespace Entidades
         /// </summary>
         /// <param name="nombrePlato"></param>
         /// <returns>Devuelve si existe en la Lista de Platos </returns>
-        private bool ExitePlatoEnLista(string nombrePlato, List<IConsumible> listaPlatosEnMenu)
+        private bool ExistePlatoEnLista(string nombrePlato, List<IConsumible> listaPlatosEnMenu)
         {
             bool seEncontro = false;
             foreach (IConsumible plato in listaPlatosEnMenu)
@@ -54,14 +53,25 @@ namespace Entidades
             return seEncontro;
         }
 
-        public IConsumible CrearPlato(string nombre, List<IConsumible> listaDeIngredientes)
+
+        /// <summary>
+        /// Al momento de Crear un plato debe contar antes con ingredientes en la lista para el plato, y debe tener al menos 2 ingredientes.
+        /// Al Crear el Plato, limpia la lista de ingredientes del cocinero para que este proceda a elejir nueva conbinacion de ingredientes para un nuevo plato.
+        /// </summary>
+        /// <param name="nombreDelPlato"></param>
+        /// <returns></returns>
+        /// <exception cref="AlObtenerListaDeIngredientesException"></exception>
+        public IConsumible CrearPlato(string nombreDelPlato, List<IConsumible> ingredientes)
         {
-            if (listaDeIngredientes == null || listaDeIngredientes.Count < 2)
+            
+            if ( ingredientes.Count < 2)
             {
                 throw new AlObtenerListaDeIngredientesException("El plato debe tener al menos 2 ingredientes.");
             }
 
-            return new Plato(nombre, listaDeIngredientes);
+            IConsumible plato =  new Plato(nombreDelPlato, ingredientes);
+
+            return plato;
         }
 
 
@@ -78,7 +88,7 @@ namespace Entidades
                 throw new InvalidCastException("El objeto plato no puede ser convertido a Plato.");
             }
 
-            platoActualizado.SetIngredientesDelPlato(ingredientesActualizacion);
+            platoActualizado.ReemplazarIngredientes(ingredientesActualizacion);
 
             return platoActualizado as IConsumible;
         }
@@ -95,6 +105,8 @@ namespace Entidades
                 }
             }
         }
+
+
 
 
     }

@@ -10,16 +10,16 @@ namespace Entidades.Interfaces
     public interface IGestorProductos
     {
         void CrearProductoParaListaDeStock(
-              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida
+              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida
             , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
             , EClasificacionBebida clasificacionDeBebida = default);
 
-        IProducto CrearProducto(
-             ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadMedida unidadDeMedida,
+        IConsumible CrearProducto(
+             ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida,
              decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default,
              EClasificacionBebida clasificacionDeBebida = default);
 
-        bool DescontarProductosDeStock(List<IProducto> listaDeIngredienteEnElPlato);
+        bool DescontarProductosDeStock(List<IConsumible> listaDeIngredienteEnElPlato);
 
         List<IConsumible> GetAllProductosIngrediente();
         List<IConsumible> GetAllProductosBebidas();
