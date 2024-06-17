@@ -21,7 +21,7 @@ namespace Entidades
             }
 
             
-            return ingredienteSeleccionado.CrearCopiaConCantidadNecesariaParaElPlato(cantidad, unidadDeMedida);// Creamos una copia del ingrediente con la nueva cantidad y unidad de medida
+            return ingredienteSeleccionado.CrearCopiaConCantidadNueva(cantidad, unidadDeMedida);// Creamos una copia del ingrediente con la nueva cantidad y unidad de medida
         }
     }
 }

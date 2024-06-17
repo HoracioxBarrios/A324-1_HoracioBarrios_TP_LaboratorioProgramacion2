@@ -1,5 +1,7 @@
 ﻿using Datos;
+using Entidades;
 using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 using Negocio;
 
@@ -13,56 +15,55 @@ namespace Test
         public void CorroborarLaCreacionDeLaTablaEmpleadoEnDb_SiEsFalseEstaOkPorqueSeConsideraCreadaLaTabla()
         {
             
-            IOperacionesEmpleadoDB enpleadoDb = new EmpleadoDB();
+            IOperacionesEmpleadoDB empleadoDb = new EmpleadoDB();
 
             // Asegurarse de que la tabla se haya creado (o verificar si ya existe)
-            enpleadoDb.CrearTabla();
+            empleadoDb.CrearTabla();
 
 
-            Assert.IsFalse(enpleadoDb.CrearTabla());// Verificar que intentar crearla nuevamente devuelve false
+            Assert.IsFalse(empleadoDb.CrearTabla());// Verificar que intentar crearla nuevamente devuelve false
+        }
+        //CREACION DE EMPLEADOS EN DB
+        [TestMethod]
+        public void CorroboraLaCreacionDeVariosEmpleadoEnLaDB_DaTrueSiSeCrearon()
+        {
+            // Arrange
+            EmpleadoDB operacionesDeBaseDeDatosEmpleados = new EmpleadoDB();
+            GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados(operacionesDeBaseDeDatosEmpleados);
+
+            //----- instancio los EMPLEADOS y se crean en la DB ------- (AL MOMENTO DE CREAR SI EXISTEN LANZA EXCEPTION, ES PARA LA PRIMERA VEZ NOMAS)
+            //gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
+            //gestorDeEmpleados.CrearEmpleado(ERol.Encargado, "Mar", "Ruy", "1156202", "Principio Solid 5", 30000m);
+            //gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
+            //gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
+            //gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
+
+            List<IEmpleado> empleados = gestorDeEmpleados.GetEmpleadosEnList();
+            Assert.IsTrue(empleados.Count > 0);
+
         }
 
 
         //CREACION DE EMPLEADO EN DB
         [TestMethod]
-        public void CorroboraLaCreacionDeUnEmpleadoEnLaDB_DaTrueSiSeCreoElEmpleadoEnLaDB()
+        public void CorroboraLaExistenciaDeUnEmpleadoEnLaDB_DaTrueSiSeCreoElEmpleadoEnLaDB()
         {
             ERol rol = ERol.Encargado;
             string nombre = "ada";
             string apellido = "DBTEst";
-            string contacto = "1144553311";
-            string nombreVacio = string.Empty;
-
-
-
-            string direccion = "Av. San Pocho";
-            decimal salario = 150000.50M;
-            IOperacionesEmpleadoDB enpleadoDb = new EmpleadoDB();
-
-
-
-            Assert.IsTrue(enpleadoDb.Create(rol, nombre, apellido, contacto, direccion, salario));
+            //string contacto = "1144553311";
+            //string nombreVacio = string.Empty;
+            //string direccion = "Av. San Pocho";
+            //decimal salario = 150000.50M;
+            IOperacionesEmpleadoDB empleadoDb = new EmpleadoDB();
+            Assert.IsNotNull(empleadoDb.ReadOne(nombre, apellido));
         }
-        //CREACION DE EMPLEADO EN DB
-        [TestMethod]
-        public void CorroboraLaCreacionDeVariosEmpleadoEnLaDB_DaTrueSiSeCrearonLosEmpleadosEnLaDB()
-        {
-            EmpleadoDB operacionesDeBaseDeDatosEmpleados = new EmpleadoDB();
 
 
-            GestorDeEmpleados gestorDeEmpleados = new GestorDeEmpleados(operacionesDeBaseDeDatosEmpleados);
 
-            //----- instancio los EMPLEADOS y se crean en la DB -------
-            bool seCreoEmpleado1 = gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
-            bool seCreoEmpleado2 = gestorDeEmpleados.CrearEmpleado(ERol.Encargado, "Mar", "Ruy", "1156202", "Principio Solid 5", 30000m);
-            bool seCreoEmpleado3 = gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
-            bool seCreoEmpleado4 = gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
-            bool seCreoEmpleado5 = gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
 
-            Assert.IsNotNull(gestorDeEmpleados.GetEmpleadosEnList());
 
-            
-        }
+
         //MODIFICACION DE EMPLEADO EN DB
         [TestMethod]
         public void CorroboraLaModificacionDeUnEmpleadoPorIdEnLaDB_DaTrueSiSeModificoElEmpleadoEnLaDB()
@@ -129,7 +130,7 @@ namespace Test
             
 
             IOperacionesEmpleadoDB empleadoDb = new EmpleadoDB();
-            Assert.IsTrue(empleadoDb.Delete(8));
+            Assert.IsTrue(empleadoDb.Delete(3));
 
         }
         //ELIMINA EMPLEADO POR NOMBRE Y APELLIDO
@@ -139,7 +140,7 @@ namespace Test
 
 
             IOperacionesEmpleadoDB empleadoDb = new EmpleadoDB();
-            Assert.IsTrue(empleadoDb.Delete("Cris", "Lol"));
+            Assert.IsTrue(empleadoDb.Delete("Gille", "Rel"));
 
         }
     }

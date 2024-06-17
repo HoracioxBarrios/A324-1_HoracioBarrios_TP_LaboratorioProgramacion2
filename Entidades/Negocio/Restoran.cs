@@ -31,11 +31,11 @@ namespace Negocio
             _gestorDeEmpleados = new GestorDeEmpleados(_operacionesDeBaseDatosEmpleados);
 
             //----- instancio los EMPLEADOS -------
-            bool seCreoEmpleado1 = _gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
-            bool seCreoEmpleado2 = _gestorDeEmpleados.CrearEmpleado(ERol.Encargado, "Mar", "Ruy", "1156202", "Principio Solid 5", 30000m);
-            bool seCreoEmpleado3 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
-            bool seCreoEmpleado4 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
-            bool seCreoEmpleado5 = _gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
+            //bool seCreoEmpleado1 = _gestorDeEmpleados.CrearEmpleado(ERol.Cocinero, "Gille", "Rel", "1150654", "Av los pericos 5142", 20000m);
+            //bool seCreoEmpleado2 = _gestorDeEmpleados.CrearEmpleado(ERol.Encargado, "Mar", "Ruy", "1156202", "Principio Solid 5", 30000m);
+            //bool seCreoEmpleado3 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Jun", "Fre", "117778", "Calle 88", 15000m);
+            //bool seCreoEmpleado4 = _gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
+            //bool seCreoEmpleado5 = _gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
 
             
 

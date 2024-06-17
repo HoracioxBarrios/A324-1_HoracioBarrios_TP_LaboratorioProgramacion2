@@ -24,7 +24,7 @@ namespace Datos
             _baseDeDatosPcEscritorio = "Hora\\SERVER_PRUEBA";
             _baseDeDatosPcEscritorioOfi = "DESKTOP-RF5OK6R\\RESTAURANT";
 
-            _connectionString = $"Server={_baseDeDatosPcEscritorio};Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
+            _connectionString = $"Server={_baseDeDatosPcEscritorioOfi};Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
 
             _tablaEmpleado = "Empleado";
             
@@ -32,43 +32,68 @@ namespace Datos
 
 
         /// <summary>
-        /// Crea el empleado en la Base de datos
+        /// Crea un empleado guardandolo en base de datos
         /// </summary>
-        /// <param name="empleado"></param>
-        /// <returns>Devuelve true si fue exitoso, sino False</returns>
+        /// <param name="rol"></param>
+        /// <param name="nombre"></param>
+        /// <param name="apellido"></param>
+        /// <param name="contacto"></param>
+        /// <param name="direccion"></param>
+        /// <param name="salario"></param>
+        /// <returns></returns>
         /// <exception cref="AlCrearEmpleadoEnDBException"></exception>
         public bool Create(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
         {
             try
             {
-                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
-                bool seCreo = false;
-                if(empleado != null )
+                if (string.IsNullOrEmpty(nombre) ||  string.IsNullOrEmpty(apellido) || string.IsNullOrEmpty(contacto) || string.IsNullOrEmpty(direccion) || salario <= 0)
                 {
-                    using (SqlConnection conn = new SqlConnection(_connectionString))
+                    throw new DatoIncorrectoException("Los Datos son incorrectos");
+                }
+
+                if (!VerificarExistenciaDelEmpleadoEnTabla(nombre, apellido)) 
+                {
+                    IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(rol, nombre, apellido, contacto, direccion, salario);
+                    bool seCreo = false;
+                    if (empleado != null)
                     {
-                        conn.Open();
-                        string queryInsertEmpleado = @"
+                        using (SqlConnection conn = new SqlConnection(_connectionString))
+                        {
+                            conn.Open();
+                            string queryInsertEmpleado = @"
                     INSERT INTO Empleado (Nombre, Apellido, Contacto, Rol, Direccion, Salario, Password, Status)
                     VALUES (@Nombre, @Apellido, @Contacto, @Rol, @Direccion, @Salario, @Password, @Status)";
 
-                        using (SqlCommand command = new SqlCommand(queryInsertEmpleado, conn))
-                        {
-                            command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
-                            command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
-                            command.Parameters.AddWithValue("@Contacto", empleado.Contacto);
-                            command.Parameters.AddWithValue("@Rol", (int)empleado.Rol);
-                            command.Parameters.AddWithValue("@Direccion", empleado.Direccion);
-                            command.Parameters.AddWithValue("@Salario", empleado.Salario);
-                            command.Parameters.AddWithValue("@Password", empleado.Password);
-                            command.Parameters.AddWithValue("@Status", (int)empleado.Status);
+                            using (SqlCommand command = new SqlCommand(queryInsertEmpleado, conn))
+                            {
+                                command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
+                                command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
+                                command.Parameters.AddWithValue("@Contacto", empleado.Contacto);
+                                command.Parameters.AddWithValue("@Rol", (int)empleado.Rol);
+                                command.Parameters.AddWithValue("@Direccion", empleado.Direccion);
+                                command.Parameters.AddWithValue("@Salario", empleado.Salario);
+                                command.Parameters.AddWithValue("@Password", empleado.Password);
+                                command.Parameters.AddWithValue("@Status", (int)empleado.Status);
 
-                            int filas = command.ExecuteNonQuery();
-                            seCreo = true;
+                                int filas = command.ExecuteNonQuery();
+                                seCreo = true;
+                            }
                         }
-                    }                    
+                    }
+                    return seCreo;
                 }
-                return seCreo;
+                else
+                {
+                    throw new EmpleadoExisteEnDBException("Empleado ya Existe En DB");
+                }
+            }
+            catch(DatoIncorrectoException e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error al crear el empleado en la Base de Datos: {e.Message}", e);
+            }
+            catch(EmpleadoExisteEnDBException e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error al crear el empleado en Base de datos: {e.Message}", e);
             }
             catch (ArgumentException e)
             {
@@ -364,26 +389,22 @@ namespace Datos
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /// <summary>
+        /// Comprueba si existe el empelado en db
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <param name="apellido"></param>
+        /// <returns>Devuelve True si existe y false si no existe</returns>
+        private bool VerificarExistenciaDelEmpleadoEnTabla(string nombre, string apellido)
+        {
+            bool existe = true;
+            IEmpleado empleado = ReadOne(nombre, apellido);
+            if (empleado == null)
+            {
+                existe = false;
+            }
+            return existe;
+        }
 
 
 

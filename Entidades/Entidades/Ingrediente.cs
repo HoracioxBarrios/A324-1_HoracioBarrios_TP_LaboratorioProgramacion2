@@ -163,7 +163,7 @@ namespace Entidades
         /// <param name="cantidadNecesaria"></param>
         /// <param name="nuevaUnidadDeMedida"></param>
         /// <returns></returns>
-        public Ingrediente CrearCopiaConCantidadNecesariaParaElPlato(double cantidadNecesaria, EUnidadDeMedida nuevaUnidadDeMedida)
+        public Ingrediente CrearCopiaConCantidadNueva(double cantidadNecesaria, EUnidadDeMedida nuevaUnidadDeMedida)
         {
             
             ITipoUnidadDeMedida nuevaITipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(nuevaUnidadDeMedida, cantidadNecesaria);
