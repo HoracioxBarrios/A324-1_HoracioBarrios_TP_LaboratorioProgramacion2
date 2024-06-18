@@ -20,25 +20,28 @@ namespace Negocio
         private List<IConsumible> _listaDeTodasLasBebidasNoDisponibles;
         private List<IMenu> _listaDeMenus;//Se va a ofrecer solo si esta disponible
         private ICocinero _cocinero;
+        
+
+
         private IGestorProductos _gestorproductos;
+        private List<IConsumible> _ingredientesSelecionados;
 
-        private List<IConsumible> _ingredientes;
-
-
-        public GestorDeMenu(ICocinero cocinero)
+        public GestorDeMenu()
         {
-            
             _listaDeMenus = new List<IMenu>();
             _listaDeConsumiblesDisponiblesGeneral = new List<IConsumible>();
             _listaDeTodosLosPlatosDisponibles = new List<IConsumible>();
             _listaDeTodasLasBebidasDisponibles = new List<IConsumible>();
             _listaDeTodosLosPlatosNoDisponibles = new List<IConsumible>();
             _listaDeTodasLasBebidasNoDisponibles = new List<IConsumible>();
-            _cocinero = cocinero;
 
-            _ingredientes = new List<IConsumible>();
-
+            _ingredientesSelecionados = new List<IConsumible>();
         }
+        public GestorDeMenu(ICocinero cocinero) :this()
+        {
+            _cocinero = cocinero;
+        }
+
         public GestorDeMenu(ICocinero cocinero, IGestorProductos gestorDeproductosStock): this(cocinero)
         {
             _gestorproductos = gestorDeproductosStock;
@@ -111,11 +114,27 @@ namespace Negocio
 
 
 
+        /// <summary>
+        /// En Base a los IProductos o IConsumibles (Ingredientes) que estan disponibles en STOCK, Premite seleccionar los necesarios para el Cocinero pueda crear sus platos
+        /// </summary>
+        /// <param name="listaDeConsumiblesEnStock"></param>
+        /// <param name="nombreDelIngrediente"></param>
+        /// <param name="cantidadNecesaria"></param>
+        /// <param name="unidadDeMedida"></param>
+        public void SeleccionarIngredienteParaElPlato(List<IConsumible> listaDeConsumiblesEnStock, string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida)
+        {
+            IConsumible ingrediente = IngredienteService.ObtenerIngredienteParaPlato(listaDeConsumiblesEnStock, nombreDelIngrediente, cantidadNecesaria, unidadDeMedida);
+            if (ingrediente != null)
+            {
+                _ingredientesSelecionados.Add(ingrediente);
+            }
+        }
+
 
 
         public void AgregarPlatoAMenu(string nombreDelMenu, string nombrePlato)
         {
-            if (_ingredientes == null || _ingredientes.Count < 2)
+            if (_ingredientesSelecionados == null || _ingredientesSelecionados.Count < 2)
             {
                 throw new ListaVaciaException("Debe seleccionar al menos 2 ingredientes para crear el plato.");
             }
@@ -127,32 +146,12 @@ namespace Negocio
             }
 
 
-            List<IConsumible> ingredientes = _ingredientes; // NO LE PASO LA MISMA LISTA PORQUE DESPUES LA VOY A BORRAA Y ME DA ERROR QUE NUNCA TIENE 2 O MAS INGREDIENTES EN EL TEST
+            List<IConsumible> ingredientes = _ingredientesSelecionados; // NO LE PASO LA MISMA LISTA PORQUE DESPUES LA VOY A BORRAA Y ME DA ERROR QUE NUNCA TIENE 2 O MAS INGREDIENTES EN EL TEST
             IConsumible plato = _cocinero.CrearPlato(nombrePlato, new List<IConsumible>(ingredientes));
             ((Menu)menu).Agregar(plato); 
-            _listaDeConsumiblesDisponiblesGeneral.Add(plato);
-
-            
-            _ingredientes.Clear();// Limpiar la lista de ingredientes utilizados
+            _listaDeConsumiblesDisponiblesGeneral.Add(plato);            
+            _ingredientesSelecionados.Clear();// LimpiaMOS la lista de ingredientes utilizados
         }
-
-
-
-
-
-
-
-        public void SeleccionarIngredienteParaElPlato(List<IConsumible> listaDeConsumiblesEnStock, string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida)
-        {
-            IConsumible ingrediente = IngredienteService.ObtenerIngredienteParaPlato(listaDeConsumiblesEnStock, nombreDelIngrediente, cantidadNecesaria, unidadDeMedida);
-            if (ingrediente != null)
-            {
-                _ingredientes.Add(ingrediente);
-            }
-        }
-
-
-
 
 
 

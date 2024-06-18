@@ -15,10 +15,9 @@ namespace Negocio
 
 
 
-        public GestorDePedidos(ICreadorDePedidos creadorDePedidos, IGestorMenu gestorMenu)
+        public GestorDePedidos(IGestorMenu gestorMenu)
         {
             _pedidos = new List<IPedido>();
-            _creadorDePedidos = creadorDePedidos;
             _gestorMenu = gestorMenu;
         }
 

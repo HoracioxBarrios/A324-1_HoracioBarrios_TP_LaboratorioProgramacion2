@@ -45,10 +45,11 @@ namespace Entidades
             mesero.AgregarMesa(mesa);
         }
 
-        public void CrearPedido(ETipoDePedido tipoDePedido)
+        public void CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
         {
 
         }
+
 
     }
 }

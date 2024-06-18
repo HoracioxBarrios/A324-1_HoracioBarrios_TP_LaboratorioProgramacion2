@@ -43,7 +43,7 @@ namespace Entidades
 
 
 
-        public void CrearPedido(ETipoDePedido tipoDePedido)
+        public void CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
         {
 
         }
@@ -101,6 +101,11 @@ namespace Entidades
         }
 
         public void Cobrar(decimal monto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CrearPedido(ETipoDePedido tipoDePedido, IPedido pedido)
         {
             throw new NotImplementedException();
         }

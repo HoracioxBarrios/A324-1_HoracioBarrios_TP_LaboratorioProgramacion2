@@ -184,7 +184,6 @@ namespace Entidades
             };
         }
 
-
         public override string ToString()
         {
             return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Su Precio {CalcularPrecio()}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";

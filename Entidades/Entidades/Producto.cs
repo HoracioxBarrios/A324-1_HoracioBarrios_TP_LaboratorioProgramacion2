@@ -72,9 +72,10 @@ namespace Entidades
         }
         public bool Disponibilidad
         {
-            get { return Cantidad > 0; }
+            get { return (Cantidad > 0); }
             set { _disponibilidad = value; }
         }
+
         public EUnidadDeMedida EUnidadDeMedida 
         {
             get { return _eUnidadDeMedidad; }

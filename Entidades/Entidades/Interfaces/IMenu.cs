@@ -13,7 +13,7 @@ namespace Entidades.Interfaces
 
         void Quitar(IConsumible consumible);
 
-        List<IConsumible> GetPlatosInMenu();
+        List<IConsumible> GetPlatosEnMenu();
 
         List<IConsumible> GetBebidasInMenu();
 

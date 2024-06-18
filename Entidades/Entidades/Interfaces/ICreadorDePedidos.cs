@@ -9,7 +9,6 @@ namespace Entidades.Interfaces
 {
     public interface ICreadorDePedidos
     {
-
-        void CrearPedido(ETipoDePedido tipoDePedido);
+        void CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido);
     }
 }

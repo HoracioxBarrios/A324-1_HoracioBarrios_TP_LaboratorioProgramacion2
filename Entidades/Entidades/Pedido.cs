@@ -18,12 +18,16 @@ namespace Entidades
         private bool _isEntregable;
 
 
-        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos) 
+        private Pedido() 
+        {
+            _isEntregable = false;
+        }
+        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos) :this()
         {
             _tipoDePedido = tipoDePedido;
-            _isEntregable = false;
             _consumiblesPedidos = consumiblesPedidos;
         }
+
 
 
 

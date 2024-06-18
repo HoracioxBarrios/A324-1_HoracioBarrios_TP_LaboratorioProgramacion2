@@ -52,7 +52,7 @@ namespace Entidades
             }
             return nuevaListaDeBebidas;
         }
-        public List<IConsumible> GetPlatosInMenu()
+        public List<IConsumible> GetPlatosEnMenu()
         {
             List<IConsumible> nuevaListaDePlatos = new List<IConsumible>();
             foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)

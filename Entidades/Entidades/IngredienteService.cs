@@ -13,7 +13,7 @@ namespace Entidades
         public static IConsumible ObtenerIngredienteParaPlato(List<IConsumible> ingredientes, string nombreIngrediente, double cantidad, EUnidadDeMedida unidadDeMedida)
         {
             
-            Ingrediente ingredienteSeleccionado = (Ingrediente)ingredientes.Find(ingrediente => ingrediente.Nombre.Equals(nombreIngrediente, StringComparison.OrdinalIgnoreCase));
+            Ingrediente ingredienteSeleccionado = (Ingrediente)ingredientes.Find(ingrediente => ingrediente.Nombre.Equals(nombreIngrediente, StringComparison.OrdinalIgnoreCase));// y si esta disponible
 
             if (ingredienteSeleccionado == null)
             {
