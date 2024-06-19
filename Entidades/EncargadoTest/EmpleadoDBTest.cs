@@ -78,15 +78,14 @@ namespace Test
 
 
             int id = 6;
-            string nuevaDireccion = "Av. MateListo 1234";
+            //NUEVO PASSWORD
             string passwordActualizacion = "444444";
-            EStatus status = EStatus.Activo;
 
             IOperacionesEmpleadoDB enpleadoDb = new EmpleadoDB();
 
 
 
-            Assert.IsTrue(enpleadoDb.Update(id, passwordActualizacion, status, rol, nombre, apellido, contacto, nuevaDireccion, salario));
+            Assert.IsTrue(enpleadoDb.Update(id, passwordActualizacion));
         }
 
         //READ ALL EMPLEADOS DE LA DB

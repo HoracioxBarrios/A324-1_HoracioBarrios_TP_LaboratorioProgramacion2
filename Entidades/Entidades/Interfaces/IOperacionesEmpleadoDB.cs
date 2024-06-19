@@ -14,7 +14,10 @@ namespace Entidades.Interfaces
         IEmpleado ReadOne(int id);
         IEmpleado ReadOne(string nombre, string apellido0);
         List<IEmpleado> ReadAll();
-        bool Update(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario);
+        bool Update(int id, string password);
+        bool Update(int id, decimal salario);
+        bool Update(int id, string nombre, string apellido);
+
         bool Delete(int id);
         bool Delete(string nombre, string apellido);
     }

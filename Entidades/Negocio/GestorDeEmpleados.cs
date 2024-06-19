@@ -41,18 +41,73 @@ namespace Negocio
             }
             
         }
-
-        public void EditarEmpleado(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
+        public IEmpleado ReadOneEmpleado(int id)
         {
             try
             {
-                bool seEdito = _operacionesDeBaseDeDatos.Update(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
+                IEmpleado empleado = _operacionesDeBaseDeDatos.ReadOne(id);
+                return empleado;
+            }
+            catch(Exception e)
+            {
+                throw new AlLeerEmpleadoException("Error al leer empleado en la base de datos.");
+            }
+        }
+        public IEmpleado ReadOneEmpleado(string nombre, string apellido)
+        {
+            try
+            {
+                IEmpleado empleado = _operacionesDeBaseDeDatos.ReadOne(nombre, apellido);
+                return empleado;
+            }
+            catch (Exception e)
+            {
+                throw new AlLeerEmpleadoException("Error al leer empleado en la base de datos.");
+            }
+        }
+        public void EditarEmpleado(int id, string password)
+        {
+            try
+            {
+                bool seEdito = _operacionesDeBaseDeDatos.Update(id, password);
                 if (seEdito)
                 {
                     ActualizarListaEmpleadosLocal();
                 }
             }
             catch(Exception e)
+            {
+                throw new AlEditarEmpleadoEnDBException($"Error al editar el empleado en la base de datos {e.Message}", e);
+            }
+
+        }
+        public void EditarEmpleado(int id, string nombre, string apellido)
+        {
+            try
+            {
+                bool seEdito = _operacionesDeBaseDeDatos.Update(id,nombre, apellido);
+                if (seEdito)
+                {
+                    ActualizarListaEmpleadosLocal();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new AlEditarEmpleadoEnDBException($"Error al editar el empleado en la base de datos {e.Message}", e);
+            }
+
+        }
+        public void EditarEmpleado(int id,  decimal salario)
+        {
+            try
+            {
+                bool seEdito = _operacionesDeBaseDeDatos.Update(id, salario);
+                if (seEdito)
+                {
+                    ActualizarListaEmpleadosLocal();
+                }
+            }
+            catch (Exception e)
             {
                 throw new AlEditarEmpleadoEnDBException($"Error al editar el empleado en la base de datos {e.Message}", e);
             }

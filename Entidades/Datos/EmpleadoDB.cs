@@ -249,44 +249,27 @@ namespace Datos
             }
         }
 
-        public bool Update(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
+        public bool Update(int id, string password)
         {
             bool seActualizo = false;
             try
             {
-                
-                IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(id, password, status, rol, nombre, apellido, contacto, direccion, salario);
-
-                if (empleado != null)
+                if (password != null)
                 {
                     using (SqlConnection conn = new SqlConnection(_connectionString))
                     {
                         conn.Open();
-
                         
                         string queryUpdateEmpleado = @"
                                 UPDATE Empleado
-                                SET Nombre = @Nombre,
-                                    Apellido = @Apellido,
-                                    Contacto = @Contacto,
-                                    Rol = @Rol,
-                                    Direccion = @Direccion,
-                                    Salario = @Salario,
-                                    Password = @Password,
-                                    Status = @Status
+                                SET Password = @Password
                                 WHERE Id = @Id";
 
                         using (SqlCommand command = new SqlCommand(queryUpdateEmpleado, conn))
                         {
-                            command.Parameters.AddWithValue("@Id", empleado.Id);
-                            command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
-                            command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
-                            command.Parameters.AddWithValue("@Contacto", empleado.Contacto);
-                            command.Parameters.AddWithValue("@Rol", (int)empleado.Rol);
-                            command.Parameters.AddWithValue("@Direccion", empleado.Direccion);
-                            command.Parameters.AddWithValue("@Salario", empleado.Salario);
-                            command.Parameters.AddWithValue("@Password", empleado.Password);
-                            command.Parameters.AddWithValue("@Status", (int)empleado.Status);
+                            command.Parameters.AddWithValue("@Id", id);
+                            command.Parameters.AddWithValue("@Password", password);
+            
 
                             int filas = command.ExecuteNonQuery();
                             if (filas > 0)
@@ -295,16 +278,98 @@ namespace Datos
                             }
                         }
                     }
-                    return seActualizo;
+                    
                 }
-                else
-                {
-                    throw new AlCrearEmpleadoEsNullException("Error el empleado no se pudo crear por ende es null, y por eso no se guardo en la Base de Datos");
-                }
+                return seActualizo;
             }
-            catch (AlCrearEmpleadoEsNullException e)
+            catch (ArgumentException e)
             {
                 throw new AlCrearEmpleadoEnDBException($"Error al actualizar el empleado en la Base de Datos: {e.Message}", e);
+            }
+            catch (Exception e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error desconocido al actualizar el empleado en la Base de datos: {e.Message}", e);
+            }
+        }
+        public bool Update(int id, string nombre, string apellido)
+        {
+            bool seActualizo = false;
+            try
+            {
+
+                IEmpleado empleado = ReadOne(id);
+
+                if (empleado != null)
+                {
+                    using (SqlConnection conn = new SqlConnection(_connectionString))
+                    {
+                        conn.Open();
+
+                        string queryUpdateEmpleado = @"
+                                UPDATE Empleado
+                                SET Nombre = @Nombre,
+                                    Apellido = @Apellido
+                                WHERE Id = @Id";
+
+                        using (SqlCommand command = new SqlCommand(queryUpdateEmpleado, conn))
+                        {
+                            command.Parameters.AddWithValue("@Id", empleado.Id);
+                            command.Parameters.AddWithValue("@Nombre", empleado.Nombre);
+                            command.Parameters.AddWithValue("@Apellido", empleado.Apellido);
+
+                            int filas = command.ExecuteNonQuery();
+                            if (filas > 0)
+                            {
+                                seActualizo = true;
+                            }
+                        }
+                    }
+                    
+                }
+                return seActualizo;
+            }
+            catch (ArgumentException e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error al actualizar el empleado en la Base de Datos: {e.Message}", e);
+            }
+            catch (Exception e)
+            {
+                throw new AlCrearEmpleadoEnDBException($"Error desconocido al actualizar el empleado en la Base de datos: {e.Message}", e);
+            }
+        }
+        public bool Update(int id, decimal salario)
+        {
+            bool seActualizo = false;
+            try
+            {
+
+                IEmpleado empleado = ReadOne(id);
+
+                if (empleado != null)
+                {
+                    using (SqlConnection conn = new SqlConnection(_connectionString))
+                    {
+                        conn.Open();
+
+
+                        string queryUpdateEmpleado = @"
+                                UPDATE Empleado
+                                SET Salario = @Salario
+                                WHERE Id = @Id";
+
+                        using (SqlCommand command = new SqlCommand(queryUpdateEmpleado, conn))
+                        {
+                            command.Parameters.AddWithValue("@Id", empleado.Id);
+                            command.Parameters.AddWithValue("@Salario", empleado.Salario);
+                            int filas = command.ExecuteNonQuery();
+                            if (filas > 0)
+                            {
+                                seActualizo = true;
+                            }
+                        }
+                    }                    
+                }
+                return seActualizo;
             }
             catch (ArgumentException e)
             {
