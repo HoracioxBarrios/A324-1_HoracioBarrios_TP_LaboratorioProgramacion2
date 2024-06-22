@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface IModificadorDePedidos
+    public interface IGestorDePedidos
     {
+        void CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido);
+        void AgregarConsumibleAlPedido(int id, IConsumible consumible);
+        void GetPedidoPorId(int id);
         void EditarPedido(int id);
         void EditarPedido(int id, ETipoDePedido tipoDePedido);
         void EditarPedido(int id, ETipoDePedido tipoDePedido, IPedido pedido);

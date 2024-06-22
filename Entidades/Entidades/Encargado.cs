@@ -7,9 +7,9 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Encargado : Empleado, IEncargado, ICreadorDePedidos
-    {      
-        public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario):base(
+    public class Encargado : Empleado, IEncargado, ICreadorDePedidos, IEditorDePedidos, IEliminadorDePedidos
+    {
+        public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : base(
             rol, nombre, apellido, contacto, direccion, salario)
         {
             Nombre = nombre;
@@ -19,7 +19,7 @@ namespace Entidades
             Salario = salario;
             Rol = rol;
 
-           
+
         }
         public Encargado(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(rol, nombre, apellido, contacto, direccion, salario)
         {
@@ -45,11 +45,86 @@ namespace Entidades
             mesero.AgregarMesa(mesa);
         }
 
-        public void CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
-        {
 
+
+
+
+
+
+
+
+
+
+
+        public IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
+        {
+            return new Pedido(tipoDePedido, ConsumiblesParaElPEdido);
         }
 
 
+        /// <summary>
+        /// Edita el pedido en la cola (queue)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pedidos"></param>
+        /// <param name="consumiblesCorregidos"></param>
+        public bool EditarPedido(int id, Queue<IPedido> pedidos, List<IConsumible> consumiblesCorregidos)
+        {
+            bool seCorrigio = false;
+            int count = pedidos.Count;
+
+            while (count > 0)
+            {
+                
+                IPedido pedido = pedidos.Dequeue(); // Desencolar el pedido actual
+
+                if (pedido.Id == id)
+                {
+                    pedido.EditarConsumibles(consumiblesCorregidos);
+                    seCorrigio = true;
+                }
+
+                
+                pedidos.Enqueue(pedido);// Volver a encolar el pedido (modificado o no)
+
+                count--;
+            }
+
+            return seCorrigio;
+        }
+
+        /// <summary>
+        /// Elimina el Pedido de la cola (Queue)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pedidos"></param>
+        /// <returns></returns>
+        public bool EliminarPedido(int id, Queue<IPedido> pedidos)
+        {
+            bool seElimino = false;
+            List<IPedido> temporalList = new List<IPedido>();
+
+            while(pedidos.Count > 0)
+            {
+                // Desencolamos elementos
+                IPedido pedido = pedidos.Dequeue();
+                if(pedido.Id != id)
+                {
+                    temporalList.Add(pedido);
+                }
+                else
+                {
+                    seElimino = true;
+                }           
+            }
+            //Encolamos nuevamente
+            foreach (IPedido ped in temporalList)
+            {
+                pedidos.Enqueue(ped);
+            }
+
+            return seElimino;
+        }
     }
+    
 }

@@ -79,5 +79,32 @@ namespace Entidades.Unidades_de_Medida
             return new Kilo(nuevaCantidad);
         }
 
+
+
+
+
+
+        //TESTEAR
+        public static bool operator >(Kilo kilo1, Gramo gramo2)
+        {
+            return kilo1.Cantidad > gramo2.Cantidad / 1000.0;
+        }
+
+        public static bool operator <(Kilo kilo1, Gramo gramo2)
+        {
+            return kilo1.Cantidad < gramo2.Cantidad / 1000.0;
+        }
+
+        public static bool operator >(Kilo kilo1, Kilo kilo2)
+        {
+            return kilo1.Cantidad > kilo2.Cantidad;
+        }
+
+        public static bool operator <(Kilo kilo1, Kilo kilo2)
+        {
+            return kilo1.Cantidad < kilo2.Cantidad;
+        }
+
+
     }
 }

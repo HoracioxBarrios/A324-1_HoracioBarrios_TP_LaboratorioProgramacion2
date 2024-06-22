@@ -67,5 +67,42 @@ namespace Entidades.Unidades_de_Medida
             }
             return new Litro(nuevaCantidad);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        //TESTEAR
+
+        public static bool operator >(Litro litro, MiliLitro miliLitro)
+        {
+            return litro.Cantidad > miliLitro.Cantidad / 1000.0;
+        }
+
+        public static bool operator <(Litro litro, MiliLitro miliLitro)
+        {
+            return litro.Cantidad < miliLitro.Cantidad / 1000.0;
+        }
+
+        public static bool operator >(Litro litro1, Litro litro2)
+        {
+            return litro1.Cantidad > litro2.Cantidad;
+        }
+
+        public static bool operator <(Litro litro1, Litro litro2)
+        {
+            return litro1.Cantidad < litro2.Cantidad;
+        }
+
+
+
+
     }
 }

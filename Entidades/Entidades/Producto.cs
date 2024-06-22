@@ -41,7 +41,7 @@ namespace Entidades
             _id = id;
         }
 
-        public abstract decimal CalcularPrecio();
+        public abstract decimal CalcularPrecioDeCosto();
 
         public string Nombre 
         {

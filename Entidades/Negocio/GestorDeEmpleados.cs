@@ -50,7 +50,7 @@ namespace Negocio
             }
             catch(Exception e)
             {
-                throw new AlLeerEmpleadoException("Error al leer empleado en la base de datos.");
+                throw new AlLeerEmpleadoException($"Error al leer empleado en la base de datos. {e.Message}", e);
             }
         }
         public IEmpleado ReadOneEmpleado(string nombre, string apellido)
@@ -62,7 +62,7 @@ namespace Negocio
             }
             catch (Exception e)
             {
-                throw new AlLeerEmpleadoException("Error al leer empleado en la base de datos.");
+                throw new AlLeerEmpleadoException($"Error al leer empleado en la base de datos. {e.Message}", e);
             }
         }
         public void EditarEmpleado(int id, string password)

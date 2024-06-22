@@ -10,15 +10,26 @@ namespace Entidades.Interfaces
     public interface IGestorMenu
     {
         void CrearMenu(string nombreMenu);
-        void AgregarPlatoAMenu(string nombreMenu, string nombrePlato);
+        void SelecionarIngrediente(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida);
+
+        IConsumible CrearPlato(string nombreDelPlato, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo);
+        void EditarPlato();
+
+        void EliminarPlato();
+
+        void EstablecerPrecioAlPlato();
+
+
+        void AgregarPlatoAMenu(string nombreDelMenu, IConsumible plato);
+        void AgregarPlatosAlMenu(string nombreDelMenu, List<IConsumible> listaDePlatos);
         void AgregarBebidasAMenu(string nombreDelMenu, List<IConsumible> listaDeBebidas);
 
-        void SeleccionarIngredienteParaElPlato(List<IConsumible> listaDeConsumiblesEnStock, string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida);
-        List<IMenu> GetListaDeMenusQueSeOfrecen();
-        List<IConsumible> GetListaDeTodosLosPlatosDisponibles();
-        List<IConsumible> GetListaDeTodasLasBebidasDisponibles();
-        List<IConsumible> GetListaDeTodosLosPlatosNoDisponibles();
-        List<IConsumible> GetListaDeTodasLasBebidasNoDisponibles();
+        IMenu GetMenuPorNombre(string nombreDelMenu);
+        List<IMenu> GetAllMenus();
+        List<IConsumible> GetPlatosDisponibles();
+        List<IConsumible> GetBebidasDisponibles();
+        List<IConsumible> GetPlatosNoDisponibles();
+        List<IConsumible> GetBebidasNoDisponibles();
 
     }
 }

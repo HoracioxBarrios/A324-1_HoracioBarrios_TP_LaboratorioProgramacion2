@@ -3,6 +3,7 @@ using Entidades.Excepciones;
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -10,28 +11,86 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Plato : IConsumible
+
+    public delegate void PlatoListoDelegate(Plato plato);
+
+    public class Plato : ICocinable, IConsumible, IVendible
     {
-        private List<IConsumible> _listaDeIngredientesParaEstePlato;// Ingrediente es un IConsumible
-        private string _nonbre;
+        private string _nombre;
+        private List<IConsumible> _ingredientesSeleccionadosParaEstePlato;
         private decimal _precioDeCosto;
         private decimal _precioDeVenta ;
         private ECategoriaConsumible _categoriaDeConsumible;
-        private DateTime _tiempoDePreparacion;
-        private bool _disponibilidad = false;
-        
+        private bool _disponibilidad;
 
-        
+        private bool _listoParaEntregar;
+
+        public event PlatoListoDelegate EventPlatoListo;
 
 
-        public Plato(string nombre, List<IConsumible> listaIngredientes) 
-        { 
-            Nombre = nombre;
-            _listaDeIngredientesParaEstePlato = listaIngredientes;
-            VerificarDisponibilidad();
-            _precioDeCosto = 0;
+        private TimeSpan _tiempoDePreparacion;
+        private Stopwatch _cronometro; 
+        private DateTime _horaInicioCocinado;
+        private DateTime _horaFinCocinado;
+
+
+
+
+
+
+
+
+
+        private Plato()
+        {
             _precioDeVenta = 0;
+            _disponibilidad = false;
+            _ingredientesSeleccionadosParaEstePlato = new List<IConsumible>();
+            _listoParaEntregar = false;
         }
+
+        private Plato(string nombre, List<IConsumible> listaIngredientesSeleccionados) :this()
+        {
+            Nombre = nombre;
+            _ingredientesSeleccionadosParaEstePlato = listaIngredientesSeleccionados ?? new List<IConsumible>(); //usamos operador (operador de coalescencia nula )
+            _precioDeCosto = CalcularPrecioDeCosto();
+        }
+
+        public Plato(string nombre, List<IConsumible> listaIngredientesSeleccionados, int tiempoPreparacion, EUnidadDeTiempo unidadDeTiempo) :this(nombre, listaIngredientesSeleccionados)
+        {
+             if(unidadDeTiempo == EUnidadDeTiempo.Segundos)
+            { 
+                _tiempoDePreparacion = TimeSpan.FromSeconds(tiempoPreparacion);
+            }
+            if(unidadDeTiempo == EUnidadDeTiempo.Minutos)
+            {
+                _tiempoDePreparacion = TimeSpan.FromMinutes(tiempoPreparacion);
+            }
+        }
+
+
+        public async void Cocinar()
+        {
+            _listoParaEntregar = false;
+
+            _cronometro = Stopwatch.StartNew();
+            _horaInicioCocinado = DateTime.Now;
+
+            await Task.Delay(_tiempoDePreparacion);//hace un delay con el tiempo de preparacion sin detener el hilo proncipal
+            _cronometro.Stop();
+            _horaFinCocinado = DateTime.Now;
+
+
+            _listoParaEntregar = true;
+
+            OnPlatoListo();
+        }
+
+        private void OnPlatoListo()
+        {
+                EventPlatoListo?.Invoke(this); // Invoca el evento para notificar que el plato está listo
+        }
+
 
 
 
@@ -40,53 +99,87 @@ namespace Entidades
         /// 
         /// </summary>
         /// <returns>devuelve el precio de COSTO del plato</returns>
-        public decimal CalcularPrecio()
+        public decimal CalcularPrecioDeCosto()
         {
             decimal precio = 0;
 
-            foreach (IConsumible ingrediente in _listaDeIngredientesParaEstePlato)
+            foreach (IConsumible ingrediente in _ingredientesSeleccionadosParaEstePlato)
             {
-                precio += ingrediente.CalcularPrecio();
+                precio += ingrediente.CalcularPrecioDeCosto();
             }
+            _precioDeCosto = precio;
             return precio;
         }
-
-
-        public void VerificarDisponibilidad()
+        /// <summary>
+        /// obtiene el precio de costo
+        /// </summary>
+        /// <returns></returns>
+        public decimal GetPrecioDeCosto()
         {
-            bool estePlatoEstaDisponible = true; // Comenzamos asumiendo que el plato está disponible
+            return _precioDeCosto;
+        }
 
-            foreach (IConsumible ingrediente in _listaDeIngredientesParaEstePlato)
+
+ 
+
+        /// <summary>
+        /// Esta disponible si hay mas ingredientes en stock, de lo que necesita el plato
+        /// </summary>
+        /// <param name="ingredientesEnStock"></param>
+        /// <returns></returns>
+        /// <exception cref="ListaVaciaException"></exception>
+        public bool VerificarDisponibilidad(List<IConsumible> ingredientesEnStock)
+        {
+            _disponibilidad = false;
+            if(ingredientesEnStock == null || ingredientesEnStock.Count == 0)
             {
-                Ingrediente ing = ingrediente as Ingrediente;
-                if (ing.Cantidad <= 0)
+                throw new ListaVaciaException("La lista de productos INGREDIENTES que viene de stock esta vacia");
+            }
+            foreach(IConsumible ingredienteEnStock in ingredientesEnStock)
+            {
+                foreach (IConsumible ingrediente in _ingredientesSeleccionadosParaEstePlato)
                 {
-                    estePlatoEstaDisponible = false;
-                    break; // Si encontramos un ingrediente no disponible, salimos del bucle
+                    if(ingrediente.Nombre == ingredienteEnStock.Nombre)
+                    {
+                        if((Ingrediente)ingredienteEnStock > (Ingrediente)ingrediente)
+                        {
+                            _disponibilidad = true;
+                        }
+                    }
                 }
             }
-
-            _disponibilidad = estePlatoEstaDisponible;
+            return _disponibilidad;
         }
+
+
+        public List<IConsumible> GetIngredientesDelPlato()
+        {
+            return _ingredientesSeleccionadosParaEstePlato;
+        }
+        public void AgregarIngredienteAListaDeIngredientes(IConsumible ingrediente)
+        {
+            if (ingrediente != null)
+            {
+                _ingredientesSeleccionadosParaEstePlato.Add(ingrediente);
+            }
+
+        }
+
+        public void ReemplazarIngredientes(List<IConsumible> ingredientes)
+        {
+            if (ingredientes.Count > 0)
+            {
+                _ingredientesSeleccionadosParaEstePlato = ingredientes;
+            }
+        }
+
 
         public string Nombre
         {
-            get { return _nonbre; }
-            set { _nonbre = value; }
+            get { return _nombre; }
+            set { _nombre = value; }
         }
 
-        /// <summary>
-        /// Obtiene o Establece el precio de Venta del plato
-        /// </summary>
-        public decimal Precio
-        {
-            get { return _precioDeVenta; }
-            set
-            {
-                if (value > _precioDeCosto)
-                { _precioDeVenta = value; }
-            }
-        }
 
         public ECategoriaConsumible Categoria
         {
@@ -96,33 +189,56 @@ namespace Entidades
 
         public bool Disponibilidad 
         {
-            get {return _disponibilidad; } 
+            get { return _disponibilidad; } 
             set { _disponibilidad = value; } 
         }
-        public List<IConsumible> GetIngredientesDelPlato()
+
+        public TimeSpan TiempoDePreparacion
         {
-            return _listaDeIngredientesParaEstePlato;
+            get { return _tiempoDePreparacion; }
+            set { _tiempoDePreparacion = value; }
         }
-        public void AgregarIngredienteAListaDeIngredientes(IConsumible ingrediente)
-        {            
-            if (ingrediente != null)
+
+        /// <summary>
+        /// Precio Unitario DE VENTA./
+        /// -- SETTER : Establece el precio de venta 
+        /// ---GETTER : Devuelve le precio de venta
+        /// </summary>
+        public decimal Precio
+        {
+            get { return _precioDeVenta; }
+            set
             {
-                _listaDeIngredientesParaEstePlato.Add(ingrediente);
+                if (value > _precioDeCosto)
+                {
+                    _precioDeVenta = value;
+                }
             }
-
         }
 
-        public void ReemplazarIngredientes(List<IConsumible> ingredientes)
+        public bool ListoParaEntregar
         {
-            if(ingredientes.Count > 0)
-            {
-                _listaDeIngredientesParaEstePlato = ingredientes;
-            }            
+            get { return _listoParaEntregar; }
+        }
+
+        public DateTime HoraInicioCocinado
+        {
+            get { return _horaInicioCocinado; }
+        }
+
+        public DateTime HoraFinCocinado
+        {
+            get { return _horaFinCocinado; }
+        }
+
+        public TimeSpan TiempoTranscurrido
+        {
+            get { return _cronometro.Elapsed; }
         }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Nombre: {Nombre}, Precio: {Precio}, Categoria: {Categoria}");
+            sb.AppendLine($"Nombre: {Nombre}, Precio: {Precio}");
             return sb.ToString();
         }
 

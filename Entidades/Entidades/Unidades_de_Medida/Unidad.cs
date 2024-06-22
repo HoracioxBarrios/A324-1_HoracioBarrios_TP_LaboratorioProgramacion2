@@ -41,5 +41,20 @@ namespace Entidades.Unidades_de_Medida
             return new Unidad(nuevaCantidad);
         }
 
+
+        //TESTEAR
+        public static bool operator >(Unidad unidad1, Unidad unidad2)
+        {
+            return unidad1.Cantidad > unidad2.Cantidad;
+        }
+
+        public static bool operator <(Unidad unidad1, Unidad unidad2)
+        {
+            return unidad1.Cantidad < unidad2.Cantidad;
+        }
+
+
+
+
     }
 }

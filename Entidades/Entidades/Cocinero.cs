@@ -7,8 +7,18 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
+
+    public delegate void PlatoCocinadoEventHandler(ICocinable plato);
+
     public class Cocinero : Empleado, ICocinero
     {
+        private List<IConsumible> _ingredientesSelecionados;
+        private Queue<IPedido> _pedidosConPlatosParaCocinar;
+
+
+        public event PlatoCocinadoEventHandler EventPlatoCocinado;
+
+
         public Cocinero(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :base(
             rol, nombre, apellido, contacto, direccion, salario)
         {
@@ -18,6 +28,9 @@ namespace Entidades
             this.Direccion = direccion;
             this.Salario = salario;
             this.Rol = rol;
+
+            _ingredientesSelecionados = new List<IConsumible>();
+            _pedidosConPlatosParaCocinar = new Queue<IPedido>();
         }
         public Cocinero(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -61,7 +74,7 @@ namespace Entidades
         /// <param name="nombreDelPlato"></param>
         /// <returns></returns>
         /// <exception cref="AlObtenerListaDeIngredientesException"></exception>
-        public IConsumible CrearPlato(string nombreDelPlato, List<IConsumible> ingredientes)
+        public IConsumible CrearPlato(string nombreDelPlato, List<IConsumible> ingredientes, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo)
         {
             
             if ( ingredientes.Count < 2)
@@ -69,7 +82,7 @@ namespace Entidades
                 throw new AlObtenerListaDeIngredientesException("El plato debe tener al menos 2 ingredientes.");
             }
 
-            IConsumible plato =  new Plato(nombreDelPlato, ingredientes);
+            IConsumible plato =  new Plato(nombreDelPlato, ingredientes, tiempoDePreparacion, unidadDeTiempo);
 
             return plato;
         }
@@ -106,8 +119,90 @@ namespace Entidades
             }
         }
 
+        public void TomarPedido(IPedido pedido)
+        {
+            if (pedido == null)
+            {
+                throw new ArgumentNullException(nameof(pedido), "El pedido no puede ser nulo.");
+            }
+
+            _pedidosConPlatosParaCocinar.Enqueue(pedido);
+            if(_pedidosConPlatosParaCocinar.Count > 0)
+            {
+                CocinarPedido();
+            }
+
+            
+        }
+
+        private void CocinarPedido()
+        {
+            
+            if (_pedidosConPlatosParaCocinar.Count > 0)
+            {
+                IPedido pedidoActual = _pedidosConPlatosParaCocinar.Peek(); // Tomamos el primer pedido sin eliminarlo de la cola
+
+                
+                List<IConsumible> platosDelPedido = ObtenerPlatosDelPedido(pedidoActual);
+                
+                foreach (var plato in platosDelPedido)
+                {
+                    if (plato is ICocinable platoCocinable)
+                    {
+                        CocinarPlato(platoCocinable);
+                    }
+                }
+                pedidoActual.VerificarSiEsEntregable();
+                
+                _pedidosConPlatosParaCocinar.Dequeue();//quitamos de la lista el pedido que ya se cocinó
+            }
+        }
+
+        private List<IConsumible> ObtenerPlatosDelPedido(IPedido pedido)
+        {
+            List<IConsumible> platos = new List<IConsumible>();
+
+            foreach (var consumible in pedido.GetPlatos())
+            {
+                if (consumible is IConsumible plato)
+                {
+                    platos.Add(plato);
+                }
+            }
+
+            return platos;
+        }
+
+
+        public void CocinarPlato(ICocinable plato)
+        {
+            plato.Cocinar();
+        }
+    
 
 
 
+
+
+        /// <summary>
+        /// En Base a los IProductos o IConsumibles (Ingredientes) que estan disponibles en STOCK, Permite seleccionar los necesarios para el Cocinero pueda crear sus platos
+        /// </summary>
+        /// <param name="listaDeConsumiblesEnStock"></param>
+        /// <param name="nombreDelIngrediente"></param>
+        /// <param name="cantidadNecesaria"></param>
+        /// <param name="unidadDeMedida"></param>
+        public void SeleccionarIngredienteParaElPlato(List<IConsumible> listaDeConsumiblesEnStock, string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida)
+        {
+            IConsumible ingrediente = IngredienteService.ObtenerIngredienteParaPlato(listaDeConsumiblesEnStock, nombreDelIngrediente, cantidadNecesaria, unidadDeMedida);
+            if (ingrediente != null)
+            {
+                _ingredientesSelecionados.Add(ingrediente);
+            }
+        }
+
+        public List<IConsumible> GetListaDeIngredientesSeleccionados()
+        {
+            return _ingredientesSelecionados;
+        }
     }
 }

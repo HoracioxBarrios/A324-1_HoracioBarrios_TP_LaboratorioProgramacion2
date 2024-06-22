@@ -1,4 +1,5 @@
 ﻿using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,31 @@ namespace Entidades
             }
         }
 
+        public IConsumible GetPlatoPorNombre(string nombreDelPlato)
+        {
+            foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
+            {
+                if (consumible is Plato && consumible.Nombre == nombreDelPlato)
+                {
+                    return consumible;
+                }
+            }
+            throw new ConsumibleNoExisteEnListaDeMenuException("No existe El Plato en la Lista del Menú");
+        }
+
+
+        public IConsumible GetBebidaPorNombre(string nombreDeLaBebida)
+        {
+            foreach(IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
+            {
+                if(consumible is Bebida && consumible.Nombre == nombreDeLaBebida)
+                {
+                    return consumible;
+                }
+            }
+            throw new ConsumibleNoExisteEnListaDeMenuException("No existe la bebida en la Lista del Menú");
+        }
+
 
         public List<IConsumible> GetBebidasInMenu()
         {
@@ -52,6 +78,9 @@ namespace Entidades
             }
             return nuevaListaDeBebidas;
         }
+
+
+
         public List<IConsumible> GetPlatosEnMenu()
         {
             List<IConsumible> nuevaListaDePlatos = new List<IConsumible>();

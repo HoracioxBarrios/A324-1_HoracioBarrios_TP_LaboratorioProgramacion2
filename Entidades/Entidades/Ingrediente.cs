@@ -150,7 +150,11 @@ namespace Entidades
         }
 
 
-        public override decimal CalcularPrecio()
+
+ 
+
+
+        public override decimal CalcularPrecioDeCosto()
         {
             return _precioUnitario * (decimal)_iTipoUnidadDeMedida.Cantidad;
         }
@@ -184,9 +188,83 @@ namespace Entidades
             };
         }
 
+
+        public static bool operator >(Ingrediente ingrediente1, Ingrediente ingrediente2)
+        {
+            if (ingrediente1 == null || ingrediente2 == null)
+            {
+                return false;
+            }
+
+            if (ingrediente1._iTipoUnidadDeMedida.GetType() == ingrediente2._iTipoUnidadDeMedida.GetType())
+            {
+                return ingrediente1._iTipoUnidadDeMedida.Cantidad > ingrediente2._iTipoUnidadDeMedida.Cantidad;
+            }
+
+            // Comparaciones entre diferentes tipos de unidades de medida
+            if (ingrediente1._iTipoUnidadDeMedida is Kilo && ingrediente2._iTipoUnidadDeMedida is Gramo)
+            {
+                return (Kilo)ingrediente1._iTipoUnidadDeMedida > (Kilo)(Gramo)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else if (ingrediente1._iTipoUnidadDeMedida is Gramo && ingrediente2._iTipoUnidadDeMedida is Kilo)
+            {
+                return (Gramo)ingrediente1._iTipoUnidadDeMedida > (Gramo)(Kilo)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else if (ingrediente1._iTipoUnidadDeMedida is Litro && ingrediente2._iTipoUnidadDeMedida is MiliLitro)
+            {
+                return (Litro)ingrediente1._iTipoUnidadDeMedida > (Litro)(MiliLitro)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else if (ingrediente1._iTipoUnidadDeMedida is MiliLitro && ingrediente2._iTipoUnidadDeMedida is Litro)
+            {
+                return (MiliLitro)ingrediente1._iTipoUnidadDeMedida > (MiliLitro)(Litro)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else
+            {
+                throw new InvalidOperationException("Tipos de unidad de medida no compatibles para la comparación.");
+            }
+        }
+
+
+        public static bool operator <(Ingrediente ingrediente1, Ingrediente ingrediente2)
+        {
+            if (ingrediente1 == null || ingrediente2 == null)
+            {
+                return false;
+            }
+
+            if (ingrediente1._iTipoUnidadDeMedida.GetType() == ingrediente2._iTipoUnidadDeMedida.GetType())
+            {
+                return ingrediente1._iTipoUnidadDeMedida.Cantidad < ingrediente2._iTipoUnidadDeMedida.Cantidad;
+            }
+
+            // Comparaciones entre diferentes tipos de unidades de medida
+            if (ingrediente1._iTipoUnidadDeMedida is Kilo && ingrediente2._iTipoUnidadDeMedida is Gramo)
+            {
+                return (Kilo)ingrediente1._iTipoUnidadDeMedida < (Kilo)(Gramo)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else if (ingrediente1._iTipoUnidadDeMedida is Gramo && ingrediente2._iTipoUnidadDeMedida is Kilo)
+            {
+                return (Gramo)ingrediente1._iTipoUnidadDeMedida < (Gramo)(Kilo)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else if (ingrediente1._iTipoUnidadDeMedida is Litro && ingrediente2._iTipoUnidadDeMedida is MiliLitro)
+            {
+                return (Litro)ingrediente1._iTipoUnidadDeMedida < (Litro)(MiliLitro)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else if (ingrediente1._iTipoUnidadDeMedida is MiliLitro && ingrediente2._iTipoUnidadDeMedida is Litro)
+            {
+                return (MiliLitro)ingrediente1._iTipoUnidadDeMedida < (MiliLitro)(Litro)ingrediente2._iTipoUnidadDeMedida;
+            }
+            else
+            {
+                throw new InvalidOperationException("Tipos de unidad de medida no compatibles para la comparación.");
+            }
+        }
+
+
+
         public override string ToString()
         {
-            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Su Precio {CalcularPrecio()}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";
+            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Su Precio {CalcularPrecioDeCosto()}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";
         }
     }
 }

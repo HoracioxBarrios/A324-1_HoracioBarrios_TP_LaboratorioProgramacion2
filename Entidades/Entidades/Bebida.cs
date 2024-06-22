@@ -16,10 +16,11 @@ namespace Entidades
     /// _precioUnitario;//Se auto calcula.   
     /// ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Guarda la cantidad y por medio del Get : Cantidad tenemos acceso al dato.
     /// </summary>
-    public class Bebida : Producto, IConsumible, IConsumibleCategorizable
+    public class Bebida : Producto, IConsumible, IConsumibleCategorizable, IVendible
     {
         private string _nombre;
-        private decimal _precioUnitario;
+        private decimal _precioUnitarioDeCosto;
+        private decimal _precioUnitarioDeVenta;
         private ITipoUnidadDeMedida _iTipoUnidadDeMedida;
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad;
@@ -29,7 +30,7 @@ namespace Entidades
 
         private ECategoriaConsumible _eCategoriaConsumible;
         private EClasificacionBebida _eClasificacionDeBebida;
-
+        private bool _listoParaEntregar;
 
 
         public Bebida(
@@ -40,31 +41,70 @@ namespace Entidades
 
             _nombre = nombre;
             _iTipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(eUnidadDeMedida, cantidad);
-            _precioUnitario = (precioporCantidad / (decimal)cantidad);
+            _precioUnitarioDeCosto = (precioporCantidad / (decimal)cantidad);
             _proveedor = proveedor;
             _eCategoriaConsumible = categoriaDeConsumible;
             _eClasificacionDeBebida = clasificacionDeBebida;
             _eTipoDeProducto = ETipoDeProducto.Bebida;            
             _id = id;
-            if (cantidad > 0){Disponibilidad = true;}
+
+            _precioUnitarioDeVenta = 0;
+
+            if (cantidad > 0)
+            {
+                _disponibilidad = true;
+            }
+            else
+            {
+                _disponibilidad = false;
+            }
         }
 
         /// <summary>
         /// Calcula el precio de las bebidas.
         /// </summary>
         /// <returns>devuelve el precio de una bebida</returns>
-        public override decimal CalcularPrecio()
+        public override decimal CalcularPrecioDeCosto()
         {
-            return _precioUnitario * (decimal)_iTipoUnidadDeMedida.Cantidad;
+            return _precioUnitarioDeCosto * (decimal)_iTipoUnidadDeMedida.Cantidad;
+
+        }
+        
+        public decimal GetPrecioDeCosto()
+        {
+            return _precioUnitarioDeCosto;
+        }
+        
+
+
+        /// <summary>
+        /// Precio Unitario DE VENTA./
+        /// -- SETTER : Establece el precio unitario de venta
+        /// ---GETTER : Devuelve le precio unitario de venta
+        /// </summary>
+        public decimal Precio
+        {
+            get { return _precioUnitarioDeVenta; }
+            set 
+            {
+                if (value > _precioUnitarioDeCosto)
+                {
+                    _precioUnitarioDeVenta = value;                    
+                }
+            }
         }
 
+        public bool ListoParaEntregar
+        {
+            get { return Disponibilidad; }
+        }
 
         public static Bebida operator +(Bebida bebida1, Bebida bebida2)
         {
             if (bebida1.Id == bebida2.Id)
             {
                 double nuevaCantidad = bebida1.Cantidad + bebida2.Cantidad;
-                decimal nuevoPrecio = bebida1._precioUnitario * (decimal)nuevaCantidad;
+                decimal nuevoPrecio = bebida1._precioUnitarioDeCosto * (decimal)nuevaCantidad;
                 return new Bebida(
                     id: bebida1.Id,
                     nombre: bebida1.Nombre,
@@ -87,7 +127,7 @@ namespace Entidades
             if (bebida1.Id == bebida2.Id)
             {
                 double nuevaCantidad = bebida1.Cantidad - bebida2.Cantidad;
-                decimal nuevoPrecio = bebida1._precioUnitario * (decimal)nuevaCantidad;
+                decimal nuevoPrecio = bebida1._precioUnitarioDeCosto * (decimal)nuevaCantidad;
                 return new Bebida(
                     id: bebida1.Id,
                     nombre: bebida1.Nombre,
@@ -114,14 +154,6 @@ namespace Entidades
         }
 
 
-        /// <summary>
-        /// Precio Unitario
-        /// </summary>
-        public decimal Precio
-        {
-            get { return _precioUnitario; }
-            set { _precioUnitario = value; }
-        }
 
 
         public double Cantidad
@@ -174,9 +206,12 @@ namespace Entidades
             set { _eCategoriaConsumible= value; }
         }
 
+        
+
         public override string ToString()
         {
-            return $"ID: {Id}, Nombre: {Nombre}, Cantidad {Cantidad},Su Precio: {CalcularPrecio()}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Clasificacion : {ClasificacionDeBebida}";
+            return $"ID: {Id}, Nombre: {Nombre}, Cantidad {Cantidad},Su Precio: {CalcularPrecioDeCosto()}, Proveedor: {Proveedor}, Categoria de Consumible: {Categoria}, Clasificacion : {ClasificacionDeBebida}";
         }
+
     }
 }

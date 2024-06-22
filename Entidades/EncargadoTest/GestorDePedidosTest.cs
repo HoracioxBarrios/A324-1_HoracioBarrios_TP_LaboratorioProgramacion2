@@ -14,10 +14,21 @@ namespace Test
     [TestClass]
     public class GestorDePedidosTest
     {
-        [TestMethod]
-        public void testeandoLacreacionDeUnpedidoParaLocal()
+
+        private IGestorMenu _gestorMenu;
+        private IGestorProductos _gestorProductos;
+        private IEmpleado _empleadoMesero;
+
+
+
+
+
+
+        [TestInitialize]
+        public void Setup()
         {
-            //Ingredientes que van a formar los platos
+
+            //CREAMOS Y PONEMOS EN STOCK LOS INGREDIENTES que van a formar los platos.
             //Ingrediente 1-----------------------------------
             ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
             string nombreDeProducto1 = "pollo";
@@ -57,25 +68,38 @@ namespace Test
 
 
             //------------------- GESTOR DE PRODUCTOS -----------------------
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            _gestorProductos = new GestorDeProductos();
+            
+            //Creamos los productos
+            IProducto pollo = _gestorProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
+            IProducto papa = _gestorProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
+
+            //AGREGAMOS AL STOCK
+            _gestorProductos.AgregarProductoAStock(pollo);
+            _gestorProductos.AgregarProductoAStock(papa);
 
 
-            //Act
-            //Productos que van a estar en la lista del stock (está dentro de GestorProductos)
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
+            //podriamos Obtenemos la lista de ingredientes. si queremos visualizar que hay
+            List<IConsumible> listaDeIngredientesDisponibles = _gestorProductos.ReadAllProductosIngredientes();
 
 
-            List<IConsumible> listaDeIngredientesDisponibles = gestorDeProductos.GetAllProductosIngrediente();
-
-
-
+            //-- intanciamos el COCINERO --
             IEmpleado cocinero = EmpleadoServiceFactory.CrearEmpleado(ERol.Cocinero, "Pipo", "ERG", "4215554", "Av El Ruttu 5412", 40000M);
-            GestorDeMenu gestorMenu = new GestorDeMenu((Cocinero)cocinero);
 
 
-            //----------- CREAMOS EL MENU -------------------
-            gestorMenu.CrearMenu("General");
+            //------------------------- GESTOR MENU --------------------------
+            _gestorMenu = new GestorDeMenu((Cocinero)cocinero, _gestorProductos);
+
+            // -- CREAMOS EL MENU --
+            string nombreDelmenu = "General";
+
+
+            _gestorMenu.CrearMenu(nombreDelmenu);
+
+
+
+
+            // -- ELEGIMOS LOS INGREDIENTES PARA EL PLATO
             //Elegimos el producto Ingrediente 1 con su cantidad
             string nombreDelProductoSeleccionado1 = "pollo";
             double cantidadDelProductoSeleccionado1 = 1;
@@ -87,27 +111,45 @@ namespace Test
             EUnidadDeMedida unidadDeMedidaParaElProductoSeleccionado2 = EUnidadDeMedida.Kilo;
 
 
+            //selecciona INGREDIENTES para el COCINERO (lo guardara en su lista de ingredientes seleccionados)
+            _gestorMenu.SelecionarIngrediente(nombreDelProductoSeleccionado1, cantidadDelProductoSeleccionado1, unidadDeMedidaParaElProductoSeleccionado1);
 
-            gestorMenu.SeleccionarIngredienteParaElPlato(
-                listaDeIngredientesDisponibles, nombreDelProductoSeleccionado1, cantidadDelProductoSeleccionado1, unidadDeMedidaParaElProductoSeleccionado1);
-
-            gestorMenu.SeleccionarIngredienteParaElPlato(
-                listaDeIngredientesDisponibles, nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
+            _gestorMenu.SelecionarIngrediente( nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
 
 
-            string nombreDeMenuCreadoPreviamente = "General";
+            string nombreDelMenuCreadoPreviamente = "General";
+
+
+
+            //CREAMOSEL PLATO
             string nombreDelPlatoACrear = "MilaPapa";
+            int tiempoDePreparacion = 30;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
 
-            gestorMenu.AgregarPlatoAMenu(nombreDeMenuCreadoPreviamente, nombreDelPlatoACrear);
+            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlatoACrear, tiempoDePreparacion, unidadDeTiempo);
 
 
-            //Verificamos si en la lista de Menu esta el menu que creamos recien
-            Assert.IsTrue(gestorMenu.GetListaDeMenusQueSeOfrecen().Count() > 0);
 
-            //verificamos si es el plato que creamos recien el que esta en la lista de menus.
-            var menuGeneral = gestorMenu.GetListaDeMenusQueSeOfrecen().FirstOrDefault(menu => menu.Nombre.Equals(nombreDeMenuCreadoPreviamente, StringComparison.OrdinalIgnoreCase));
+            // -------- AHORA SE AGREGA EL PLATO AL MENU ------------
+            _gestorMenu.AgregarPlatoAMenu("General", plato1);
+
+
+
+            //Verificamos si en la lista de Menu tiene al menos 1 menu
+            Assert.IsTrue(_gestorMenu.GetAllMenus().Count() > 0);
+
+            //verificamos si es el Menu que creamos recien, esta en la lista de menus.
+            var menuGeneral = _gestorMenu.GetAllMenus().FirstOrDefault(menu => menu.Nombre.Equals(nombreDelMenuCreadoPreviamente, StringComparison.OrdinalIgnoreCase));
             Assert.IsNotNull(menuGeneral);
+
+            //Verificamos si el Plato esta en el menu (en su lista interna de consumibles PLATOS)
             Assert.IsTrue(menuGeneral.GetPlatosEnMenu().Any(plato => plato.Nombre.Equals(nombreDelPlatoACrear, StringComparison.OrdinalIgnoreCase)));
+
+
+
+
+
+
 
             // ------------- EN EL MENU PUEDE HABER BEBIDAS --------------
             //PROVEEDOR MOCK
@@ -141,26 +183,42 @@ namespace Test
             ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;
             EClasificacionBebida clasificacionBebida2 = EClasificacionBebida.Con_Alcohol;
 
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
+            IProducto coca = _gestorProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
+            IProducto cerveza = _gestorProductos.CrearProducto(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
 
-            List< IConsumible> bebidasDelStock = gestorDeProductos.GetAllProductosBebidas();
+            //Agregamos los productos BEBIDAS
+            _gestorProductos.AgregarProductoAStock(coca);
+            _gestorProductos.AgregarProductoAStock(cerveza);
+
+
+
+            List<IConsumible> bebidasDelStock = _gestorProductos.ReadAllProductosBebidas();
 
             // AGREGAMOS LAS BEBIDAS DEL STOCK AL MENÚ
-            gestorMenu.AgregarBebidasAMenu(nombreDeMenuCreadoPreviamente, bebidasDelStock);
+            _gestorMenu.AgregarBebidasAMenu(nombreDelMenuCreadoPreviamente, bebidasDelStock);
 
-            //Teniendo el Menú listo se puede mostrar
-            //----- MOSTRAMOS EL MENU Y SELECIONAMOS LOS CONSUMIBLES PARA ARMAR EL PEDIDO -----
-            gestorMenu.GetListaDeMenusQueSeOfrecen();
+            //***************** Teniendo el Menú listo se puede mostrar y podriamos crear el pedido: --------->>>>>>>>>>>
+
 
             //-------------- VAMOS A CREAR UN PEDIDO -----------------
 
-            IEmpleado empleadoMesero = new Mesero(ERol.Mesero, "Pepe", "Medusa", "4521", "Av los saltamontes 54", 15000M);
+            _empleadoMesero = new Mesero(ERol.Mesero, "Pepe", "Medusa", "4521", "Av los saltamontes 54", 15000M);
+        }
 
 
-            GestorDePedidos gestorDePedidos = new GestorDePedidos(gestorMenu);
+
+        [TestMethod]
+        public void testeandoLacreacionDeUnpedidoParaLocal()
+        {
+
+            GestorDePedidos gestorDePedidos = new GestorDePedidos();
+
+            //----- MOSTRAMOS EL MENU Y SELECIONAMOS LOS CONSUMIBLES PARA ARMAR EL PEDIDO -----
+            _gestorMenu.GetAllMenus();
 
             // tener el crear dentro del gestor pedidos que espere el ICreador de Pedido
+
+
         }
 
 

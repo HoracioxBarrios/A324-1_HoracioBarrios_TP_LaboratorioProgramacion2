@@ -7,22 +7,28 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
+
+    public delegate void StockDeProductosActualizoDelegate();
+
+
     public interface IGestorProductos
     {
-        void CrearProductoParaListaDeStock(
-              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida
-            , decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default
-            , EClasificacionBebida clasificacionDeBebida = default);
 
-        IConsumible CrearProducto(
+
+        IProducto CrearProducto(
              ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida,
              decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default,
              EClasificacionBebida clasificacionDeBebida = default);
+ 
+        void EditarProducto(string nombre, string correccionDelNombre);
+        void EliminarProducto(string nombre);
+        void AgregarProductoAStock(IProducto producto);
+        List<IConsumible> ReadAllProductosIngredientes();
+        List<IConsumible> ReadAllProductosBebidas();
+        List<IProducto> ReadAllProductos();
 
         bool DescontarProductosDeStock(List<IConsumible> listaDeIngredienteEnElPlato);
 
-        List<IConsumible> GetAllProductosIngrediente();
-        List<IConsumible> GetAllProductosBebidas();
-
+        event StockDeProductosActualizoDelegate EventStockDeProductosActualizados;
     }
 }

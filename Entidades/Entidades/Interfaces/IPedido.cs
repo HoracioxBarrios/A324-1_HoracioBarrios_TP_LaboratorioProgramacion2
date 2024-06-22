@@ -12,10 +12,15 @@ namespace Entidades.Interfaces
         ETipoDePedido TipoDePedido { get; set;}
         int Id { get; set; }
         void AgregarConsumible(IConsumible consumible);
-        void EditarConsumible(IConsumible consumibleConLaCantidadCorregida);
+        void EditarConsumible(IConsumible consumibleCorregido);
+        void EditarConsumibles(List<IConsumible> nuevaListaDeConsumiblesCorregidos);
         void EliminarConsumible(IConsumible consumible);
+        List<IConsumible> GetBebidas();
+        List<IConsumible> GetPlatos();
         decimal CalcularPrecio();
         bool VerificarSiEsEntregable();
+
+        event PedidoListoParaEntregarEventHandler PedidoListoParaEntregar;
 
 
     }

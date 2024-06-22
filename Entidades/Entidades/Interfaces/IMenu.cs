@@ -10,9 +10,9 @@ namespace Entidades.Interfaces
     {
         string Nombre { get; set; }
         void Agregar(IConsumible consumible);
-
         void Quitar(IConsumible consumible);
-
+        IConsumible GetPlatoPorNombre(string nombreDelPlato);
+        IConsumible GetBebidaPorNombre(string nombreDeLaBebida);
         List<IConsumible> GetPlatosEnMenu();
 
         List<IConsumible> GetBebidasInMenu();

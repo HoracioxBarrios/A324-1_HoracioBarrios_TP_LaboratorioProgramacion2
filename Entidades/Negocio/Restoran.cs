@@ -10,10 +10,7 @@ using System.Threading.Tasks;
 
 namespace Negocio
 {
-    /// <summary>
-    /// Class Restoran
-    /// 
-    /// </summary>
+
     public class Restoran
     {
         private IGestorDeEmpleados _gestorDeEmpleados;
@@ -50,7 +47,7 @@ namespace Negocio
 
             _gestorDeProductos = new GestorDeProductos();
 
-            //------- instancio PRODUCTOS (INGREDIENTES) ---------
+            //------- instancio PRODUCTOS (INGREDIENTES)  Y Se Agregan al Stock ---------
 
             //Proveedor para Ingrediente 1 -ALMACEN
             IProveedor proveedor1 = _gestorDeProveedores.GetProveedor(1);
@@ -61,57 +58,81 @@ namespace Negocio
             //proveedor para Ingrediente 4 -VERDULERIA
             IProveedor proveedor4 = _gestorDeProveedores.GetProveedor(4);
 
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Ingrediente, "Aceite", 2, EUnidadDeMedida.Litro, 1000M, proveedor1);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Ingrediente, "Pollo", 6, EUnidadDeMedida.Kilo, 6000M, proveedor2) ;
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Ingrediente, "Tomate", 2, EUnidadDeMedida.Kilo , 2000M, proveedor3);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Ingrediente, "Papa", 6, EUnidadDeMedida.Kilo, 6000M, proveedor4);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Ingrediente, "Lechuga",2, EUnidadDeMedida.Kilo, 2000M, proveedor4);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Ingrediente, "Carne", 10, EUnidadDeMedida.Kilo, 10000M, proveedor2);
+            IProducto aceite = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Aceite", 2, EUnidadDeMedida.Litro, 1000M, proveedor1);
+            IProducto pollo = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Pollo", 6, EUnidadDeMedida.Kilo, 6000M, proveedor2) ;
+            IProducto tomate = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Tomate", 2, EUnidadDeMedida.Kilo , 2000M, proveedor3);
+            IProducto papa = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Papa", 6, EUnidadDeMedida.Kilo, 6000M, proveedor4);
+            IProducto lechuga = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Lechuga",2, EUnidadDeMedida.Kilo, 2000M, proveedor4);
+            IProducto carne = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Carne", 10, EUnidadDeMedida.Kilo, 10000M, proveedor2);
+
+            //---- Existe la manera de crear el producto con (CrearProducto() y luego agregarlo a la lista de productos de stock (AgregarproductoAStock()) -----
+
+            // ------- Instancio PRODUCTOS (BEBIDAS)  y se Agregan al Stock ----------
+
+            IProducto cocaCola = _gestorDeProductos.CrearProducto(ETipoDeProducto.Bebida, "CocaCola", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Sin_Añcohol);
+            IProducto cocaLight = _gestorDeProductos.CrearProducto(ETipoDeProducto.Bebida, "CocaLigh", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Sin_Añcohol);
+            IProducto cerveza = _gestorDeProductos.CrearProducto(ETipoDeProducto.Bebida, "Cerveza", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Con_Alcohol);
+            IProducto vino = _gestorDeProductos.CrearProducto(ETipoDeProducto.Bebida, "Vino", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Con_Alcohol);
+            IProducto jugo = _gestorDeProductos.CrearProducto(ETipoDeProducto.Bebida, "Jugo", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Sin_Añcohol);
 
 
-            // ------- Instancio PRODUCTOS (BEBIDAS) ----------
+            //AGREGAMOS AL STOCK
+            _gestorDeProductos.AgregarProductoAStock(aceite);
+            _gestorDeProductos.AgregarProductoAStock(pollo);
+            _gestorDeProductos.AgregarProductoAStock(tomate);
+            _gestorDeProductos.AgregarProductoAStock(papa);
+            _gestorDeProductos.AgregarProductoAStock(lechuga);
+            _gestorDeProductos.AgregarProductoAStock(carne);
+            _gestorDeProductos.AgregarProductoAStock(cocaCola);
+            _gestorDeProductos.AgregarProductoAStock(cocaLight);
+            _gestorDeProductos.AgregarProductoAStock(cerveza);
+            _gestorDeProductos.AgregarProductoAStock(vino);
+            _gestorDeProductos.AgregarProductoAStock(jugo);
 
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Bebida, "CocaCola", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Sin_Añcohol);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Bebida, "CocaLigh", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Sin_Añcohol);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Bebida, "Cerveza", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Con_Alcohol);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Bebida, "Vino", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Con_Alcohol);
-            _gestorDeProductos.CrearProductoParaListaDeStock(ETipoDeProducto.Bebida, "Jugo", 50, EUnidadDeMedida.Unidad, 50000M, proveedor1, ECategoriaConsumible.Bebida, EClasificacionBebida.Sin_Añcohol);
+            // TENIENDO STOCK DE PRODUCTOS PODEMOS CREAR EL PLATO
 
-
-            //-------- Instancio INGREDIENTES PARA CREAR LOS PLATOS (ICONSUMIBLE)
-            // Ingredientes para el Plato 1
-            List<IConsumible> listaDeIngredienteParaElPlato1 = new List<IConsumible>();
-            IConsumible ingrediente1ParaPlato1 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Carne", 1, EUnidadDeMedida.Kilo, 1000M, proveedor2);
-            IConsumible ingrediente2ParaPlato1 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Papa", 1, EUnidadDeMedida.Kilo, 1000M, proveedor4);
-            listaDeIngredienteParaElPlato1.Add(ingrediente2ParaPlato1);
-            listaDeIngredienteParaElPlato1.Add(ingrediente1ParaPlato1);
-
-            // Ingredientes para el Plato 2
-            List<IConsumible> listaDeIngredienteParaElPlato2 = new List<IConsumible>();
-            IConsumible ingrediente1ParaPlato2 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Carne", 1, EUnidadDeMedida.Kilo, 1000M, proveedor2);
-            IConsumible ingrediente2ParaPlato2 = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Tomate", 1, EUnidadDeMedida.Kilo, 1000M, proveedor3);
-            listaDeIngredienteParaElPlato2.Add(ingrediente1ParaPlato2);
-            listaDeIngredienteParaElPlato2.Add(ingrediente2ParaPlato2);
-
-            // Para el PLATO (Necesitamos el Cocinero), Crea El PLATO, LO AGREGA A UN MENU Y ESTE SE GUARDA EN UNA LISTA DE MENUES EN EL GESTOR
+            //INSTANCIAMOS EL COCINERO
             IEmpleado cocinero = _gestorDeEmpleados.GetEmpleadoEnList("Gille");
-            _gestorMenu = new GestorDeMenu((ICocinero)cocinero);
 
+            //INSTACIAMOS EL GESTOR MENU
+            _gestorMenu = new GestorDeMenu((ICocinero)cocinero, _gestorDeProductos);
+
+            //CREAMOS UN MENU
             _gestorMenu.CrearMenu("Almuerzo");
 
-            // Selecciona ingredientes para el primer plato
-            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato1, "Carne", 1, EUnidadDeMedida.Kilo);
-            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato1, "Papa", 1, EUnidadDeMedida.Kilo);
-            _gestorMenu.AgregarPlatoAMenu("Almuerzo", "Milanesa con papas");
+
+            // Selecciona ingredientes para el primer PLATO // AL MENOS DEBE HABER 2 INGREDIENTES PARA EL PLATO EN LA LISTA DE INGREDIENTES
+            _gestorMenu.SelecionarIngrediente("Carne", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngrediente("Papa", 1, EUnidadDeMedida.Kilo);
+
+
+            //Crear El Plato 1
+            string nombreDelPLato1 = "Milanesa con papas";
+            int tiempoDePreparacion = 30;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+
+            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPLato1, tiempoDePreparacion, unidadDeTiempo);
+
+
+            //AGREGAMOS EL PLATO CREADO AL MENU: 'Almuerzo'
+            _gestorMenu.AgregarPlatoAMenu("Almuerzo", plato1);
 
 
 
 
 
-            // Selecciona ingredientes para el segundo plato // AL MENOS DEBE HABER 2 INGREDIENTES PARA EL PLATO EN LA LISTA DE INGREDIENTES
-            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato2, "Carne", 1, EUnidadDeMedida.Kilo);
-            _gestorMenu.SeleccionarIngredienteParaElPlato(listaDeIngredienteParaElPlato2, "Tomate", 1, EUnidadDeMedida.Kilo);
-            _gestorMenu.AgregarPlatoAMenu("Almuerzo", "Ensalada");
+            // Selecciona ingredientes para el plato 2 // AL MENOS DEBE HABER 2 INGREDIENTES PARA EL PLATO EN LA LISTA DE INGREDIENTES
+            _gestorMenu.SelecionarIngrediente("Carne", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngrediente("Tomate", 1, EUnidadDeMedida.Kilo);
+
+            //Creamos el plato 2
+            string nombreDelPlato2 = "Ensalada";
+            int tiempoDePreparacion2 = 30;
+            EUnidadDeTiempo unidadDeTiempo2 = EUnidadDeTiempo.Segundos;
+
+            IConsumible plato2 = _gestorMenu.CrearPlato(nombreDelPlato2, tiempoDePreparacion2, unidadDeTiempo2);
+
+            _gestorMenu.AgregarPlatoAMenu("Almuerzo", plato2);
 
 
         }

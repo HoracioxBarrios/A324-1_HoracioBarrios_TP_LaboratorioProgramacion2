@@ -11,6 +11,7 @@ namespace Entidades.Interfaces
         decimal Precio { get; set; }
         bool Disponibilidad { get; set; }
 
-        decimal CalcularPrecio();
+        decimal CalcularPrecioDeCosto();
+        
     }
 }

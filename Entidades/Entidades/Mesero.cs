@@ -43,9 +43,9 @@ namespace Entidades
 
 
 
-        public void CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
+        public IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
         {
-
+            return new Pedido(tipoDePedido, ConsumiblesParaElPEdido);
         }
 
 
@@ -105,7 +105,7 @@ namespace Entidades
             throw new NotImplementedException();
         }
 
-        public void CrearPedido(ETipoDePedido tipoDePedido, IPedido pedido)
+        public void CrearPedido()
         {
             throw new NotImplementedException();
         }
