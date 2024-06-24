@@ -53,21 +53,18 @@ namespace Test
 
 
         [TestMethod]
-        public void Cocinar_PlatoDeberiaEstaBienSiNoEsNull()
+        public void IntanciarPlato_PlatoDeberiaEstarBienSiNoEsNull()
         {
-
+            //act
             Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
             // Act
             Assert.IsNotNull(plato);
         }
 
         [TestMethod]
-        public void Cocinar_PlatoDeberiaIniciarEnListoParaEntregarFalse_SiEsFalseEstaBien()
+        public void IntanciarPlato_PlatoDeberiaIniciarEnListoParaEntregarFalse_SiEsFalseEstaBien()
         {
-            // Arrange
-            //creamos el producto para el plato           
-
-            // creamos un plato con tiempo de preparación de 30 segundos
+            // Act
             Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
 
             // Act
@@ -78,10 +75,11 @@ namespace Test
         [TestMethod]
         public async Task Cocinar_PlatoDeberiaTardar30Segundos()
         {
-            // creamos un plato con tiempo de preparación de 30 segundos
+            //Intanciamos el Plato
             Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
 
             // Act
+            // cocinamos un plato con tiempo de preparación de 30 segundos
             await plato.Cocinar(); // Iniciar la preparación del plato
 
             // Assert
@@ -94,17 +92,18 @@ namespace Test
         [TestMethod]
         public async Task Cocinar_PlatoDeberiaTardar30SegundosYCambiarSuEstadoAEntregableTrue()
         {
-            // creamos un plato con tiempo de preparación de 30 segundos
+            //Intanciamos un plato
             Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
 
             // Act
+            // cocinamos el plato con tiempo de preparación de 30 segundos
             await plato.Cocinar(); // Iniciar la preparación del plato
 
             // Assert
-
+            //emulamos el tiempo de preparacion
             Assert.AreEqual(30, plato.TiempoTranscurrido.TotalSeconds, 1); // Aceptamos un margen de error de 1 segundo
 
-            //Luego de transcurrido el tiempo debe de estar listo = true
+            //Luego de transcurrido el tiempo debe de estar listo . cambia a listo para entregar true.
             Assert.AreEqual(true, plato.ListoParaEntregar);
         }
     }
