@@ -18,7 +18,7 @@ namespace Entidades
         private List<IConsumible> _consumiblesPedidos; // Bebidas o Platos
         private decimal _precioDeloPedido;
         private ETipoDePedido _tipoDePedido;//Para Local o Para Delivery     
-        private bool _isEntregable;
+        private bool _listoParaEntregar;
         private static int _contadorId = 0;
         private int _id;
 
@@ -26,14 +26,9 @@ namespace Entidades
 
 
 
-
-
-
-
-
         private Pedido() 
         {
-            _isEntregable = false;
+            _listoParaEntregar = false;
             _id = ++_contadorId;
         }
         public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos) :this()
@@ -97,26 +92,29 @@ namespace Entidades
         }
 
 
-
+        /// <summary>
+        /// Comprueba si los platos del pedido tienen el estado entregable
+        /// </summary>
+        /// <returns></returns>
         public bool VerificarSiEsEntregable()
         {
-            _isEntregable = true;
+            _listoParaEntregar = true;
 
             foreach (IConsumible consumible in _consumiblesPedidos)
             {
                 if (consumible is IVendible vendible && !vendible.ListoParaEntregar)
                 {
-                    _isEntregable = false;
+                    _listoParaEntregar = false;
                     break;
                 }
             }
 
-            if (_isEntregable)
+            if (_listoParaEntregar)
             {
                 OnPedidoListoParaEntregar(); // Si todos los platos están listos, disparar el evento
             }
 
-            return _isEntregable;
+            return _listoParaEntregar;
         }
 
         protected virtual void OnPedidoListoParaEntregar()

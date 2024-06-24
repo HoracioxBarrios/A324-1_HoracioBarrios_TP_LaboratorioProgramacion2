@@ -1,5 +1,6 @@
 ﻿using Entidades;
 using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -37,19 +38,22 @@ namespace Negocio
             {
                 seCreo = true;
                 _pedidos.Enqueue(pedido);
-                SuscribirEventoListoParaEntregar(pedido);
+                SuscribirEventoListoParaEntregar(pedido); // se suscribe al evento 
             }
             return seCreo;
         }
 
         private void SuscribirEventoListoParaEntregar(IPedido pedido)
         {
-            pedido.PedidoListoParaEntregar += PedidoParaEntregarHandler;
+            pedido.PedidoListoParaEntregar += PedidoListoParaEntregarHandler;
         }
 
 
 
-        private void PedidoParaEntregarHandler(IPedido pedido)
+
+
+        // Manejador del evento PedidoListoParaEntregar
+        private void PedidoListoParaEntregarHandler(IPedido pedido)
         {
             // Aquí realizas las acciones que corresponden cuando un pedido está listo para entregar
             Console.WriteLine($"El pedido {pedido.Id} está listo para ser entregado.");
@@ -71,19 +75,28 @@ namespace Negocio
         
 
         /// <summary>
-        /// Toma Para el Cocinero el primer pedido de la cola (queue) y el cocinero lo añade a su lista interna de platos a cocinar
+        /// Toma el primer pedido de la cola (queue)
         /// </summary>
         /// <param name="cocinero"></param>
-        public void TomarPedido(ICocinero cocinero)
+        public IPedido TomarPedidoPrioritario()
         {
             if(_pedidos.Count > 0)
             {
-                IPedido pedido = _pedidos.Peek();// Obtiene el primer pedido de la cola sin eliminarlo
-                cocinero.TomarPedido(pedido);
-            }            
-            
+                IPedido pedido = _pedidos.Peek();// Obtiene el primer pedido de la cola sin eliminarlo                
+                return pedido;
+            }
+            throw new NoHayPedidosEnColaException("No hay Pedidos en Cola en el Gestor Pedidos");
         }
 
+
+        /// <summary>
+        /// El cocinero lo añade a su queue interna de platos a cocinar y comienza a cocinarlo
+        /// </summary>
+        /// <param name="cocineroPreparadorPedido"></param>
+        public void PrepararPedido(IPreparadorDePedidos cocineroPreparadorPedido, IPedido pedido)
+        {
+            cocineroPreparadorPedido.PrepararPedido(pedido);
+        }
         
     }
 }

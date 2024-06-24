@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface ICocinable
+    public interface IPreparadorDePedidos
     {
-        Task Cocinar();
+        bool PrepararPedido(IPedido pedido);
     }
 }

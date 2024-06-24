@@ -59,8 +59,8 @@ namespace Test
 
 
 
-            //------------------- GESTOR DE PRODUCTOS -----------------------
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            //------------------- GESTOR DE PRODUCTOS que tiene la lista de productos stock -----------------------
+            IGestorProductos gestorDeProductos = new GestorDeProductos();
 
 
             //Act
@@ -79,7 +79,7 @@ namespace Test
 
 
             //INSTANCIAMOS EL GESTOR MENU
-            GestorDeMenu gestormenu = new GestorDeMenu((Cocinero)cocinero);
+            GestorDeMenu gestormenu = new GestorDeMenu((ICocinero)cocinero, gestorDeProductos);
 
 
             //SELECCIONAMOS INGREDIENTES PARA EL PLATO (DEBE ESTAR CREADO EN SISTEMA ( -- STOCK --)) -- para el PLATO deben ser 
@@ -90,7 +90,11 @@ namespace Test
             gestormenu.CrearMenu("Almuerzo");
 
             // -------------- Creamos el plato ---------------------
-            IConsumible plato = gestormenu.CrearPlato("polloPapa");
+            string nombreDelPlato = "polloPapa";
+            int tiempoDePreparacion = 30;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+
+            IConsumible plato = gestormenu.CrearPlato(nombreDelPlato, tiempoDePreparacion, unidadDeTiempo);
 
             //Agrgamos el plato al menu
             gestormenu.AgregarPlatoAMenu("Almuerzo", plato);
@@ -102,7 +106,7 @@ namespace Test
             List<IMenu> menusDisponibles = gestormenu.GetAllMenus();
             IMenu menuSeleccionado = gestormenu.GetMenuPorNombre("Almuerzo");
 
-            //----------- SELECCION DE CONSUMIBLES --------------------
+            //----------- SELECCION DE CONSUMIBLES para el Pedido--------------------
             
 
             List<IConsumible> platosYBebidasSelecionadasParaElPedido = new List<IConsumible>();
@@ -122,24 +126,34 @@ namespace Test
 
             //------------------------------------------------------ SE CREÓ EL PEDIDO
             //El cocinero ----> DEBE TOMAR ESE PEDIDO O COMANDA Y Ponerse a cocinar (cuando seleciona el pedido empieza a correr el tiempo del plato)
-            gestorDePedidos.TomarPedido(ICocinero cocinero);
+
+            IPedido pedidoAPreparar = gestorDePedidos.TomarPedidoPrioritario();
+
+            gestorDePedidos.PrepararPedido((IPreparadorDePedidos)cocinero, pedidoAPreparar);
 
 
+            System.Threading.Thread.Sleep(30000); // Espera 30 segundos
+
+            // Verificar si el pedido está listo para entregar
+            Assert.IsTrue(pedidoAPreparar.VerificarSiEsEntregable());
 
 
+            //COMO PUEDO ACA VER QUE SE CUMPLA LOS 30 SEGUNDOS DE PREPARACION DEL PALTO QUE ESTA EN EL PEDIDO.
             //CUANDO TERMINA EL TIEMPO ( de todos los platos )-----> avisa por evento que el pedido esta LISTO PARA ENTREGAR
 
+
+            // ACA EL MESERO DEBE ASIGNAR EL PLATO A LA MESA.
 
             //El cocinero ASIGNA EL PLATO A LA MESA y se debe DESCONTAR LOS INGREDIENTES QUE SE USARON EN EL PLATO.
 
             //Se le pasa la lista de Ingredintes a desconcar
-            bool seDesconto = gestorDeProductos.DescontarProductosDeStock(listaDeIngredienteEnElPlato);
+            //bool seDesconto = gestorDeProductos.DescontarProductosDeStock(listaDeIngredienteEnElPlato);
 
             //------------------------------------------------------------------------------------------------------------------ CORREGIR ACA
 
             //Assert
             //Si se descuenta
-            Assert.IsTrue(seDesconto);
+            //Assert.IsTrue(seDesconto);
 
 
 
@@ -210,8 +224,8 @@ namespace Test
 
             //Act
             //Productos que van a estar en la lista del stock (está dentro de GestorProductos)
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
+            gestorDeProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
+            gestorDeProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
 
 
             //Producto IConsumubleque va a estar en el plato(lo que  usa el plato)
@@ -301,8 +315,8 @@ namespace Test
 
             //Act
             //Productos que van a estar en la lista del stock (está dentro de GestorProductos)
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
+            gestorDeProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
+            gestorDeProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)
@@ -392,8 +406,8 @@ namespace Test
 
             //Act
             //Productos que van a estar en la lista del stock (está dentro de GestorProductos)
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
-            gestorDeProductos.CrearProductoParaListaDeStock(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
+            gestorDeProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
+            gestorDeProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
 
 
             //Producto que va a estar en el plato(lo que  usa el plato)

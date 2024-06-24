@@ -53,10 +53,10 @@ namespace Test
             decimal sueldo = 45000M;
             ERol rol = ERol.Encargado;
             IEmpleado empleadoEncargado1 = new Encargado(rol ,nombre, apellido, cantacto, calle, sueldo);
-                        
 
-            //    Assert.AreEqual(rol, empleadoEncargado1.Rol);
-            //}
+
+            Assert.AreEqual(rol, empleadoEncargado1.Rol);
+            
         }
     }
 }

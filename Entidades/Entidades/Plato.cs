@@ -69,22 +69,22 @@ namespace Entidades
         }
 
 
-        public async void Cocinar()
+        public async Task Cocinar()
         {
             _listoParaEntregar = false;
 
             _cronometro = Stopwatch.StartNew();
             _horaInicioCocinado = DateTime.Now;
 
-            await Task.Delay(_tiempoDePreparacion);//hace un delay con el tiempo de preparacion sin detener el hilo proncipal
+            await Task.Delay(_tiempoDePreparacion); // Espera el tiempo de preparación sin bloquear el hilo principal
             _cronometro.Stop();
             _horaFinCocinado = DateTime.Now;
 
-
-            _listoParaEntregar = true;
+            _listoParaEntregar = true;// se termina de cocinar y es entregable
 
             OnPlatoListo();
         }
+
 
         private void OnPlatoListo()
         {

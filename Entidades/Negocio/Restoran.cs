@@ -136,6 +136,12 @@ namespace Negocio
 
 
         }
+
+
+
+
+
+
         public IGestorDeEmpleados GestorEmpleados
         {
             get { return _gestorDeEmpleados; }
