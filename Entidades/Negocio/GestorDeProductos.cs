@@ -4,6 +4,7 @@ using Entidades;
 using Entidades.Enumerables;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
+using Entidades.Services;
 
 namespace Negocio
 {

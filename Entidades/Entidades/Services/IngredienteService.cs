@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace Entidades.Services
 {
     public class IngredienteService
     {
         public static IConsumible ObtenerIngredienteParaPlato(List<IConsumible> ingredientes, string nombreIngrediente, double cantidad, EUnidadDeMedida unidadDeMedida)
         {
-            
+
             Ingrediente ingredienteSeleccionado = (Ingrediente)ingredientes.Find(ingrediente => ingrediente.Nombre.Equals(nombreIngrediente, StringComparison.OrdinalIgnoreCase));// y si esta disponible
 
             if (ingredienteSeleccionado == null)
@@ -20,7 +20,7 @@ namespace Entidades
                 throw new ArgumentException($"Ingrediente con nombre '{nombreIngrediente}' no encontrado en la lista.");
             }
 
-            
+
             return ingredienteSeleccionado.CrearCopiaConCantidadNueva(cantidad, unidadDeMedida);// Creamos una copia del ingrediente con la nueva cantidad y unidad de medida
         }
     }

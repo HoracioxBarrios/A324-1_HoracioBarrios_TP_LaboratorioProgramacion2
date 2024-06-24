@@ -3,7 +3,7 @@ using Entidades.Enumerables;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
 
-namespace Negocio
+namespace Entidades.Services
 {
     /// <summary>
     /// Class Empleado Service - (Usa el Patron de Diseño Factory Method para crear IEmpleados
@@ -25,8 +25,8 @@ namespace Negocio
         public static IEmpleado CrearEmpleado(ERol rol, string nombre, string apellido, string contacto
             , string direccion, decimal salario)
         {
-            if ((string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido)
-                || string.IsNullOrEmpty(contacto) || string.IsNullOrEmpty(direccion) ||salario <= 0))
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido)
+                || string.IsNullOrEmpty(contacto) || string.IsNullOrEmpty(direccion) || salario <= 0)
             {
                 throw new EmpleadoDatosException("Datos de empleado Invalido");
 
@@ -68,8 +68,8 @@ namespace Negocio
         public static IEmpleado CrearEmpleado(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto
            , string direccion, decimal salario)
         {
-            if ((string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido)
-                || string.IsNullOrEmpty(contacto) || string.IsNullOrEmpty(direccion) || salario <= 0 || id < 0 || string.IsNullOrEmpty(password)))
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellido)
+                || string.IsNullOrEmpty(contacto) || string.IsNullOrEmpty(direccion) || salario <= 0 || id < 0 || string.IsNullOrEmpty(password))
             {
                 throw new EmpleadoDatosException("Datos de empleado Invalido");
 

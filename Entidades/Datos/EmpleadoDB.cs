@@ -2,16 +2,16 @@
 using Entidades.Enumerables;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
-using Negocio;
 using Microsoft.Data.SqlClient;
 using System.Reflection.Metadata.Ecma335;
+using Entidades.Services;
 
 
 //https://www.connectionstrings.com
 //https://www.connectionstrings.com/sql-server-2019/
 namespace Datos
 {
-    
+
     public class EmpleadoDB :IOperacionesEmpleadoDB
     {
         private string _connectionString;
@@ -24,7 +24,7 @@ namespace Datos
             _baseDeDatosPcEscritorio = "Hora\\SERVER_PRUEBA";
             _baseDeDatosPcEscritorioOfi = "DESKTOP-RF5OK6R\\RESTAURANT";
 
-            _connectionString = $"Server={_baseDeDatosPcEscritorioOfi};Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
+            _connectionString = $"Server={_baseDeDatosPcEscritorio};Database=RestaurantDB;User Id=sa;Password=123456;TrustServerCertificate=true;";
 
             _tablaEmpleado = "Empleado";
             

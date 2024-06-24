@@ -1,10 +1,10 @@
 ﻿using Entidades;
-using Negocio;
 using Entidades.Enumerables;
 using System;
 using System.Collections.Generic;
 using Entidades.Interfaces;
 using Entidades.Excepciones;
+using Entidades.Services;
 namespace Test
 {
     [TestClass]

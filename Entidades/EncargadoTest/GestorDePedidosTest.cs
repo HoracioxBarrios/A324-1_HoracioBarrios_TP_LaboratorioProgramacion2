@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using Entidades.Enumerables;
 using Entidades.Interfaces;
+using Entidades.Services;
 using Moq;
 using Negocio;
 using System;

@@ -8,6 +8,7 @@ using Entidades.Interfaces;
 using Entidades;
 using Moq;
 using Negocio;
+using Entidades.Services;
 
 namespace Test
 {
@@ -66,7 +67,7 @@ namespace Test
             _cocinero = new Cocinero(ERol.Cocinero, "Christof", "F", "115448", "Calle inexistente 5", 50000M);
 
 
-            _gestorMenu = new GestorDeMenu(_cocinero, _gestorProductos);
+            _gestorMenu = new GestorDeMenu(_cocinero);
             //CREAMOS EL MENU
             _gestorMenu.CrearMenu("Desayuno");
 
@@ -80,9 +81,7 @@ namespace Test
             //Creamos el plato ya que el cocinero elijio y ya tiene una lista con los ingredientes SELECCIONADOS
             //CREAMOS EL PLATO
             string nombreDelPlato = "Milapapa";
-            int tiempoDePreparacion = 30;
-            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
-            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlato, tiempoDePreparacion, unidadDeTiempo);
+            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlato);
 
             //aGREGAMOS EL PLATO AL MENU
             _gestorMenu.AgregarPlatoAMenu("Desayuno", plato1);
@@ -115,8 +114,8 @@ namespace Test
             Assert.IsNotNull(plato, "El plato 'Pizza' no fue agregado al menú correctamente.");
             Assert.IsTrue(plato.Disponibilidad, $"El plato '{plato.Nombre}' no está disponible.");
 
-            //int cantidadIngredientes = plato.GetIngredientesDelPlato().Count;
-            //Assert.IsTrue(cantidadIngredientes >= 2, $"El plato '{plato.Nombre}' debe tener al menos 2 ingredientes.");
+            int cantidadIngredientes = plato.GetIngredientesDelPlato().Count;
+            Assert.IsTrue(cantidadIngredientes >= 2, $"El plato '{plato.Nombre}' debe tener al menos 2 ingredientes.");
         }
 
         [TestMethod]
@@ -178,11 +177,12 @@ namespace Test
             List<IConsumible> listaDeIngredientesEnStock = _gestorProductos.ReadAllProductosIngredientes();
 
 
-            //usamos EL COCINERO         
+            //INSTANCIAMOS EL COCINERO
+            IEmpleado cocinero = EmpleadoServiceFactory.CrearEmpleado(ERol.Cocinero, "Pipo", "ERG", "4215554", "Av El Ruttu 5412", 40000M);
 
 
             //INTANCIAMOSEL GESTOR MENU
-            _gestorMenu = new GestorDeMenu(_cocinero, _gestorProductos);
+            _gestorMenu = new GestorDeMenu((Cocinero)cocinero);
 
 
             //CREAMOS EL MENU
@@ -207,13 +207,11 @@ namespace Test
 
 
             string nombreDeMenuCreadoPreviamente = "General";
-            int tiempodePreparacion = 30;
-            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
             string nombreDelPlatoACrear = "MilaPapa";
 
             //creamos el pLato ya que el cocinero elijio los ingredientes y lostiene (en una lista interna de INGREDIENTES SELECCIONADOS)
             //CREAMOS EL PLATO
-            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlatoACrear, tiempodePreparacion, unidadDeTiempo);
+            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlatoACrear);
             _gestorMenu.AgregarPlatoAMenu(nombreDeMenuCreadoPreviamente, plato1);
 
 

@@ -1,6 +1,6 @@
 ﻿using Entidades.Enumerables;
 using Entidades.Interfaces;
-using Negocio;
+using Entidades.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
