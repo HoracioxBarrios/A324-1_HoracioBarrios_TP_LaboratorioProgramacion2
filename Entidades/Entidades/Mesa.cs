@@ -66,7 +66,11 @@ namespace Entidades
             }
             return estaAsignada;
         }
-
+        public void Cerrar()
+        {
+            _estado = EStateMesa.Cerrada;
+            _pedidos.Clear();
+        }
 
         public int IdDelMesero
         {

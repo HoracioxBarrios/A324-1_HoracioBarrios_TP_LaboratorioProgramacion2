@@ -42,7 +42,7 @@ namespace Entidades
         public void AsignarMesaAMesero(IMesa mesa, IMesero mesero)
         {
             mesa.IdDelMesero = mesero.Id;
-            mesero.AgregarMesa(mesa);
+            mesero.RecibirMesa(mesa);
         }
 
 

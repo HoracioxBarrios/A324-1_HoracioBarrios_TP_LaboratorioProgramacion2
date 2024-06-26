@@ -9,8 +9,9 @@ namespace Entidades.Interfaces
     public interface IMesero
     {
         int Id { get; }
+        string Nombre { get; }
+        string Apellido { get; }
         List<IMesa> MesasAsignada { get; set; }
-        void AgregarMesa(IMesa mesa);
-        void CobrarMesa(int idMesa);       
+        void RecibirMesa(IMesa mesa);   
     }
 }

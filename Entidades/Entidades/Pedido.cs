@@ -19,9 +19,11 @@ namespace Entidades
         private decimal _precioDeloPedido;
         private ETipoDePedido _tipoDePedido;//Para Local o Para Delivery     
         private bool _listoParaEntregar;
+        private bool _entregado;
         private static int _contadorId = 0;
         private int _id;
 
+        private int _idMesaOCliente;
         public event PedidoListoParaEntregarEventHandler PedidoListoParaEntregar;
 
 
@@ -29,12 +31,15 @@ namespace Entidades
         private Pedido() 
         {
             _listoParaEntregar = false;
+            _entregado = false;
             _id = ++_contadorId;
+            
         }
-        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos) :this()
+        public Pedido(ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos, int idMesaOCliente) :this()
         {
             _tipoDePedido = tipoDePedido;
             _consumiblesPedidos = consumiblesPedidos ?? new List<IConsumible>(); // (el operador de coalescencia nula). Este operador se usa para devolver el valor de su operando izquierdo si no es null; de lo contrario, devuelve el operando derecho.
+            _idMesaOCliente = idMesaOCliente;
             SuscribirseVariosPlatosAEventoPlatoListoParaEntregar(_consumiblesPedidos);//Los consumibles pedidos son BEBIDAS O EN ESTE CASO PLATOS
         }
 
@@ -93,7 +98,7 @@ namespace Entidades
 
 
         /// <summary>
-        /// Comprueba si los platos del pedido tienen el estado entregable
+        /// Comprueba si los platos - Bebidas del pedido tienen el estado entregable
         /// </summary>
         /// <returns></returns>
         public bool VerificarSiEsEntregable()
@@ -220,7 +225,25 @@ namespace Entidades
             get { return _id;}
             set { _id = value;}
         }
+        public bool ListoParaEntregar
+        {
+            get { return _listoParaEntregar; }
+        }
+        public bool Entregado
+        {
+            get { return _entregado; }
+            set { _entregado = value; }
+        }
 
+
+
+        /// <summary>
+        /// Representa la ID del cliente al que le corresponde el pedido
+        /// </summary>
+        public int IDMesaOCliente
+        {
+            get { return _idMesaOCliente; }
+            set { _idMesaOCliente = value; }
 
         public override string ToString()
         {

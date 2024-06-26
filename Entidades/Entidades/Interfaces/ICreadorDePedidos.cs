@@ -9,6 +9,6 @@ namespace Entidades.Interfaces
 {
     public interface ICreadorDePedidos
     {
-        IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido);
+        IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido, int IdDeLaMesaOCliente);
     }
 }

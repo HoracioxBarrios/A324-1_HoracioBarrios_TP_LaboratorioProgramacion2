@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface IPreparadorDePedidos
+    public interface IEntregadorPedidos
     {
-        void TomarPedido(IPedido pedido);
-        Task<bool> PrepararPedido();
+        void EntregarPedido(int idCliente, IPedido pedido);
     }
 }

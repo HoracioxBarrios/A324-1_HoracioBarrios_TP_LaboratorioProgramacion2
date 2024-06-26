@@ -13,7 +13,7 @@ namespace Entidades.Interfaces
         IConsumible CrearPlato(string nombreDelPlato, List<IConsumible> ingredientes, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo);
         IConsumible EditarPlato(IConsumible plato, List<IConsumible> ingredientesActualizacion);
         void EliminarPlato(string nombre, List<IConsumible> listaDePlatos);
-        void CocinarPlato(ICocinable plato);
+        Task CocinarPlato(ICocinable plato);
         List<IConsumible> GetListaDeIngredientesSeleccionados();
 
     }

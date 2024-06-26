@@ -10,10 +10,9 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {//meseri debe poder ser pasado a la entidad gestor pedidos y crear los pedidos que luego vera en la cocina para crear los platos(debe tener tiempo de preparacion)
-    public class Mesero : Empleado, ICobrador, IMesero, ICreadorDePedidos
+    public class Mesero : Empleado, ICobrador, IMesero, ICreadorDePedidos, IEntregadorPedidos
     {
-        private decimal _montoAcumuladoDeTodasLasMesas;
-        private decimal _montoMesaActual;
+        private decimal _montoAcumulado;
         private List<IMesa> _mesasAsignada;
 
         public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario): base(
@@ -26,8 +25,8 @@ namespace Entidades
             this.Salario = salario;
             this.Rol = rol;
 
-            _montoAcumuladoDeTodasLasMesas = 0;
-            _montoMesaActual = 0;
+            _montoAcumulado = 0;
+
         }
         public Mesero(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -43,19 +42,6 @@ namespace Entidades
 
 
 
-        public IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
-        {
-            return new Pedido(tipoDePedido, ConsumiblesParaElPEdido);
-        }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -63,28 +49,32 @@ namespace Entidades
         /// agrega la mesa que va a atender
         /// </summary>
         /// <param name="mesa"></param>
-        public void AgregarMesa(IMesa mesa)
+        public void RecibirMesa(IMesa mesa)
         {
             _mesasAsignada.Add(mesa);
         }
 
 
-        public void CobrarMesa(int idMesa)
+        public void Cobrar(int idMesaOCliente)
         {
             decimal montoMesaActual = 0;
             foreach(IMesa mesa in _mesasAsignada) 
             { 
-                if(mesa.Id == idMesa)
+                if(mesa.Id == idMesaOCliente)
                 {
                     List<IPedido> pedidosDeLaMesa = mesa.ObtenerPedidosDeLaMesa();
                     foreach(IPedido pedido in pedidosDeLaMesa)
                     {
-                        _montoMesaActual = pedido.CalcularPrecio();
-                        _montoAcumuladoDeTodasLasMesas += _montoMesaActual;
-                        CerrarMesa(idMesa);
+                        if(pedido.Entregado == true)
+                        {
+                            _montoAcumulado += pedido.CalcularPrecio();
+                        }                                        
+
                     }
+                    CerrarMesa(idMesaOCliente);
+                    break;
                 }
-            
+                
             }
         }
 
@@ -94,37 +84,42 @@ namespace Entidades
             {
                 if (_mesasAsignada[i].Id == idMesa)
                 {
-                    _mesasAsignada[i].Estado = EStateMesa.Cerrada;
+                    _mesasAsignada[i].Cerrar();
+                    break;
                 }            
             }
 
         }
 
-        public void Cobrar(decimal monto)
+
+        public IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPedido, int IdDeLaMesaOCliente)
         {
-            throw new NotImplementedException();
+            return new Pedido(tipoDePedido, ConsumiblesParaElPedido, IdDeLaMesaOCliente);
         }
 
-        public void CrearPedido()
+
+
+        public void EntregarPedido(int idMesa, IPedido pedido)
         {
-            throw new NotImplementedException();
+            foreach(Mesa mesa in _mesasAsignada)
+            {
+                if(mesa.Id == idMesa)
+                {
+                    mesa.AgregarPedidoAMesa(pedido);
+                    pedido.Entregado = true;
+                    break;
+                }
+            }
         }
-
-        public List<IMesa> MesasAsignada 
-        { 
-            get { return _mesasAsignada; }
-            set { _mesasAsignada = value;}
-        }
-
 
         public decimal MontoAcumulado
         {
             get
             {
-                return _montoAcumuladoDeTodasLasMesas;
+                return _montoAcumulado;
             }     
         }
 
-        
+        public List<IMesa> MesasAsignada { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

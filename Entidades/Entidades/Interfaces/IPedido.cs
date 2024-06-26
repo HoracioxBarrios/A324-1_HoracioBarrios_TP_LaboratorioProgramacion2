@@ -11,6 +11,8 @@ namespace Entidades.Interfaces
     {
         ETipoDePedido TipoDePedido { get; set;}
         int Id { get; set; }
+        bool ListoParaEntregar { get; }
+        bool Entregado { get; set; }
         void AgregarConsumible(IConsumible consumible);
         void EditarConsumible(IConsumible consumibleCorregido);
         void EditarConsumibles(List<IConsumible> nuevaListaDeConsumiblesCorregidos);

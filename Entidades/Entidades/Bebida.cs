@@ -94,6 +94,10 @@ namespace Entidades
             }
         }
 
+
+        /// <summary>
+        /// La Bebida esta lista para entregar si esta disponible en stock
+        /// </summary>
         public bool ListoParaEntregar
         {
             get { return Disponibilidad; }

@@ -18,5 +18,7 @@ namespace Entidades.Interfaces
         void AgregarPedidosAMesa(List<IPedido> pedidos);
         List<IPedido> ObtenerPedidosDeLaMesa();
 
+        void Cerrar();
+
     }
 }

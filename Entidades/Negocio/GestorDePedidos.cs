@@ -30,10 +30,10 @@ namespace Negocio
         /// Crea un pedido y lo agrega a la lista de pedidos (en Gestor Pedidos) - Strategy con Encargado o con Mesero
         /// </summary>
         /// <param name="menu"></param>
-        public bool CrearPedido(ICreadorDePedidos creadorDePedidos, ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos)
+        public bool CrearPedido(ICreadorDePedidos creadorDePedidos, ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos, int IdDeLaMesaOCliente)
         {
             bool seCreo = false;
-            IPedido pedido = creadorDePedidos.CrearPedido(tipoDePedido, consumiblesPedidos);
+            IPedido pedido = creadorDePedidos.CrearPedido(tipoDePedido, consumiblesPedidos, IdDeLaMesaOCliente);
             if(pedido != null)
             {
                 seCreo = true;
@@ -90,13 +90,26 @@ namespace Negocio
 
 
         /// <summary>
-        /// El cocinero lo añade a su queue interna de platos a cocinar y comienza a cocinarlo
+        /// El cocinero toma el pedido (lo añade a su queue interna de platos a cocinar) y comienza a cocinarlo
         /// </summary>
         /// <param name="cocineroPreparadorPedido"></param>
-        public void PrepararPedido(IPreparadorDePedidos cocineroPreparadorPedido, IPedido pedido)
+        public async Task<bool> PrepararPedido(IPreparadorDePedidos cocineroPreparadorPedido, IPedido pedido)
         {
-            cocineroPreparadorPedido.PrepararPedido(pedido);
+            cocineroPreparadorPedido.TomarPedido(pedido);
+            return await cocineroPreparadorPedido.PrepararPedido();
         }
-        
+
+        public void EntregarPedido(IEntregadorPedidos entregadorPedidos, int idDelPedido, int idDeMesaOCliente)
+        {
+            foreach(Pedido pedido in _pedidos)
+            {
+                if (pedido.Id == idDelPedido && pedido.ListoParaEntregar == true)
+                {
+                    entregadorPedidos.EntregarPedido(idDeMesaOCliente, pedido); // se entrega por ej. a la mesa y se agrega  a una lista de pedidos para luego cobrar
+                    pedido.Entregado = true;
+                    
+                }
+            }
+        }
     }
 }

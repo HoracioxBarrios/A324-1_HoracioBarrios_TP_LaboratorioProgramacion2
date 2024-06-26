@@ -17,7 +17,7 @@ namespace Test
     public class IngredienteTest
     {
         [TestMethod]
-        public void DescontarIngredienteDelStock_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_SiSeDescontóDaTrue()
+        public async Task DescontarIngredienteDelStock_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_SiSeDescontóDaTrue()
         {
 
             //Arrange
@@ -80,7 +80,7 @@ namespace Test
 
 
             //INSTANCIAMOS EL GESTOR MENU
-            GestorDeMenu gestormenu = new GestorDeMenu((Cocinero)cocinero);
+            GestorDeMenu gestormenu = new GestorDeMenu((ICocinero)cocinero, gestorDeProductos);
 
 
             //SELECCIONAMOS INGREDIENTES PARA EL PLATO (DEBE ESTAR CREADO EN SISTEMA ( -- STOCK --)) -- para el PLATO deben ser 
@@ -91,50 +91,92 @@ namespace Test
             gestormenu.CrearMenu("Almuerzo");
 
             // -------------- Creamos el plato ---------------------
-            IConsumible plato = gestormenu.CrearPlato("polloPapa");
+            string nombrePlato = "polloPapa";
+            int tiempoPreparacion = 10;
+            EUnidadDeTiempo unidadTiempo = EUnidadDeTiempo.Segundos;
 
-            //Agrgamos el plato al menu
+            IConsumible plato = gestormenu.CrearPlato(nombrePlato, tiempoPreparacion,unidadTiempo);
+
+            //Agregamos el plato al menu
             gestormenu.AgregarPlatoAMenu("Almuerzo", plato);
 
 
 
 
-            // >>>>>>>>>>>>>>>>>> ---- Mostramos el menu ---- <<<<<<<<<<<<<<<<<<<<<<<<<<
+            // >>>>>>>>>>>>>>>>>> ---- Traemos los menus disponibles Mostramos el menu ---- <<<<<<<<<<<<<<<<<<<<<<<<<<
             List<IMenu> menusDisponibles = gestormenu.GetAllMenus();
-            IMenu menuSeleccionado = gestormenu.GetMenuPorNombre("Almuerzo");
+            IMenu menuSeleccionado = gestormenu.GetMenuPorNombre("Almuerzo");//selecionamos un menu
 
-            //----------- SELECCION DE CONSUMIBLES --------------------
+            //----------- SELECCION DE CONSUMIBLES ( son los que elijen los comensales o clientes) con esto Armaremos el Pedido( solo sera selecionable la bebidas que hayan en stock y los platos que se puedan cocinar) --------------------
             
 
-            List<IConsumible> platosYBebidasSelecionadasParaElPedido = new List<IConsumible>();
-            IConsumible plato1 = menuSeleccionado.GetPlatoPorNombre("polloPapa");
+            List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
+
+            IConsumible plato1 = menuSeleccionado.GetPlatoPorNombre("polloPapa");//del menu traemos el plato elegido por el cliente
 
 
-            platosYBebidasSelecionadasParaElPedido.Add(plato1);
+            consumublesSelecionadosParaPedido.Add(plato1);
             //---------------------- CREAMOS EL PEDIDO ------------------------
 
             GestorDePedidos gestorDePedidos = new GestorDePedidos();
 
-            //ICreador de Pedidos
-            IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Kiko", "Gry","1152000" , "Av iglu 45", 15000M);
-            Mesero meseroCreadorPedido = (Mesero)mesero;
+            //ICreador de Pedidos MESERO O ENCARGADO
+            //EN CASO DEL MESERO DEBE ESTAR ASIGNADO A LA MESA:
+            IEmpleado encargado = EmpleadoServiceFactory.CrearEmpleado(ERol.Encargado, "Frey", "Varga","421544", "Av. los copos 66", 45000M);
 
-            gestorDePedidos.CrearPedido(meseroCreadorPedido,ETipoDePedido.Para_Local, platosYBebidasSelecionadasParaElPedido);
+            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4);
 
-            //------------------------------------------------------ SE CREÓ EL PEDIDO
-            //El cocinero ----> DEBE TOMAR ESE PEDIDO O COMANDA Y Ponerse a cocinar (cuando seleciona el pedido empieza a correr el tiempo del plato)
-            gestorDePedidos.TomarPedido(ICocinero cocinero);
+            
+
+            IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Leo", "Gry","1152000" , "Av iglu 45", 15000M);
+
+            gestorMesas.RegistrarMesero((IMesero)mesero); //Registro el Mesero en el gestor mesas
+
+            gestorMesas.AsignarMesaAMesero("Leo", "Gry", 1);
 
 
+            //Id de la mesa que realiza el pedido
+            int idDeLaMesCliente = 1;
 
+            bool seCreoPedido = gestorDePedidos.CrearPedido((ICreadorDePedidos)mesero ,ETipoDePedido.Para_Local, consumublesSelecionadosParaPedido, idDeLaMesCliente);
+
+            //------------------------------------------------------ cuando SE CREa EL PEDIDO ya lo tenemos disponible
+            //DEBEMOS TOMAR ESE PEDIDO O COMANDA :por eemplo el cocinero que va a preparar los platos del pedido
+
+            IPedido pedido = gestorDePedidos.TomarPedidoPrioritario();
+
+
+            //Preparar pedido el cocinero recibe el pedido, los PLATOS TARDAN EN COCINARSE y cuando esten los platos cocinados (el pedido pasara a estar disponible ), LAS BEBIDAS SE TOMAN COMO ENTREGABLES SI ESTAN disponibles EN STOCK
+            bool estaListoElPedido = await gestorDePedidos.PrepararPedido((IPreparadorDePedidos) cocinero, pedido);
 
             //CUANDO TERMINA EL TIEMPO ( de todos los platos )-----> avisa por evento que el pedido esta LISTO PARA ENTREGAR
+            if (estaListoElPedido == true)
+            {
+                Assert.IsTrue(estaListoElPedido);
+
+
+
+                gestorDePedidos.EntregarPedido()
+
+                /*
+                 
+                 2- falta el entregar pedido a la mesa,
+                 3- luego cerrar la mesa y el mesero debe reflejar dentro lo cobrado por el pédido entregado.
+                 */
+
+
+
+            }
+            
 
 
             //El cocinero ASIGNA EL PLATO A LA MESA y se debe DESCONTAR LOS INGREDIENTES QUE SE USARON EN EL PLATO.
 
+
+
+
             //Se le pasa la lista de Ingredintes a desconcar
-            bool seDesconto = gestorDeProductos.DescontarProductosDeStock(listaDeIngredienteEnElPlato);
+            //bool seDesconto = gestorDeProductos.DescontarProductosDeStock(listaDeIngredienteEnElPlato);
 
             //------------------------------------------------------------------------------------------------------------------ CORREGIR ACA
 

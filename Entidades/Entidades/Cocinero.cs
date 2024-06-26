@@ -9,16 +9,12 @@ using Entidades.Services;
 namespace Entidades
 {
 
-    public delegate void PlatoCocinadoEventHandler(ICocinable plato);
 
-    public class Cocinero : Empleado, ICocinero
+    public class Cocinero : Empleado, ICocinero, IPreparadorDePedidos
     {
         private List<IConsumible> _ingredientesSelecionados;
         private Queue<IPedido> _pedidosConPlatosParaCocinar;
-
-
-        public event PlatoCocinadoEventHandler EventPlatoCocinado;
-
+        private Queue<IPedido> _pedidosConPLatosCocinados;
 
         public Cocinero(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :base(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -32,6 +28,7 @@ namespace Entidades
 
             _ingredientesSelecionados = new List<IConsumible>();
             _pedidosConPlatosParaCocinar = new Queue<IPedido>();
+            _pedidosConPLatosCocinados = new Queue<IPedido>();
         }
         public Cocinero(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -120,6 +117,8 @@ namespace Entidades
             }
         }
 
+
+
         public void TomarPedido(IPedido pedido)
         {
             if (pedido == null)
@@ -128,36 +127,38 @@ namespace Entidades
             }
 
             _pedidosConPlatosParaCocinar.Enqueue(pedido);
-            if(_pedidosConPlatosParaCocinar.Count > 0)
-            {
-                CocinarPedido();
-            }
-
             
         }
 
-        private void CocinarPedido()
+
+
+
+        public async Task<bool> PrepararPedido()
         {
-            
+            bool esEntregable = false;
             if (_pedidosConPlatosParaCocinar.Count > 0)
             {
                 IPedido pedidoActual = _pedidosConPlatosParaCocinar.Peek(); // Tomamos el primer pedido sin eliminarlo de la cola
 
-                
                 List<IConsumible> platosDelPedido = ObtenerPlatosDelPedido(pedidoActual);
-                
+
                 foreach (var plato in platosDelPedido)
                 {
                     if (plato is ICocinable platoCocinable)
                     {
-                        CocinarPlato(platoCocinable);
+                        await CocinarPlato(platoCocinable);
                     }
                 }
-                pedidoActual.VerificarSiEsEntregable();
-                
-                _pedidosConPlatosParaCocinar.Dequeue();//quitamos de la lista el pedido que ya se cocinó
+                esEntregable = pedidoActual.VerificarSiEsEntregable();
+                if (esEntregable)
+                {
+                    _pedidosConPlatosParaCocinar.Dequeue();//quitamos de la lista el pedido que ya se cocinó
+                    _pedidosConPLatosCocinados.Enqueue(pedidoActual); // cola de los ya cocinados para historial
+                }
             }
+            return esEntregable;
         }
+
 
         private List<IConsumible> ObtenerPlatosDelPedido(IPedido pedido)
         {
@@ -175,11 +176,12 @@ namespace Entidades
         }
 
 
-        public void CocinarPlato(ICocinable plato)
+
+        public async Task CocinarPlato(ICocinable plato)
         {
-            plato.Cocinar();
+            await plato.Cocinar();
         }
-    
+
 
 
 
@@ -205,5 +207,7 @@ namespace Entidades
         {
             return _ingredientesSelecionados;
         }
+
+
     }
 }

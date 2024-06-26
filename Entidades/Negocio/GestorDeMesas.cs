@@ -18,18 +18,51 @@ namespace Negocio
 
 
 
-        public GestorDeMesas(int cantidadDeMesas, List<IMesero> listaDeMeseros, IEncargado encargado)
+        public GestorDeMesas(IEncargado encargado, int cantidadDeMesas)
         {
             _listaDeMesas = new List<IMesa>();
+            _listaDeMeseros = new List<IMesero>();
             for (int i = 0; i < cantidadDeMesas;  i++)
             {
                 IMesa mesa = new Mesa();
-                mesa.Id = i +1;//asigno aca una Id arranca en 1
+                mesa.Id = i +1;     //asigno aca una Id arranca en 1, la db deveria asignar luego
                 _listaDeMesas.Add(mesa);
             }
 
-            _listaDeMeseros = listaDeMeseros;
+            
         }
+
+        public void RegistrarMesero(IMesero mesero)
+        {
+            if (mesero != null)
+            {
+                _listaDeMeseros.Add(mesero);
+            }
+        }
+
+        public void AsignarMesaAMesero(string nombreDelMesero, string apellido, int idMesa)
+        {
+            IMesero mesero = _listaDeMeseros.FirstOrDefault(m => m.Nombre == nombreDelMesero && m.Apellido == apellido);
+            IMesa mesa = _listaDeMesas.FirstOrDefault(m => m.Id == idMesa);
+
+            if (mesero != null && mesa != null)
+            {
+                _encargado.AsignarMesaAMesero(mesa, mesero);
+            }
+            else
+            {
+                // Manejar el caso cuando no se encuentra el mesero o la mesa /
+                if (mesero == null)
+                {
+                    throw new IdDelMeseroBuscadoAlAsignarMesaAMeseroException("Error al buscar mesero por Id al querer asignar mesa a mesero");
+                }
+                if (mesa == null)
+                {
+                    throw new IdDeLaMesaBuscadaAlAsignarMesaAMeseroException("Error al buscar mesa por Id al querer asignar mesa al mesero");
+                }
+            }
+        }
+
         public void AsignarMesaAMesero(int idDelMesero, int idMesa)
         {
             IMesero mesero = _listaDeMeseros.FirstOrDefault(m => m.Id == idDelMesero);
@@ -52,6 +85,25 @@ namespace Negocio
                 }
             }
         }
-            
+
+
+        public void EntregarPedidoAMesa()
+        {
+
+        }
+
+
+        public IMesero GetMesero(string nombre, string apellido)
+        {
+            return _listaDeMeseros.FirstOrDefault(m => m.Nombre == nombre && m.Apellido == apellido);
+        }
+
+
+        public IMesero GetMesero(int idMesero)
+        {
+            return _listaDeMeseros.FirstOrDefault(m => m.Id == idMesero );
+        }
+
+
     }
 }
