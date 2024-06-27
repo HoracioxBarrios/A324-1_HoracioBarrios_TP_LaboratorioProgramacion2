@@ -53,19 +53,30 @@ namespace Test
 
 
         [TestMethod]
-        public void IntanciarPlato_PlatoDeberiaEstarBienSiNoEsNull()
+        public void InstanciarPlato_PlatoDeberiaEstarBienSiNoEsNull()
         {
-            //act
-            Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
+
+            //Arrange
+            string nombre = "NombreDelPlato";
+            int tiempoDePreparacion = 10;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+
+            Plato plato = new Plato(nombre, _ingredientes, tiempoDePreparacion, unidadDeTiempo);
             // Act
             Assert.IsNotNull(plato);
         }
 
+
+
         [TestMethod]
-        public void IntanciarPlato_PlatoDeberiaIniciarEnListoParaEntregarFalse_SiEsFalseEstaBien()
+        public void InstanciarPlato_PlatoDeberiaIniciarEnListoParaEntregarFalse_SiEsFalseEstaBien()
         {
-            // Act
-            Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
+            //Arrange
+            string nombre = "NombreDelPlato";
+            int tiempoDePreparacion = 10;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+
+            Plato plato = new Plato(nombre, _ingredientes, tiempoDePreparacion, unidadDeTiempo);
 
             // Act
             Assert.AreEqual(false, plato.ListoParaEntregar);
@@ -73,35 +84,43 @@ namespace Test
 
 
         [TestMethod]
-        public async Task Cocinar_PlatoDeberiaTardar30Segundos()
+        public async Task Cocinar_PlatoDeberiaTardar10Segundos()
         {
-            //Intanciamos el Plato
-            Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
+            //Arrange
+            string nombre = "NombreDelPlato";
+            int tiempoDePreparacion = 10;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+
+            Plato plato = new Plato(nombre, _ingredientes, tiempoDePreparacion, unidadDeTiempo);
 
             // Act
-            // cocinamos un plato con tiempo de preparación de 30 segundos
+            // cocinamos un plato con tiempo de preparación de 10 segundos
             await plato.Cocinar(); // Iniciar la preparación del plato
 
             // Assert
-            // Verificar que el tiempo transcurrido sea aproximadamente 30 segundos
-            Assert.AreEqual(30, plato.TiempoTranscurrido.TotalSeconds, 1); // Aceptamos un margen de error de 1 segundo
+            // Verificar que el tiempo transcurrido sea aproximadamente 10 segundos
+            Assert.AreEqual(10, plato.TiempoTranscurrido.TotalSeconds, 1); // Aceptamos un margen de error de 1 segundo
 
         }
 
 
         [TestMethod]
-        public async Task Cocinar_PlatoDeberiaTardar30SegundosYCambiarSuEstadoAEntregableTrue()
+        public async Task Cocinar_PlatoDeberiaTardar10SegundosYCambiarSuEstadoAEntregableTrue()
         {
-            //Intanciamos un plato
-            Plato plato = new Plato("NombreDelPlato", _ingredientes, 30, EUnidadDeTiempo.Segundos);
+            //Arrange
+            string nombre = "NombreDelPlato";
+            int tiempoDePreparacion = 10;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+
+            Plato plato = new Plato(nombre, _ingredientes, tiempoDePreparacion, unidadDeTiempo);
 
             // Act
-            // cocinamos el plato con tiempo de preparación de 30 segundos
+            // cocinamos el plato con tiempo de preparación de 10 segundos
             await plato.Cocinar(); // Iniciar la preparación del plato
 
             // Assert
             //emulamos el tiempo de preparacion
-            Assert.AreEqual(30, plato.TiempoTranscurrido.TotalSeconds, 1); // Aceptamos un margen de error de 1 segundo
+            Assert.AreEqual(10, plato.TiempoTranscurrido.TotalSeconds, 1); // Aceptamos un margen de error de 1 segundo
 
             //Luego de transcurrido el tiempo debe de estar listo . cambia a listo para entregar true.
             Assert.AreEqual(true, plato.ListoParaEntregar);
