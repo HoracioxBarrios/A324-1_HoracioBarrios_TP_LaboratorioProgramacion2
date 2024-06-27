@@ -54,6 +54,20 @@ namespace Entidades
             _mesasAsignada.Add(mesa);
         }
 
+        public void EntregarPedido(int idMesa, IPedido pedido)
+        {
+            foreach (Mesa mesa in _mesasAsignada)
+            {
+                if (mesa.Id == idMesa)
+                {
+                    mesa.AgregarPedidoAMesa(pedido);
+                    pedido.Entregado = true;
+                    //Descontar del stock
+                    break;
+                }
+            }
+            throw new AlEntregarPedidoException("Error al entregar Pedido a la mesa");
+        }
 
         public void Cobrar(int idMesaOCliente)
         {
@@ -99,18 +113,7 @@ namespace Entidades
 
 
 
-        public void EntregarPedido(int idMesa, IPedido pedido)
-        {
-            foreach(Mesa mesa in _mesasAsignada)
-            {
-                if(mesa.Id == idMesa)
-                {
-                    mesa.AgregarPedidoAMesa(pedido);
-                    pedido.Entregado = true;
-                    break;
-                }
-            }
-        }
+
 
         public decimal MontoAcumulado
         {

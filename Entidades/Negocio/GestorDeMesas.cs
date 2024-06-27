@@ -15,7 +15,7 @@ namespace Negocio
         private List<IMesa> _listaDeMesas;
         private List<IMesero> _listaDeMeseros;// SEGUIR HAY QUE METER A LOS MESEROS ACA
         private IEncargado _encargado;
-
+        
 
 
         public GestorDeMesas(IEncargado encargado, int cantidadDeMesas)
@@ -63,6 +63,8 @@ namespace Negocio
             }
         }
 
+
+
         public void AsignarMesaAMesero(int idDelMesero, int idMesa)
         {
             IMesero mesero = _listaDeMeseros.FirstOrDefault(m => m.Id == idDelMesero);
@@ -87,10 +89,6 @@ namespace Negocio
         }
 
 
-        public void EntregarPedidoAMesa()
-        {
-
-        }
 
 
         public IMesero GetMesero(string nombre, string apellido)

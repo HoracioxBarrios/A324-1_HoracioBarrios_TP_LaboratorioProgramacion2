@@ -21,18 +21,18 @@ namespace Entidades
 
         public Mesa()
         {
+            _id = 0;
             _cantidadComensales = 4;
             _estado = EStateMesa.Cerrada;
+            _pedidos = new List<IPedido>();
         }
-        public Mesa(int id) : this()
-        {
-            _id = id;
-        }
-        public Mesa(int id, int cantidadDeComensales) : this(id)
+
+        public Mesa(int id, int cantidadDeComensales) : this()
         {
             _cantidadComensales = cantidadDeComensales;
+            _id = id;
         }
-        
+
         public Mesa(int id, int cantidadDeComensales, EStateMesa estado) : this(id, cantidadDeComensales)
         {
             _estado = estado;

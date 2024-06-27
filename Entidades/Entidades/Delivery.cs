@@ -40,10 +40,12 @@ namespace Entidades
         }
 
 
-        public void Cobrar(decimal monto)
+        public void Cobrar(int idMesaOCliente)
         {
             throw new NotImplementedException();
         }
+
+
         public decimal MontoAcumulado
         {
             get

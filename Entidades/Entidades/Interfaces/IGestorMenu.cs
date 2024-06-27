@@ -16,9 +16,7 @@ namespace Entidades.Interfaces
         void EditarPlato();
 
         void EliminarPlato();
-
-        void EstablecerPrecioAlPlato();
-
+        void EstablecerPrecioAProducto(IEstablecedorDePrecios establecedorDePrecios, string nombreDelPlato, decimal precioDeVentaDelPlato);
 
         void AgregarPlatoAMenu(string nombreDelMenu, IConsumible plato);
         void AgregarPlatosAlMenu(string nombreDelMenu, List<IConsumible> listaDePlatos);

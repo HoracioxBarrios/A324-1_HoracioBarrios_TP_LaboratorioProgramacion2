@@ -215,29 +215,32 @@ namespace Negocio
         }
 
 
-
-
-        public bool DescontarProductosDeStock(List<IConsumible> listaDeIngredienteEnElPlato)
+        public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)
         {
             bool seModificoProductoEnLista = false;
 
-            foreach (IConsumible consumible in listaDeIngredienteEnElPlato)
+            if (consumiblesADescontarDeStock == null || consumiblesADescontarDeStock.Count == 0)
+                return false;
+
+            lock (_listaDeProductosEnStock) // Aplicamos lock para garantizar la consistencia de _listaDeProductosEnStock durante la modificación, en contextos con eventos y múltiples hilos (threads)
             {
-                if (consumible is Ingrediente ingredienteADescontar)
+                foreach (IConsumible consumible in consumiblesADescontarDeStock)
                 {
-                    lock (_listaDeProductosEnStock) // Aplicamos lock para garantizar la consistencia de _listaDeProductosEnStock durante la modificación, en contextos con eventos y múltiples hilos (threads)
+                    for (int i = 0; i < _listaDeProductosEnStock.Count; i++)
                     {
-                        for (int i = 0; i < _listaDeProductosEnStock.Count; i++)
+                        if (consumible is Ingrediente ingredienteADescontar && _listaDeProductosEnStock[i] is Ingrediente ingredienteEnStock && ingredienteEnStock.Id == ingredienteADescontar.Id)
                         {
-                            if (_listaDeProductosEnStock[i] is Ingrediente ingredienteEnStock && ingredienteEnStock.Id == ingredienteADescontar.Id)
-                            {
-                                Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
-                                _listaDeProductosEnStock[i] = nuevoIngrediente;
-
-                                seModificoProductoEnLista = true;
-
-                                break;
-                            }
+                            Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
+                            _listaDeProductosEnStock[i] = nuevoIngrediente;
+                            seModificoProductoEnLista = true;
+                            break;
+                        }
+                        else if (consumible is Bebida bebidaADescontar && _listaDeProductosEnStock[i] is Bebida bebidaEnStock && bebidaEnStock.Id == bebidaADescontar.Id)
+                        {
+                            Bebida nuevaBebida = bebidaEnStock - bebidaADescontar;
+                            _listaDeProductosEnStock[i] = nuevaBebida;
+                            seModificoProductoEnLista = true;
+                            break;
                         }
                     }
                 }
@@ -250,6 +253,54 @@ namespace Negocio
 
             return seModificoProductoEnLista;
         }
+
+
+        //public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)
+        //{
+        //    bool seModificoProductoEnLista = false;
+
+        //    foreach (IConsumible consumible in consumiblesADescontarDeStock)
+        //    {
+        //        if (consumible is Ingrediente ingredienteADescontar)
+        //        {
+        //            lock (_listaDeProductosEnStock) // Aplicamos lock para garantizar la consistencia de _listaDeProductosEnStock durante la modificación, en contextos con eventos y múltiples hilos (threads)
+        //            {
+        //                for (int i = 0; i < _listaDeProductosEnStock.Count; i++)
+        //                {
+        //                    if (_listaDeProductosEnStock[i] is Ingrediente ingredienteEnStock && ingredienteEnStock.Id == ingredienteADescontar.Id)
+        //                    {
+        //                        Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
+        //                        _listaDeProductosEnStock[i] = nuevoIngrediente;
+
+        //                        seModificoProductoEnLista = true;
+
+        //                        break;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        if(consumible is Bebida bebidaADescontar)
+        //        {
+        //            for(int i = 0; i < _listaDeProductosEnStock.Count; i++)
+        //            {
+        //                if (_listaDeProductosEnStock[i] is Bebida bebidaInStock && bebidaInStock.Id == bebidaADescontar.Id)
+        //                {
+        //                    Bebida nuevaBebida = bebidaInStock - bebidaADescontar;
+        //                    _listaDeProductosEnStock[i] = nuevaBebida;
+        //                    seModificoProductoEnLista = true;
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    if (seModificoProductoEnLista)
+        //    {
+        //        OnStockProductosActualizado(); // Disparamos evento si se han realizado modificaciones
+        //    }
+
+        //    return seModificoProductoEnLista;
+        //}
 
 
 

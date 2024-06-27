@@ -133,7 +133,11 @@ namespace Entidades
             _precioDeloPedido = 0;
             foreach(IConsumible consumible in _consumiblesPedidos)
             {
-                _precioDeloPedido += consumible.CalcularPrecioDeCosto();
+                if (consumible.Precio <= 0)//El Precio de Venta
+                {
+                    throw new ConsumibleSinPrecioDeVentaException("El Consumible deber tener el Precio de Venta Setteado");                    
+                }
+                _precioDeloPedido += consumible.Precio;
             }
             return _precioDeloPedido;
         }
@@ -213,6 +217,10 @@ namespace Entidades
             throw new ListaVaciaException("La lista de bebidas del pedido esta Vacia");
         }
 
+        public List<IConsumible> GetConsumibles()
+        {
+            return _consumiblesPedidos;
+        }
 
 
         public ETipoDePedido TipoDePedido 
@@ -244,6 +252,7 @@ namespace Entidades
         {
             get { return _idMesaOCliente; }
             set { _idMesaOCliente = value; }
+        }
 
         public override string ToString()
         {

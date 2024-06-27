@@ -13,14 +13,15 @@ namespace Negocio
     public class GestorDePedidos
     {
         private Queue<IPedido> _pedidos; // Los pedidos deben salir en orden en que ingresan
+        private IGestorProductos _gestorProductosStock;
 
 
 
 
-
-        public GestorDePedidos()
+        public GestorDePedidos(IGestorProductos gestorProductosStock)
         {
             _pedidos = new Queue<IPedido>();
+            _gestorProductosStock = gestorProductosStock;
         }
     
 
@@ -55,9 +56,9 @@ namespace Negocio
         // Manejador del evento PedidoListoParaEntregar
         private void PedidoListoParaEntregarHandler(IPedido pedido)
         {
-            // Aquí realizas las acciones que corresponden cuando un pedido está listo para entregar
-            Console.WriteLine($"El pedido {pedido.Id} está listo para ser entregado.");
-            // Puedes agregar lógica adicional según las necesidades de tu aplicación
+            
+            Console.WriteLine($"El pedido {pedido.Id} está listo para ser entregado."); // SE PUEDE MOSTRAR EN PANTALLA EL PEDIDO QUE ESTA LISTO
+            
         }
 
         public bool EditarPedido(IEditorDePedidos editorDePedidos, int id , List<IConsumible> listaActulizadaDeConsumiblesParaElPedido)
@@ -99,17 +100,31 @@ namespace Negocio
             return await cocineroPreparadorPedido.PrepararPedido();
         }
 
-        public void EntregarPedido(IEntregadorPedidos entregadorPedidos, int idDelPedido, int idDeMesaOCliente)
+        public bool EntregarPedido(IEntregadorPedidos entregadorPedidos, int idDelPedido, int idDeMesaOCliente)
         {
+            bool seEntregoCorrectamente = false;
             foreach(Pedido pedido in _pedidos)
             {
                 if (pedido.Id == idDelPedido && pedido.ListoParaEntregar == true)
                 {
                     entregadorPedidos.EntregarPedido(idDeMesaOCliente, pedido); // se entrega por ej. a la mesa y se agrega  a una lista de pedidos para luego cobrar
                     pedido.Entregado = true;
-                    
+                    seEntregoCorrectamente = _gestorProductosStock.DescontarProductosDeStock(pedido.GetConsumibles());
                 }
             }
+            return seEntregoCorrectamente;
+        }
+
+        public IPedido ObtenerPedidoListoParaLaEntrega()
+        {
+            foreach(IPedido pedido in _pedidos)
+            {
+                if(pedido.ListoParaEntregar && pedido.Entregado == false)
+                {
+                    return pedido;
+                }
+            }
+            throw new NoHayPedidosParaEntregarException("No hay pedidos Para EntregarException en la cola");
         }
     }
 }

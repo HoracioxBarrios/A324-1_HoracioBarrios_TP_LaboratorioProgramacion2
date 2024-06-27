@@ -11,6 +11,7 @@ namespace Entidades.Interfaces
     {
         ETipoDePedido TipoDePedido { get; set;}
         int Id { get; set; }
+        int IDMesaOCliente { get; set; }
         bool ListoParaEntregar { get; }
         bool Entregado { get; set; }
         void AgregarConsumible(IConsumible consumible);
@@ -19,6 +20,7 @@ namespace Entidades.Interfaces
         void EliminarConsumible(IConsumible consumible);
         List<IConsumible> GetBebidas();
         List<IConsumible> GetPlatos();
+        List<IConsumible> GetConsumibles();
         decimal CalcularPrecio();
         bool VerificarSiEsEntregable();
 

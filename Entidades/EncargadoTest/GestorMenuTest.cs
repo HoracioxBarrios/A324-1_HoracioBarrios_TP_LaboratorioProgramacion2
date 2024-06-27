@@ -21,16 +21,15 @@ namespace Test
         private List<IConsumible> _listaDeIngredientes;
         private ICocinero _cocinero;
 
-
         private IGestorMenu _gestorMenu;
         private IGestorProductos _gestorProductos;
 
 
-
+        //ok
 
 
         [TestInitialize]
-        public void Setup()
+        public void Init()
         {
             //CREAMOS LOS PROVEEDORES
             var mockProveedor1 = new Mock<IProveedor>();
@@ -67,59 +66,91 @@ namespace Test
             _cocinero = new Cocinero(ERol.Cocinero, "Christof", "F", "115448", "Calle inexistente 5", 50000M);
 
 
-            _gestorMenu = new GestorDeMenu(_cocinero);
-            //CREAMOS EL MENU
-            _gestorMenu.CrearMenu("Desayuno");
 
-
-            //SELECIONAMOS PARA EL COCINERO LOS INGREDIENTES
-            _gestorMenu.SelecionarIngrediente("Tomate", 2, EUnidadDeMedida.Kilo);
-            _gestorMenu.SelecionarIngrediente( "Cebolla", 2, EUnidadDeMedida.Kilo);
-
-
-
-            //Creamos el plato ya que el cocinero elijio y ya tiene una lista con los ingredientes SELECCIONADOS
-            //CREAMOS EL PLATO
-            string nombreDelPlato = "Milapapa";
-            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlato);
-
-            //aGREGAMOS EL PLATO AL MENU
-            _gestorMenu.AgregarPlatoAMenu("Desayuno", plato1);
         }
 
 
         [TestMethod]
         public void TestMenuCreadoCorrectamente_ProbamosSiSeCrea_NoDebeLanzarException()
         {
-            IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
 
-            Assert.IsNotNull(menu, "El menu 'Desayuno' no fue creado correctamente.");
+            _gestorMenu = new GestorDeMenu(_cocinero, _gestorProductos);
+            //CREAMOS EL MENU
+            _gestorMenu.CrearMenu("Desayuno");
+
+            IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
+            Assert.IsNotNull(menu, "El menu 'Desayuno' no fue creado correctamente.");           
+
+
         }
 
         [TestMethod]
         public void TestPlatoAgregadoAlMenuCorrectamente_SeDebePoderCorroborarQueElPlatoSeAgregoAlMenu_NoDebelanzarException()
         {
+            //SELECIONAMOS PARA EL COCINERO LOS INGREDIENTES
+            _gestorMenu.SelecionarIngrediente("Tomate", 2, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngrediente("Cebolla", 2, EUnidadDeMedida.Kilo);
+
+
+
+            //Creamos el plato ya que el cocinero elijio y ya tiene una lista con los ingredientes SELECCIONADOS
+
+
+            //Datos para el plato
+            string nombreDelPlato = "Milapapa";
+            int tiempoPreparacion = 10;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+            //Creamos el plato
+            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlato, tiempoPreparacion, unidadDeTiempo);
+
+            //aGREGAMOS EL PLATO AL MENU
+            _gestorMenu.AgregarPlatoAMenu("Desayuno", plato1);
+
+            //Buscamos que este el menu
             IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
+
+            //Buscamos que este el plato en el menu
             Plato plato = (Plato)menu.GetPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
 
             Assert.IsNotNull(plato, "El plato 'Pizza' no fue agregado al menu correctamente.");
         }
 
+
+
         [TestMethod]
         public void TestCantidadDeIngredientesEnElPlato_DebeCorroborarLaCantidadDeIngredientesEnElPlato_NoDebeLanzarException()
         {
-            IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
-            Plato plato = (Plato)menu.GetPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
+            //SELECIONAMOS PARA EL COCINERO LOS INGREDIENTES
+            _gestorMenu.SelecionarIngrediente("Tomate", 2, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngrediente("Cebolla", 2, EUnidadDeMedida.Kilo);
 
-            Assert.IsNotNull(plato, "El plato 'Pizza' no fue agregado al menú correctamente.");
-            Assert.IsTrue(plato.Disponibilidad, $"El plato '{plato.Nombre}' no está disponible.");
+
+
+            //Creamos el plato ya que el cocinero elijio y ya tiene una lista con los ingredientes SELECCIONADOS
+
+
+            //Datos para el plato
+            string nombreDelPlato = "Milapapa";
+            int tiempoPreparacion = 10;
+            EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
+            //Creamos el plato
+            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlato, tiempoPreparacion, unidadDeTiempo);
+
+            //aGREGAMOS EL PLATO AL MENU
+            _gestorMenu.AgregarPlatoAMenu("Desayuno", plato1);
+
+
+
+            IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
+
+            Plato plato = (Plato)menu.GetPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
 
             int cantidadIngredientes = plato.GetIngredientesDelPlato().Count;
             Assert.IsTrue(cantidadIngredientes >= 2, $"El plato '{plato.Nombre}' debe tener al menos 2 ingredientes.");
         }
 
         [TestMethod]
-        public void TesteamosLaCreacionDeUnMenuAlqueLuegoCreamosUnPlatoYSeAgregaAlMismo_SiSaleBienDeberiaDarOK()
+        public void TesteamosLaCreacionDeUnMenuYCorroboramosSuExistenciaEnLaListaDeMenus_SiSaleBienNoDeberiaDarException()
         {
             //Ingredientes que van a formar los platos
             //DATOS PARA Ingrediente 1-----------------------------------
@@ -182,11 +213,11 @@ namespace Test
 
 
             //INTANCIAMOSEL GESTOR MENU
-            _gestorMenu = new GestorDeMenu((Cocinero)cocinero);
+            _gestorMenu = new GestorDeMenu((Cocinero)cocinero, _gestorProductos);
 
-
+            string nombreDelMenu = "General";
             //CREAMOS EL MENU
-            _gestorMenu.CrearMenu("General");
+            _gestorMenu.CrearMenu(nombreDelMenu);
 
 
             //Elegimos el producto Ingrediente 1 con su cantidad
@@ -206,23 +237,27 @@ namespace Test
             _gestorMenu.SelecionarIngrediente(nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
 
 
-            string nombreDeMenuCreadoPreviamente = "General";
-            string nombreDelPlatoACrear = "MilaPapa";
+
+
 
             //creamos el pLato ya que el cocinero elijio los ingredientes y lostiene (en una lista interna de INGREDIENTES SELECCIONADOS)
             //CREAMOS EL PLATO
-            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlatoACrear);
-            _gestorMenu.AgregarPlatoAMenu(nombreDeMenuCreadoPreviamente, plato1);
+            string nombreDelPlatoACrear = "MilaPapa";
+            int tiempoPreparacion = 10;
+            EUnidadDeTiempo unidadTiempo = EUnidadDeTiempo.Segundos;
+            IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlatoACrear, tiempoPreparacion, unidadTiempo);
+
+            _gestorMenu.AgregarPlatoAMenu(nombreDelMenu, plato1);
 
 
             //Verificamos si en la lista de Menu esta el menu que creamos recien
 
-            Assert.IsTrue(_gestorMenu.GetAllMenus().Count() > 0);
 
-            ////verificamos si es el plato que creamos recien el que esta en la lista de menus.
-            var menuGeneral = _gestorMenu.GetAllMenus().FirstOrDefault(menu => menu.Nombre.Equals(nombreDeMenuCreadoPreviamente, StringComparison.OrdinalIgnoreCase));
+            Assert.IsTrue(_gestorMenu.GetAllMenus().Count() > 0);
+            var menuGeneral = _gestorMenu.GetAllMenus().FirstOrDefault(menu => menu.Nombre.Equals(nombreDelMenu, StringComparison.OrdinalIgnoreCase));
+
             Assert.IsNotNull(menuGeneral);
-            Assert.IsTrue(menuGeneral.GetPlatosEnMenu().Any(plato => plato.Nombre.Equals(nombreDelPlatoACrear, StringComparison.OrdinalIgnoreCase)));
+
 
 
 

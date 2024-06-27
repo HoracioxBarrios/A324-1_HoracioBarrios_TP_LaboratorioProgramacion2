@@ -119,7 +119,7 @@ namespace Negocio
         public void SelecionarIngrediente(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida )
         {
             List<IConsumible> ingredientesEnStock = _gestorProductosStock.ReadAllProductosIngredientes();
-            if(ingredientesEnStock == null || ingredientesEnStock.Count == 0)
+            if (ingredientesEnStock == null || ingredientesEnStock.Count == 0)
             {
                 throw new ListaVaciaException("La lista de Ingredientes en Stock esta Vacia");
             }
@@ -148,7 +148,23 @@ namespace Negocio
 
         public void EliminarPlato() { }
 
-        public void EstablecerPrecioAlPlato() { }
+        /// <summary>
+        /// Establece el precio de Venta del producto : Plato
+        /// </summary>
+        /// En este Lugar (Gestor Menu estableceremos el precio a los productos)
+        /// <param name="establecedorDePrecios"></param>
+        /// <param name="nombreDelProducto"></param>
+        /// <param name="precioDeVentaDelProducto"></param>
+        public void EstablecerPrecioAProducto(IEstablecedorDePrecios establecedorDePrecios, string nombreDelProducto, decimal precioDeVentaDelProducto)
+        {
+            foreach (IConsumible producto in _ListaGeneralDeConsumiblesLocal)
+            {
+                if (producto.Nombre == nombreDelProducto)
+                {
+                    establecedorDePrecios.EstablecerPrecioAProducto((IVendible)producto, precioDeVentaDelProducto);
+                }
+            }
+        }
 
 
         /// <summary>

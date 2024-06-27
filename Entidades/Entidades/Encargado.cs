@@ -7,7 +7,7 @@ using Entidades.Interfaces;
 
 namespace Entidades
 {
-    public class Encargado : Empleado, IEncargado, ICreadorDePedidos, IEditorDePedidos, IEliminadorDePedidos
+    public class Encargado : Empleado, IEncargado, ICreadorDePedidos, IEditorDePedidos, IEliminadorDePedidos, IEstablecedorDePrecios
     {
         public Encargado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : base(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -56,9 +56,9 @@ namespace Entidades
 
 
 
-        public IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido)
+        public IPedido CrearPedido(ETipoDePedido tipoDePedido, List<IConsumible> ConsumiblesParaElPEdido, int idDelCliente)
         {
-            return new Pedido(tipoDePedido, ConsumiblesParaElPEdido);
+            return new Pedido(tipoDePedido, ConsumiblesParaElPEdido, idDelCliente);
         }
 
 
@@ -125,6 +125,19 @@ namespace Entidades
 
             return seElimino;
         }
+
+
+        /// <summary>
+        /// Establece el precio de venta
+        /// </summary>
+        /// <param name="producto"></param>
+        /// <param name="precioDeVenta"></param>
+        public void EstablecerPrecioAProducto(IVendible producto, decimal precioDeVenta)
+        {
+            producto.Precio = precioDeVenta;
+        }
+
+
     }
     
 }
