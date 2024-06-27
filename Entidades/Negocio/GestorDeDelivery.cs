@@ -27,7 +27,10 @@ namespace Negocio
         }
 
         //rEGISTRAR LOS CLIENTES
-
+        public void RegistrarCliente(ICliente cliente)
+        {
+            _listaDeClientes.Add(cliente);
+        }
 
         //gestor delivery emula >>>> gestor mesas
         public void AsignarClienteADelivery(int idDelDelivery, int idDelCliente)

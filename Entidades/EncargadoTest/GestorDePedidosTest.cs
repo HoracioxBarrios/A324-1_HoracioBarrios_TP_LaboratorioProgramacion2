@@ -250,9 +250,56 @@ namespace Test
 
 
         [TestMethod]
-        public void TesteamosLaCreacionDeUnPedidoParaElDelivery()
+        public async Task TesteamosLaCreacionDeUnPedidoParaElDelivery()
         {
+            //Gestor delivery
             GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+
+            //Cliente
+            int idHaecodeadaDelCLiente1 = 200;
+            string nombreDelCliente1 = "PepeLaMangosta";
+            string direccionCliente1 = "Av Los pekes 60";
+            string telefenoCliente1 = "1522446680";
+
+            ICliente cliente1 = new Cliente(idHaecodeadaDelCLiente1, nombreDelCliente1, direccionCliente1, telefenoCliente1);
+
+            //registramos Cliente para tener disponible sus datos
+            gestorDeDelivery.RegistrarCliente(cliente1);
+
+            //Instanciamos un delivery
+            string nombreEmpleado = "pedro";
+            string apellidoEmpleadoDelivery = "pika";
+            string contactoEmpleadoDelivery = "4552166";
+            string direccionEmpleadoDelivery = "Calle 5";
+            decimal salarioEmpleadoDelivery = 20000;
+            IEmpleado empleadoDelivery = EmpleadoServiceFactory.CrearEmpleado(
+                ERol.Delivery, nombreEmpleado, apellidoEmpleadoDelivery, contactoEmpleadoDelivery, direccionEmpleadoDelivery, salarioEmpleadoDelivery);
+            int idDelEmpleadoDelivery = 50;
+
+            empleadoDelivery.Id = idDelEmpleadoDelivery;
+
+            //Creamos el Pedido para delivery
+            GestorDePedidos gestorDePedidos = new GestorDePedidos(_gestorProductos);
+
+            //Tenemos que tener una lista de consumibles pedidos.
+            List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
+
+            IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
+            //del menu traemos el plato o bebida elegido por el cliente
+            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola");
+
+            consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
+
+
+
+            gestorDePedidos.CrearPedido((ICreadorDePedidos)_encargado, ETipoDePedido.Para_Delivery, consumublesSelecionadosParaPedido, idHaecodeadaDelCLiente1);
+
+            IPedido pedidoParaDelivery = gestorDePedidos.TomarPedidoSinPrepararAunParaDelivery();
+
+            bool sePreparo = await gestorDePedidos.PrepararPedido((IPreparadorDePedidos)_cocinero, pedidoParaDelivery);
+
+            Assert.IsTrue(sePreparo);
+
         }
     }
 }

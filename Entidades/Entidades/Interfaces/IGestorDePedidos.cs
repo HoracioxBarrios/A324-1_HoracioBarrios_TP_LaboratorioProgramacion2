@@ -16,5 +16,9 @@ namespace Entidades.Interfaces
         void EditarPedido(int id, ETipoDePedido tipoDePedido);
         void EditarPedido(int id, ETipoDePedido tipoDePedido, IPedido pedido);
         void EliminarPedido(int id);
+
+        IPedido TomarPedidoSinPrepararAunParaDelivery();
+
+        IPedido TomarPedidoSinPrepararAunParaElLocal();
     }
 }
