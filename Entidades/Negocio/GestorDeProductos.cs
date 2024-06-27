@@ -264,55 +264,6 @@ namespace Negocio
 
 
 
-        //public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)
-        //{
-        //    bool seModificoProductoEnLista = false;
-
-        //    foreach (IConsumible consumible in consumiblesADescontarDeStock)
-        //    {
-        //        if (consumible is Ingrediente ingredienteADescontar)
-        //        {
-        //            lock (_listaDeProductosEnStock) // Aplicamos lock para garantizar la consistencia de _listaDeProductosEnStock durante la modificación, en contextos con eventos y múltiples hilos (threads)
-        //            {
-        //                for (int i = 0; i < _listaDeProductosEnStock.Count; i++)
-        //                {
-        //                    if (_listaDeProductosEnStock[i] is Ingrediente ingredienteEnStock && ingredienteEnStock.Id == ingredienteADescontar.Id)
-        //                    {
-        //                        Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
-        //                        _listaDeProductosEnStock[i] = nuevoIngrediente;
-
-        //                        seModificoProductoEnLista = true;
-
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if(consumible is Bebida bebidaADescontar)
-        //        {
-        //            for(int i = 0; i < _listaDeProductosEnStock.Count; i++)
-        //            {
-        //                if (_listaDeProductosEnStock[i] is Bebida bebidaInStock && bebidaInStock.Id == bebidaADescontar.Id)
-        //                {
-        //                    Bebida nuevaBebida = bebidaInStock - bebidaADescontar;
-        //                    _listaDeProductosEnStock[i] = nuevaBebida;
-        //                    seModificoProductoEnLista = true;
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    if (seModificoProductoEnLista)
-        //    {
-        //        OnStockProductosActualizado(); // Disparamos evento si se han realizado modificaciones
-        //    }
-
-        //    return seModificoProductoEnLista;
-        //}
-
-
-
 
         private int VerificarExistenciaDelProducto(string nombre, ETipoDeProducto tipoDeProducto)
         {
