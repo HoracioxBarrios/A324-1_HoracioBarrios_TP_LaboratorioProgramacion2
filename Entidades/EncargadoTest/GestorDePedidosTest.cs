@@ -143,10 +143,6 @@ namespace Test
             //Establecemos el precio de venta del plato (cuando esta agregado dentro del gestor menu) ------> <<<ESTABLECEMOS PRECIO VENTA>>>> 
             _gestorMenu.EstablecerPrecioAProducto((IEstablecedorDePrecios)_encargado, "MilaPapa", 2500);
 
-
-
-
-
             // ------------- EN EL MENU PUEDE HABER BEBIDAS --------------
             //PROVEEDOR MOCK
             var mockProveedor4 = new Mock<IProveedor>();
@@ -185,8 +181,6 @@ namespace Test
             //Agregamos los productos BEBIDAS
             _gestorProductos.AgregarProductoAStock(coca);
             _gestorProductos.AgregarProductoAStock(cerveza);
-
-
 
 
             List<IConsumible> bebidasDelStock = _gestorProductos.ReadAllProductosBebidas();
@@ -233,7 +227,7 @@ namespace Test
 
 
         [TestMethod]
-        public void testeandoLaCreacionDeUnpedidoParaLocal_SeSelecionaUnPlatoYUnaBebida_SiNoLanzaExceptionEstaBien()
+        public void TesteandoLaCreacionDeUnpedidoParaLocal_SeSelecionaUnPlatoYUnaBebida_SiNoLanzaExceptionEstaBien()
         {
             int cantidadDeMesas = 4;
             GestorDeMesas gestorMesas = new GestorDeMesas(_encargado, cantidadDeMesas);
@@ -254,5 +248,11 @@ namespace Test
 
         }
 
+
+        [TestMethod]
+        public void TesteamosLaCreacionDeUnPedidoParaElDelivery()
+        {
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+        }
     }
 }

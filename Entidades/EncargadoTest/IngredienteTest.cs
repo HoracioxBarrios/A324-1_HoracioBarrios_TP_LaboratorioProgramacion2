@@ -149,7 +149,7 @@ namespace Test
             //------------------------------------------------------ cuando SE CREa EL PEDIDO ya lo tenemos disponible
             //DEBEMOS TOMAR ESE PEDIDO O COMANDA :por eemplo el cocinero que va a preparar los platos del pedido
 
-            IPedido pedido = gestorDePedidos.TomarPedidoPrioritario();
+            IPedido pedido = gestorDePedidos.TomarPedidoSinPrepararAunParaElLocal();
 
 
             //Preparar pedido el cocinero recibe el pedido, los PLATOS TARDAN EN COCINARSE y cuando esten los platos cocinados (el pedido pasara a estar disponible ), LAS BEBIDAS SE TOMAN COMO ENTREGABLES SI ESTAN disponibles EN STOCK

@@ -22,7 +22,7 @@ namespace Negocio
         {
             _listaDeMeseros = new List<IMesero>();
             _listaDeMesas = new List<IMesa>();
-
+            _encargado = encargado;
             // Inicializar las mesas según la cantidad especificada
             for (int i = 1; i <= cantidadMesas; i++)
             {

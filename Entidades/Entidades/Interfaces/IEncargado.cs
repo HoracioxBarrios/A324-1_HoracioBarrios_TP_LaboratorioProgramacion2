@@ -9,5 +9,6 @@ namespace Entidades.Interfaces
     public interface IEncargado
     {
         void AsignarMesaAMesero(IMesa mesa, IMesero mesero);
+        void AsignarClienteADelivery(ICliente cliente, IDelivery delivery);
     }
 }

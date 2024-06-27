@@ -12,7 +12,8 @@ namespace Negocio
 {
     public class GestorDePedidos
     {
-        private Queue<IPedido> _pedidos; // Los pedidos deben salir en orden en que ingresan
+        private Queue<IPedido> _pedidosParaLocal; // Los pedidos deben salir en orden en que ingresan
+        private Queue<IPedido> _pedidosParaDelivery;
         private IGestorProductos _gestorProductosStock;
 
 
@@ -20,7 +21,8 @@ namespace Negocio
 
         public GestorDePedidos(IGestorProductos gestorProductosStock)
         {
-            _pedidos = new Queue<IPedido>();
+            _pedidosParaLocal = new Queue<IPedido>();
+            _pedidosParaDelivery = new Queue<IPedido>();
             _gestorProductosStock = gestorProductosStock;
         }
     
@@ -28,19 +30,26 @@ namespace Negocio
 
 
         /// <summary>
-        /// Crea un pedido y lo agrega a la lista de pedidos (en Gestor Pedidos) - Strategy con Encargado o con Mesero
+        /// Crea un pedido y lo agrega a la lista de pedidos (en Gestor Pedidos) - Crean pedidos Encargado (Para delivery) o con Mesero para (Local)
         /// </summary>
         /// <param name="menu"></param>
         public bool CrearPedido(ICreadorDePedidos creadorDePedidos, ETipoDePedido tipoDePedido, List<IConsumible> consumiblesPedidos, int IdDeLaMesaOCliente)
         {
             bool seCreo = false;
             IPedido pedido = creadorDePedidos.CrearPedido(tipoDePedido, consumiblesPedidos, IdDeLaMesaOCliente);
-            if(pedido != null)
+            if(pedido != null && pedido.TipoDePedido == ETipoDePedido.Para_Local)
             {
                 seCreo = true;
-                _pedidos.Enqueue(pedido);
+                _pedidosParaLocal.Enqueue(pedido);
                 SuscribirEventoListoParaEntregar(pedido); // se suscribe al evento 
             }
+            if (pedido != null && pedido.TipoDePedido == ETipoDePedido.Para_Delivery)
+            {
+                seCreo = true;
+                _pedidosParaDelivery.Enqueue(pedido);
+                SuscribirEventoListoParaEntregar(pedido); // se suscribe al evento 
+            }
+
             return seCreo;
         }
 
@@ -63,31 +72,48 @@ namespace Negocio
 
         public bool EditarPedido(IEditorDePedidos editorDePedidos, int id , List<IConsumible> listaActulizadaDeConsumiblesParaElPedido)
         {
-            return editorDePedidos.EditarPedido(id, _pedidos, listaActulizadaDeConsumiblesParaElPedido);
+            return editorDePedidos.EditarPedido(id, _pedidosParaLocal, listaActulizadaDeConsumiblesParaElPedido);
             
         }
 
         public bool EliminarPedido(IEliminadorDePedidos ediminadorDePedidos, int id)
         {
             
-            return ediminadorDePedidos.EliminarPedido(id, _pedidos);
+            return ediminadorDePedidos.EliminarPedido(id, _pedidosParaLocal);
         }
 
-        
+
 
         /// <summary>
-        /// Toma el primer pedido de la cola (queue)
+        /// Toma el primer pedido de la cola (queue) REPRESENTA A UN PEDIDO SIN PREPARAR AUN
         /// </summary>
         /// <param name="cocinero"></param>
-        public IPedido TomarPedidoPrioritario()
+        public IPedido TomarPedidoSinPrepararAunParaElLocal()
         {
-            if(_pedidos.Count > 0)
+            if(_pedidosParaLocal.Count > 0)
             {
-                IPedido pedido = _pedidos.Peek();// Obtiene el primer pedido de la cola sin eliminarlo                
+                IPedido pedido = _pedidosParaLocal.Peek();// Obtiene el primer pedido de la cola sin eliminarlo                
                 return pedido;
             }
-            throw new NoHayPedidosEnColaException("No hay Pedidos en Cola en el Gestor Pedidos");
+            throw new NoHayPedidosEnColaException("No hay Pedidos Para el Local, en Cola en el Gestor Pedidos");
         }
+
+        /// <summary>
+        /// Toma el primer pedido de la cola (queue) REPRESENTA A UN PEDIDO SIN PREPARAR AUN
+        /// </summary>
+        /// <param name="cocinero"></param>
+
+        public IPedido TomarPedidoSinPrepararAunParaDelivery()
+        {
+            if (_pedidosParaDelivery.Count > 0)
+            {
+                IPedido pedido = _pedidosParaDelivery.Peek();// Obtiene el primer pedido de la cola sin eliminarlo                
+                return pedido;
+            }
+            throw new NoHayPedidosEnColaException("No hay Pedidos Para Delivery, en Cola en el Gestor Pedidos");
+        }
+
+
 
 
         /// <summary>
@@ -107,7 +133,7 @@ namespace Negocio
             bool seEntregoCorrectamente = false;
             bool seDescontoCorrectamente = false;
             List<IConsumible> consumiblesDelPedido;
-            foreach(Pedido pedido in _pedidos)
+            foreach(Pedido pedido in _pedidosParaLocal)
             {
                 if (pedido.Id == idDelPedido && pedido.ListoParaEntregar == true)
                 {
@@ -128,7 +154,7 @@ namespace Negocio
 
         public IPedido ObtenerPedidoListoParaLaEntrega()
         {
-            foreach(IPedido pedido in _pedidos)
+            foreach(IPedido pedido in _pedidosParaLocal)
             {
                 if(pedido.ListoParaEntregar && pedido.Entregado == false)
                 {

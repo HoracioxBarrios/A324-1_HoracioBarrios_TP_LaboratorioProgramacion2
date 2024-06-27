@@ -47,7 +47,11 @@ namespace Entidades
 
 
 
-
+        public void AsignarClienteADelivery(ICliente cliente, IDelivery delivery)
+        {
+            cliente.IdDelDelivery = delivery.Id;
+            delivery.RecibirCliente(cliente);
+        }
 
 
 
