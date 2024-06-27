@@ -89,6 +89,7 @@ namespace Test
 
             //-- intanciamos el COCINERO --
             IEmpleado cocinero = EmpleadoServiceFactory.CrearEmpleado(ERol.Cocinero, "Pipo", "ERG", "4215554", "Av El Ruttu 5412", 40000M);
+            //Tengo que usar GestorEmepleado 
             _cocinero = (ICocinero)cocinero;
 
             //------------------------- GESTOR MENU --------------------------
@@ -116,9 +117,9 @@ namespace Test
 
 
             //selecciona INGREDIENTES para el COCINERO (lo guardara en su lista de ingredientes seleccionados)
-            _gestorMenu.SelecionarIngrediente(nombreDelProductoSeleccionado1, cantidadDelProductoSeleccionado1, unidadDeMedidaParaElProductoSeleccionado1);
+            _gestorMenu.SelecionarIngredienteParaUnPlato(nombreDelProductoSeleccionado1, cantidadDelProductoSeleccionado1, unidadDeMedidaParaElProductoSeleccionado1);
 
-            _gestorMenu.SelecionarIngrediente( nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
+            _gestorMenu.SelecionarIngredienteParaUnPlato( nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
 
 
 
@@ -220,6 +221,9 @@ namespace Test
             string nombreMesero = "Pepe";
             string ApellidoMesero = "Medusa";
             IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, nombreMesero, ApellidoMesero, "4521", "Av los saltamontes 54", 15000M);
+
+            mesero.Id = 100; // si usamos el empleado service debemos setear nosotros l y . (con el gestor de empleado al trabajar con la db , la db se encarga de generarnos la ID)
+
             _mesero = (IMesero)mesero;
         }
 

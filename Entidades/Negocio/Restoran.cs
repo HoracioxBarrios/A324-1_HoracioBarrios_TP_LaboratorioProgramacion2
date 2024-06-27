@@ -102,8 +102,8 @@ namespace Negocio
 
 
             // Selecciona ingredientes para el primer PLATO // AL MENOS DEBE HABER 2 INGREDIENTES PARA EL PLATO EN LA LISTA DE INGREDIENTES
-            _gestorMenu.SelecionarIngrediente("Carne", 1, EUnidadDeMedida.Kilo);
-            _gestorMenu.SelecionarIngrediente("Papa", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Carne", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Papa", 1, EUnidadDeMedida.Kilo);
 
 
             //Crear El Plato 1
@@ -122,8 +122,8 @@ namespace Negocio
 
 
             // Selecciona ingredientes para el plato 2 // AL MENOS DEBE HABER 2 INGREDIENTES PARA EL PLATO EN LA LISTA DE INGREDIENTES
-            _gestorMenu.SelecionarIngrediente("Carne", 1, EUnidadDeMedida.Kilo);
-            _gestorMenu.SelecionarIngrediente("Tomate", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Carne", 1, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Tomate", 1, EUnidadDeMedida.Kilo);
 
             //Creamos el plato 2
             string nombreDelPlato2 = "Ensalada";

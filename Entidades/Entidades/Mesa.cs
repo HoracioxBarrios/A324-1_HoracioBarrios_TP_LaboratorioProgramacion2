@@ -19,9 +19,8 @@ namespace Entidades
 
 
 
-        public Mesa()
+        private Mesa()
         {
-            _id = 0;
             _cantidadComensales = 4;
             _estado = EStateMesa.Cerrada;
             _pedidos = new List<IPedido>();

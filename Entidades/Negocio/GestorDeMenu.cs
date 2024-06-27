@@ -116,7 +116,7 @@ namespace Negocio
 
 
 
-        public void SelecionarIngrediente(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida )
+        public void SelecionarIngredienteParaUnPlato(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida )
         {
             List<IConsumible> ingredientesEnStock = _gestorProductosStock.ReadAllProductosIngredientes();
             if (ingredientesEnStock == null || ingredientesEnStock.Count == 0)

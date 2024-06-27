@@ -16,13 +16,13 @@ namespace Test
     public class GestorMenuTest
     {
 
-        private IConsumible _ingrediente1;
-        private IConsumible _ingrediente2;
-        private List<IConsumible> _listaDeIngredientes;
-        private ICocinero _cocinero;
+        private IConsumible? _ingrediente1;
+        private IConsumible? _ingrediente2;
+        private List<IConsumible>? _listaDeIngredientes;
+        private ICocinero? _cocinero;
 
-        private IGestorMenu _gestorMenu;
-        private IGestorProductos _gestorProductos;
+        private IGestorMenu? _gestorMenu;
+        private IGestorProductos? _gestorProductos;
 
 
         //ok
@@ -65,7 +65,8 @@ namespace Test
             //Instanciamos el COCINERO 
             _cocinero = new Cocinero(ERol.Cocinero, "Christof", "F", "115448", "Calle inexistente 5", 50000M);
 
-
+            //INSTANCIAMOS EL GESTOR MENU
+            _gestorMenu = new GestorDeMenu(_cocinero, _gestorProductos);
 
         }
 
@@ -74,7 +75,7 @@ namespace Test
         public void TestMenuCreadoCorrectamente_ProbamosSiSeCrea_NoDebeLanzarException()
         {
 
-            _gestorMenu = new GestorDeMenu(_cocinero, _gestorProductos);
+            
             //CREAMOS EL MENU
             _gestorMenu.CrearMenu("Desayuno");
 
@@ -87,11 +88,40 @@ namespace Test
         [TestMethod]
         public void TestPlatoAgregadoAlMenuCorrectamente_SeDebePoderCorroborarQueElPlatoSeAgregoAlMenu_NoDebelanzarException()
         {
+            //CREAMOS LOS PROVEEDORES
+            var mockProveedor1 = new Mock<IProveedor>();
+            var mockProveedor2 = new Mock<IProveedor>();
+            mockProveedor1.Setup(p => p.Nombre).Returns("Proveedor1");
+            mockProveedor2.Setup(p => p.Nombre).Returns("Proveedor2");
+
+            //CREAMOS LOS INGREDIENTES
+            _gestorProductos = new GestorDeProductos();
+
+            ETipoDeProducto tipoDeproducto1 = ETipoDeProducto.Ingrediente;
+            string nombreDeProducto1 = "Tomate";
+            double cantidadParaProducto1 = 10;
+            EUnidadDeMedida unidadDeMedidaProd1 = EUnidadDeMedida.Kilo;
+            decimal precioProd1 = 1000;
+
+            ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
+            string nombreDeProducto2 = "Cebolla";
+            double cantidadParaProducto2 = 100;
+            EUnidadDeMedida unidadDeMedidaProd2 = EUnidadDeMedida.Kilo;
+            decimal precioProd2 = 1000;
+
+            IProducto tomate = _gestorProductos.CrearProducto(tipoDeproducto1, nombreDeProducto1, cantidadParaProducto1, unidadDeMedidaProd1, precioProd1, mockProveedor1.Object);
+            IProducto cebolla = _gestorProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidadParaProducto2, unidadDeMedidaProd2, precioProd2, mockProveedor2.Object);
+
+
+            //  AGREGAMOS AL STOCK LO PRODUCTOS INGREDIENTES 
+            _gestorProductos.AgregarProductoAStock(tomate);
+            _gestorProductos.AgregarProductoAStock(cebolla);
             //SELECIONAMOS PARA EL COCINERO LOS INGREDIENTES
-            _gestorMenu.SelecionarIngrediente("Tomate", 2, EUnidadDeMedida.Kilo);
-            _gestorMenu.SelecionarIngrediente("Cebolla", 2, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Tomate", 2, EUnidadDeMedida.Kilo); 
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Cebolla", 2, EUnidadDeMedida.Kilo);
 
-
+            //CREAMOS EL MENU
+            _gestorMenu.CrearMenu("Desayuno");
 
             //Creamos el plato ya que el cocinero elijio y ya tiene una lista con los ingredientes SELECCIONADOS
 
@@ -121,12 +151,15 @@ namespace Test
         public void TestCantidadDeIngredientesEnElPlato_DebeCorroborarLaCantidadDeIngredientesEnElPlato_NoDebeLanzarException()
         {
             //SELECIONAMOS PARA EL COCINERO LOS INGREDIENTES
-            _gestorMenu.SelecionarIngrediente("Tomate", 2, EUnidadDeMedida.Kilo);
-            _gestorMenu.SelecionarIngrediente("Cebolla", 2, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Tomate", 2, EUnidadDeMedida.Kilo);
+            _gestorMenu.SelecionarIngredienteParaUnPlato("Cebolla", 2, EUnidadDeMedida.Kilo);
 
+            //CREAMOS EL MENU
+            _gestorMenu.CrearMenu("Desayuno");
 
 
             //Creamos el plato ya que el cocinero elijio y ya tiene una lista con los ingredientes SELECCIONADOS
+
 
 
             //Datos para el plato
@@ -135,6 +168,7 @@ namespace Test
             EUnidadDeTiempo unidadDeTiempo = EUnidadDeTiempo.Segundos;
             //Creamos el plato
             IConsumible plato1 = _gestorMenu.CrearPlato(nombreDelPlato, tiempoPreparacion, unidadDeTiempo);
+
 
             //aGREGAMOS EL PLATO AL MENU
             _gestorMenu.AgregarPlatoAMenu("Desayuno", plato1);
@@ -232,9 +266,9 @@ namespace Test
 
 
 
-            _gestorMenu.SelecionarIngrediente( nombreDelProductoSeleccionado1, cantidadDelProductoSeleccionado1, unidadDeMedidaParaElProductoSeleccionado1);
+            _gestorMenu.SelecionarIngredienteParaUnPlato( nombreDelProductoSeleccionado1, cantidadDelProductoSeleccionado1, unidadDeMedidaParaElProductoSeleccionado1);
 
-            _gestorMenu.SelecionarIngrediente(nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
+            _gestorMenu.SelecionarIngredienteParaUnPlato(nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
 
 
 
@@ -257,11 +291,6 @@ namespace Test
             var menuGeneral = _gestorMenu.GetAllMenus().FirstOrDefault(menu => menu.Nombre.Equals(nombreDelMenu, StringComparison.OrdinalIgnoreCase));
 
             Assert.IsNotNull(menuGeneral);
-
-
-
-
-
 
         }
     }

@@ -11,7 +11,7 @@ namespace Entidades.Interfaces
         int Id { get; }
         string Nombre { get; }
         string Apellido { get; }
-        List<IMesa> MesasAsignada { get; set; }
+        List<IMesa> MesasAsignada { get;}
         void RecibirMesa(IMesa mesa);   
     }
 }

@@ -91,7 +91,7 @@ namespace Negocio
 
 
         /// <summary>
-        /// El cocinero toma el pedido (lo añade a su queue interna de platos a cocinar) y comienza a cocinarlo
+        /// El cocinero toma el pedido (lo añade a su queue interna de platos a cocinar) y comienza a cocinarl los Platos del PEDIDO
         /// </summary>
         /// <param name="cocineroPreparadorPedido"></param>
         public async Task<bool> PrepararPedido(IPreparadorDePedidos cocineroPreparadorPedido, IPedido pedido)
@@ -100,17 +100,28 @@ namespace Negocio
             return await cocineroPreparadorPedido.PrepararPedido();
         }
 
+
+
         public bool EntregarPedido(IEntregadorPedidos entregadorPedidos, int idDelPedido, int idDeMesaOCliente)
         {
             bool seEntregoCorrectamente = false;
+            bool seDescontoCorrectamente = false;
+            List<IConsumible> consumiblesDelPedido;
             foreach(Pedido pedido in _pedidos)
             {
                 if (pedido.Id == idDelPedido && pedido.ListoParaEntregar == true)
                 {
                     entregadorPedidos.EntregarPedido(idDeMesaOCliente, pedido); // se entrega por ej. a la mesa y se agrega  a una lista de pedidos para luego cobrar
                     pedido.Entregado = true;
-                    seEntregoCorrectamente = _gestorProductosStock.DescontarProductosDeStock(pedido.GetConsumibles());
+                    consumiblesDelPedido = pedido.GetConsumibles();
+                    seDescontoCorrectamente = _gestorProductosStock.DescontarProductosDeStock(consumiblesDelPedido);
+                    break;
                 }
+            }
+
+            if (seDescontoCorrectamente)
+            {
+                seEntregoCorrectamente = true;
             }
             return seEntregoCorrectamente;
         }

@@ -15,6 +15,8 @@ namespace Entidades
         private decimal _montoAcumulado;
         private List<IMesa> _mesasAsignada;
 
+
+
         public Mesero(ERol rol, string nombre, string apellido, string contacto,string direccion, decimal salario): base(
             rol, nombre, apellido, contacto, direccion, salario)
         {
@@ -25,6 +27,7 @@ namespace Entidades
             this.Salario = salario;
             this.Rol = rol;
 
+            _mesasAsignada = new List<IMesa>();
             _montoAcumulado = 0;
 
         }
@@ -54,20 +57,31 @@ namespace Entidades
             _mesasAsignada.Add(mesa);
         }
 
+     
+
         public void EntregarPedido(int idMesa, IPedido pedido)
         {
+            bool mesaEncontrada = false;
+
             foreach (Mesa mesa in _mesasAsignada)
             {
                 if (mesa.Id == idMesa)
                 {
+                    
                     mesa.AgregarPedidoAMesa(pedido);
                     pedido.Entregado = true;
-                    //Descontar del stock
+                    mesaEncontrada = true;
                     break;
                 }
             }
-            throw new AlEntregarPedidoException("Error al entregar Pedido a la mesa");
+
+            if (!mesaEncontrada)
+            {
+                throw new AlEntregarPedidoException("Error al entregar Pedido a la mesa");
+            }
         }
+
+
 
         public void Cobrar(int idMesaOCliente)
         {
@@ -123,6 +137,9 @@ namespace Entidades
             }     
         }
 
-        public List<IMesa> MesasAsignada { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<IMesa> MesasAsignada
+        {
+            get { return _mesasAsignada; }
+        }
     }
 }

@@ -10,8 +10,13 @@ namespace Entidades.Services
     /// </summary>
     public static class EmpleadoServiceFactory
     {
+
+
+        //DATO : (este metodo: crearEmpleado no asigna una id al empleado, sino que la BASE DE DATOS LO HACE AUTOMATICAMENTE)
+
         /// <summary>
-        /// Methodo que Crea un Empleado
+        /// Methodo que Crea un Empleado, 
+        /// 
         /// </summary>
         /// <param name="rol">Representa el Rol que va a tener el empleado</param>
         /// <param name="nombre">Nombre del empleado</param>

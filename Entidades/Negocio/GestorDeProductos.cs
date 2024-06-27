@@ -215,7 +215,7 @@ namespace Negocio
         }
 
 
-        public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)
+        public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)//LE PUEDE LLEGAR PLATOS O BEBIDAS
         {
             bool seModificoProductoEnLista = false;
 
@@ -228,12 +228,20 @@ namespace Negocio
                 {
                     for (int i = 0; i < _listaDeProductosEnStock.Count; i++)
                     {
-                        if (consumible is Ingrediente ingredienteADescontar && _listaDeProductosEnStock[i] is Ingrediente ingredienteEnStock && ingredienteEnStock.Id == ingredienteADescontar.Id)
+                        Ingrediente ingredienteEnStock = (Ingrediente)_listaDeProductosEnStock[i];
+                        if (consumible is Plato plato)
                         {
-                            Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
-                            _listaDeProductosEnStock[i] = nuevoIngrediente;
-                            seModificoProductoEnLista = true;
-                            break;
+                            List<IConsumible> ingredientesDelPlato = plato.GetIngredientesDelPlato();
+                            foreach (Ingrediente ingredienteADescontar in ingredientesDelPlato)
+                            {
+                                if (ingredienteADescontar.Nombre == _listaDeProductosEnStock[i].Nombre)
+                                {
+                                    Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
+                                    _listaDeProductosEnStock[i] = nuevoIngrediente;
+                                    seModificoProductoEnLista = true;
+                                    break;
+                                }
+                            }
                         }
                         else if (consumible is Bebida bebidaADescontar && _listaDeProductosEnStock[i] is Bebida bebidaEnStock && bebidaEnStock.Id == bebidaADescontar.Id)
                         {
@@ -253,6 +261,7 @@ namespace Negocio
 
             return seModificoProductoEnLista;
         }
+
 
 
         //public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)

@@ -15,53 +15,50 @@ namespace Negocio
         private List<IMesa> _listaDeMesas;
         private List<IMesero> _listaDeMeseros;// SEGUIR HAY QUE METER A LOS MESEROS ACA
         private IEncargado _encargado;
-        
 
 
-        public GestorDeMesas(IEncargado encargado, int cantidadDeMesas)
+
+        public GestorDeMesas(IEncargado encargado, int cantidadMesas)
         {
-            _listaDeMesas = new List<IMesa>();
             _listaDeMeseros = new List<IMesero>();
-            for (int i = 0; i < cantidadDeMesas;  i++)
-            {
-                IMesa mesa = new Mesa();
-                mesa.Id = i +1;     //asigno aca una Id arranca en 1, la db deveria asignar luego
-                _listaDeMesas.Add(mesa);
-            }
+            _listaDeMesas = new List<IMesa>();
 
-            
+            // Inicializar las mesas según la cantidad especificada
+            for (int i = 1; i <= cantidadMesas; i++)
+            {
+                _listaDeMesas.Add(new Mesa(i, 4)); // Supongamos que cada mesa tiene 4 comensales
+            }
         }
 
         public void RegistrarMesero(IMesero mesero)
         {
-            if (mesero != null)
-            {
-                _listaDeMeseros.Add(mesero);
-            }
+            _listaDeMeseros.Add(mesero);
         }
+
 
         public void AsignarMesaAMesero(string nombreDelMesero, string apellido, int idMesa)
         {
+            // Buscar el mesero por nombre y apellido
             IMesero mesero = _listaDeMeseros.FirstOrDefault(m => m.Nombre == nombreDelMesero && m.Apellido == apellido);
-            IMesa mesa = _listaDeMesas.FirstOrDefault(m => m.Id == idMesa);
 
-            if (mesero != null && mesa != null)
+            if (mesero == null)
             {
-                _encargado.AsignarMesaAMesero(mesa, mesero);
+                throw new InvalidOperationException("Mesero no encontrado en AsignarMesaAMesero");
             }
-            else
+
+            // Buscar la mesa por id
+            IMesa mesa = _listaDeMesas.FirstOrDefault(m => m.Id == idMesa);
+            if (mesa == null)
             {
-                // Manejar el caso cuando no se encuentra el mesero o la mesa /
-                if (mesero == null)
-                {
-                    throw new IdDelMeseroBuscadoAlAsignarMesaAMeseroException("Error al buscar mesero por Id al querer asignar mesa a mesero");
-                }
-                if (mesa == null)
-                {
-                    throw new IdDeLaMesaBuscadaAlAsignarMesaAMeseroException("Error al buscar mesa por Id al querer asignar mesa al mesero");
-                }
+                throw new InvalidOperationException("Mesa no encontrada en AsignarMesaAMesero");
             }
+
+            // Asignar la mesa al mesero
+            mesa.IdDelMesero = mesero.Id;
+            mesero.RecibirMesa(mesa);
         }
+
+
 
 
 
@@ -89,7 +86,17 @@ namespace Negocio
         }
 
 
-
+        public IMesa GetMesa(int id)
+        {
+            foreach(IMesa mesa in _listaDeMesas)
+            {
+                if(mesa.Id == id)
+                {
+                    return mesa;
+                }
+            }
+            throw new ErrorAlBuscarMesaEnListaEnGestorDeMesas("No esta la mesa que estas buscando por ID");
+        }
 
         public IMesero GetMesero(string nombre, string apellido)
         {

@@ -79,13 +79,16 @@ namespace Test
             IEmpleado cocinero = EmpleadoServiceFactory.CrearEmpleado(ERol.Cocinero, "Pipo", "Sdd", "2323", "Av pepe 123", 15000);
 
 
+            // EL ENCARGADO
+            IEmpleado encargado = EmpleadoServiceFactory.CrearEmpleado(ERol.Encargado, "Frey", "Varga", "421544", "Av. los copos 66", 45000M);
+
             //INSTANCIAMOS EL GESTOR MENU
             GestorDeMenu gestormenu = new GestorDeMenu((ICocinero)cocinero, gestorDeProductos);
 
 
             //SELECCIONAMOS INGREDIENTES PARA EL PLATO (DEBE ESTAR CREADO EN SISTEMA ( -- STOCK --)) -- para el PLATO deben ser 
-            gestormenu.SelecionarIngrediente("Pollo", 1, EUnidadDeMedida.Kilo);
-            gestormenu.SelecionarIngrediente("Papa", 1, EUnidadDeMedida.Kilo);
+            gestormenu.SelecionarIngredienteParaUnPlato("Pollo", 1, EUnidadDeMedida.Kilo);
+            gestormenu.SelecionarIngredienteParaUnPlato("Papa", 1, EUnidadDeMedida.Kilo);
 
             // ----------------- Creamos el Menu -------------------
             gestormenu.CrearMenu("Almuerzo");
@@ -94,12 +97,14 @@ namespace Test
             string nombrePlato = "polloPapa";
             int tiempoPreparacion = 10;
             EUnidadDeTiempo unidadTiempo = EUnidadDeTiempo.Segundos;
-
+            decimal precioDeVentaDelPlato = 3000;
             IConsumible plato = gestormenu.CrearPlato(nombrePlato, tiempoPreparacion,unidadTiempo);
 
             //Agregamos el plato al menu
             gestormenu.AgregarPlatoAMenu("Almuerzo", plato);
 
+            //Ponemos precio al plato IMPORTANTE
+            gestormenu.EstablecerPrecioAProducto((IEstablecedorDePrecios)encargado, nombrePlato, precioDeVentaDelPlato);
 
 
 
@@ -122,13 +127,14 @@ namespace Test
 
             //ICreador de Pedidos MESERO O ENCARGADO
             //EN CASO DEL MESERO DEBE ESTAR ASIGNADO A LA MESA:
-            IEmpleado encargado = EmpleadoServiceFactory.CrearEmpleado(ERol.Encargado, "Frey", "Varga","421544", "Av. los copos 66", 45000M);
+
 
             GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4);
 
-            
 
             IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Leo", "Gry","1152000" , "Av iglu 45", 15000M);
+            //Al no usar GestorEmpleado , tenemos que nosotros setear la ID del mesero (El gestorEmpleado al rcearlo en la db esta se encarga de generarnos la ID del empleado MESERO en este caso)
+            mesero.Id = 100;
 
             gestorMesas.RegistrarMesero((IMesero)mesero); //Registro el Mesero en el gestor mesas
 
@@ -136,9 +142,9 @@ namespace Test
 
 
             //Id de la mesa que realiza el pedido
-            int idDeLaMesCliente = 1;
+            int idDeLaMesaCliente = 1;
 
-            bool seCreoPedido = gestorDePedidos.CrearPedido((ICreadorDePedidos)mesero ,ETipoDePedido.Para_Local, consumublesSelecionadosParaPedido, idDeLaMesCliente);
+            bool seCreoPedido = gestorDePedidos.CrearPedido((ICreadorDePedidos)mesero ,ETipoDePedido.Para_Local, consumublesSelecionadosParaPedido, idDeLaMesaCliente);
 
             //------------------------------------------------------ cuando SE CREa EL PEDIDO ya lo tenemos disponible
             //DEBEMOS TOMAR ESE PEDIDO O COMANDA :por eemplo el cocinero que va a preparar los platos del pedido
@@ -149,25 +155,41 @@ namespace Test
             //Preparar pedido el cocinero recibe el pedido, los PLATOS TARDAN EN COCINARSE y cuando esten los platos cocinados (el pedido pasara a estar disponible ), LAS BEBIDAS SE TOMAN COMO ENTREGABLES SI ESTAN disponibles EN STOCK
             bool estaListoElPedido = await gestorDePedidos.PrepararPedido((IPreparadorDePedidos) cocinero, pedido);
 
-            //CUANDO TERMINA EL TIEMPO ( de todos los platos )-----> avisa por evento que el pedido esta LISTO PARA ENTREGAR
+            //CUANDO TERMINA EL TIEMPO(de todos los platos)----->avisa por evento que el pedido esta LISTO PARA ENTREGAR
             if (estaListoElPedido == true)
             {
-                Assert.IsTrue(estaListoElPedido);
+                //Assert.IsTrue(estaListoElPedido);
 
 
                 IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntrega();
-                int idDelPedido = pedidoParaEntregar.Id;
-                int idDeLaMesa = pedidoParaEntregar.IDMesaOCliente;
+                int idDelPedido = pedido.Id;
+                IMesa mesaDelPedido = gestorMesas.GetMesa(1);
+                //Assert.IsNotNull(mesaDelPedido);
+                int idDeLaMesa = mesaDelPedido.Id;
+                //Assert.AreEqual(1 , idDeLaMesa);
+                IPedido pedidoParaEntrega = gestorDePedidos.ObtenerPedidoListoParaLaEntrega();
+                //Assert.IsNotNull(pedidoParaEntrega);
+                int idDelPedidoParaLaMesa = pedidoParaEntrega.Id;
+                //Assert.AreEqual(2, idDelPedido);
+                bool seEntregoYSeDescontoDelStock = gestorDePedidos.EntregarPedido((IEntregadorPedidos)mesero, idDelPedidoParaLaMesa, idDeLaMesa); //ENTREGAMOS EL PEDIDO A LA MESA 1
 
 
-                bool seEntregoYSeDescontoDelStock = gestorDePedidos.EntregarPedido((IEntregadorPedidos)mesero, idDelPedido, idDeLaMesa); //ENTREGAMOS EL PEDIDO A LA MESA 1
-
-                Assert.IsTrue(seEntregoYSeDescontoDelStock);               
+                Assert.IsTrue(seEntregoYSeDescontoDelStock);
 
 
 
-            }        
+            }
         }
+
+
+
+
+
+
+
+
+
+
 
         //[TestMethod]
         //public void VerElIngredienteEnKilosMenosKilos_DebeDescontarUnIngredienteDeUnaListaDeProductosQueHayEnStock_ALCorroborarDeeQuedar9KilosDEPollo()

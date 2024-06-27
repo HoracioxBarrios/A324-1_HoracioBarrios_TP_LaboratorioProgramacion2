@@ -10,7 +10,7 @@ namespace Entidades.Interfaces
     public interface IGestorMenu
     {
         void CrearMenu(string nombreMenu);
-        void SelecionarIngrediente(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida);
+        void SelecionarIngredienteParaUnPlato(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida);
 
         IConsumible CrearPlato(string nombreDelPlato, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo);
         void EditarPlato();
