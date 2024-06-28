@@ -13,9 +13,9 @@ namespace Entidades.Interfaces
         void SelecionarIngredienteParaUnPlato(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida);
 
         IConsumible CrearPlato(string nombreDelPlato, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo);
-        void EditarPlato();
+        void EditarPlato(string nombrePlato, List<IConsumible> ingredientesActualizacion);
 
-        void EliminarPlato();
+        void EliminarPlato(string nombrePlato);
         void EstablecerPrecioAProducto(IEstablecedorDePrecios establecedorDePrecios, string nombreDelPlato, decimal precioDeVentaDelPlato);
 
         void AgregarPlatoAMenu(string nombreDelMenu, IConsumible plato);
