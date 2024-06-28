@@ -76,7 +76,7 @@ namespace Entidades
             set { _disponibilidad = value; }
         }
 
-        public EUnidadDeMedida EUnidadDeMedida 
+        public EUnidadDeMedida UnidadDeMedida 
         {
             get { return _eUnidadDeMedidad; }
             set { _eUnidadDeMedidad = value; }

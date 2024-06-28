@@ -328,5 +328,19 @@ namespace Negocio
             EventStockDeProductosActualizados?.Invoke();
         }
 
+
+
+
+        public List<IProducto> ConsultaStockVigente(IEncargado encargado)
+        {
+            return encargado.ConsultaStockVigente(_listaDeProductosEnStock);
+        }
+
+        public List<IProducto> ConsultaDeStockPorAgotarse(IEncargado encargado)
+        {
+            return encargado.ConsultaDeStockPorAgotarse(_listaDeProductosEnStock);
+        }
+
+
     }
 }

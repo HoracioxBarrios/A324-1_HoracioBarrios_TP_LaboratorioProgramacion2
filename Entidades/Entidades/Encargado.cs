@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 
 namespace Entidades
@@ -141,7 +142,38 @@ namespace Entidades
             producto.Precio = precioDeVenta;
         }
 
+        public List<IProducto> ConsultaStockVigente(List<IProducto> listaDeProductosEnStock)
+        {
+            if (listaDeProductosEnStock.Count > 0)
+            {
+                return listaDeProductosEnStock;
+            }
+            throw new ListaVaciaException("Error, La lista de stock de productos esta vacia");
+        }
 
+        public List<IProducto> ConsultaDeStockPorAgotarse(List<IProducto> listaDeProductosEnStock)
+        {
+            List<IProducto> productosPorAgotarse = new List<IProducto>();
+
+            if (listaDeProductosEnStock.Count == 0)
+            {
+                throw new ListaVaciaException("Error, La lista de stock de productos esta vacia");
+            }
+
+            foreach (IProducto producto in listaDeProductosEnStock)
+            {
+                if ((producto.Cantidad < 10 && producto.UnidadDeMedida == EUnidadDeMedida.Kilo) ||
+                    (producto.Cantidad < 1000 && producto.UnidadDeMedida == EUnidadDeMedida.Gramo) ||
+                    (producto.Cantidad < 10 && producto.UnidadDeMedida == EUnidadDeMedida.Unidad) ||
+                    (producto.Cantidad < 5 && producto.UnidadDeMedida == EUnidadDeMedida.Litro) ||
+                    (producto.Cantidad < 5000 && producto.UnidadDeMedida == EUnidadDeMedida.MiliLitro))
+                {
+                    productosPorAgotarse.Add(producto);
+                }
+            }
+
+            return productosPorAgotarse;
+        }
     }
     
 }

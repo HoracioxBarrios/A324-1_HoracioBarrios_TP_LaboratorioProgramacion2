@@ -84,7 +84,7 @@ namespace Entidades
                     id: ingrediente1.Id,
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad.Cantidad,
-                    eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
+                    eUnidadDeMedida: ingrediente1.UnidadDeMedida,
                     precioporCantidad: nuevoPrecio,
                     proveedor: ingrediente1.Proveedor,
                     tipoDeProducto: ingrediente1.ETipoDeProducto
@@ -137,7 +137,7 @@ namespace Entidades
                     id: ingrediente1.Id,
                     nombre: ingrediente1.Nombre,
                     cantidad: nuevaCantidad.Cantidad,
-                    eUnidadDeMedida: ingrediente1.EUnidadDeMedida,
+                    eUnidadDeMedida: ingrediente1.UnidadDeMedida,
                     precioporCantidad: nuevoPrecio,
                     proveedor: ingrediente1.Proveedor,
                     tipoDeProducto: ingrediente1.ETipoDeProducto
@@ -264,7 +264,7 @@ namespace Entidades
 
         public override string ToString()
         {
-            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Su Precio {CalcularPrecioDeCosto()}, Disponible: {Disponibilidad}, Unidad de Medida: {EUnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";
+            return $"Id: {Id}, Nombre: {Nombre}, Cantidad: {Cantidad},Su Precio {CalcularPrecioDeCosto()}, Disponible: {Disponibilidad}, Unidad de Medida: {UnidadDeMedida}, Tipo de Producto: {ETipoDeProducto}, Proveedor: {Proveedor.Nombre}";
         }
     }
 }
