@@ -143,10 +143,33 @@ namespace Negocio
         }
 
 
+        public void EditarPlato(string nombrePlato, List<IConsumible> ingredientesActualizacion)
+        {
+            for (int i = 0; i < _ListaGeneralDeConsumiblesLocal.Count; i++)
+            {
+                IConsumible consumible = _ListaGeneralDeConsumiblesLocal[i];
+                if (consumible is Plato && consumible.Nombre == nombrePlato)
+                {
+                    _ListaGeneralDeConsumiblesLocal[i] = _cocinero.EditarPlato(consumible, ingredientesActualizacion);
+                    break;
+                }
+            }
+        }
 
-        public void EditarPlato() { }
 
-        public void EliminarPlato() { }
+        public void EliminarPlato(string nombrePlato)
+        {
+            for (int i = _ListaGeneralDeConsumiblesLocal.Count - 1; i >= 0; i--)
+            {
+                IConsumible consumible = _ListaGeneralDeConsumiblesLocal[i];
+                if (consumible is Plato && consumible.Nombre == nombrePlato)
+                {
+                    _ListaGeneralDeConsumiblesLocal.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Establece el precio de Venta del producto
