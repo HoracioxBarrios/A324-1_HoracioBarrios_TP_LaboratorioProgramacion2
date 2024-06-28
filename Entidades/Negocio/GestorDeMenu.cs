@@ -149,7 +149,7 @@ namespace Negocio
         public void EliminarPlato() { }
 
         /// <summary>
-        /// Establece el precio de Venta del producto : Plato
+        /// Establece el precio de Venta del producto
         /// </summary>
         /// En este Lugar (Gestor Menu estableceremos el precio a los productos)
         /// <param name="establecedorDePrecios"></param>
@@ -161,9 +161,11 @@ namespace Negocio
             {
                 if (producto.Nombre == nombreDelProducto)
                 {
-                    establecedorDePrecios.EstablecerPrecioAProducto((IVendible)producto, precioDeVentaDelProducto);
+                    establecedorDePrecios.EstablecerPrecioAProducto(producto, precioDeVentaDelProducto);
+                    break;
                 }
             }
+
         }
 
 

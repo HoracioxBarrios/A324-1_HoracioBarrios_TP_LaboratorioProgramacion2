@@ -136,7 +136,7 @@ namespace Entidades
         /// </summary>
         /// <param name="producto"></param>
         /// <param name="precioDeVenta"></param>
-        public void EstablecerPrecioAProducto(IVendible producto, decimal precioDeVenta)
+        public void EstablecerPrecioAProducto(IConsumible producto, decimal precioDeVenta)
         {
             producto.Precio = precioDeVenta;
         }

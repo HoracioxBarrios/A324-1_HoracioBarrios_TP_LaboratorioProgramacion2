@@ -16,7 +16,7 @@ namespace Entidades
     {
 
         private List<IConsumible> _consumiblesPedidos; // Bebidas o Platos
-        private decimal _precioDeloPedido;
+        private decimal _precioDeloPedido = 0;
         private ETipoDePedido _tipoDePedido;//Para Local o Para Delivery     
         private bool _listoParaEntregar;
         private bool _entregado;
@@ -41,6 +41,7 @@ namespace Entidades
             _consumiblesPedidos = consumiblesPedidos ?? new List<IConsumible>(); // (el operador de coalescencia nula). Este operador se usa para devolver el valor de su operando izquierdo si no es null; de lo contrario, devuelve el operando derecho.
             _idMesaOCliente = idMesaOCliente;
             SuscribirseVariosPlatosAEventoPlatoListoParaEntregar(_consumiblesPedidos);//Los consumibles pedidos son BEBIDAS O EN ESTE CASO PLATOS
+            CalcularPrecio();
         }
 
 
@@ -133,10 +134,6 @@ namespace Entidades
             _precioDeloPedido = 0;
             foreach(IConsumible consumible in _consumiblesPedidos)
             {
-                if (consumible.Precio <= 0)//El Precio de Venta (TENEMOS EN CUENTA EL PRECIO DE VENTA)
-                {
-                    throw new ConsumibleSinPrecioDeVentaException("El Consumible deber tener el Precio de Venta Setteado");                    
-                }
                 _precioDeloPedido += consumible.Precio;
             }
             return _precioDeloPedido;

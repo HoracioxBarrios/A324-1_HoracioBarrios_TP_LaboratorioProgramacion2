@@ -86,6 +86,21 @@ namespace Negocio
         }
 
 
+
+        public bool Cobrar(int idMesaOCliente, int IdDelMesero)
+        {
+            bool seCobro = false;
+            foreach (IMesero mesero in _listaDeMeseros)
+            {
+                if(mesero.Id == IdDelMesero)
+                {
+                    ICobrador meseroCobrador = (ICobrador)mesero;
+                    seCobro = meseroCobrador.Cobrar(idMesaOCliente);
+                }
+            }
+            return seCobro;
+        }
+
         public IMesa GetMesa(int id)
         {
             foreach(IMesa mesa in _listaDeMesas)

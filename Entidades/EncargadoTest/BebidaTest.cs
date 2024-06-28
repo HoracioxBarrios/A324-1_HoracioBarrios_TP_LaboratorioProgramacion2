@@ -1,4 +1,5 @@
-﻿using Entidades.Enumerables;
+﻿using Entidades;
+using Entidades.Enumerables;
 using Entidades.Interfaces;
 using Moq;
 using Negocio;
@@ -58,6 +59,8 @@ namespace Test
             //Act  -- CREAMOS LOS PRODUCTOS --
             IProducto producto1 = gestorDeProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
             IProducto producto2 = gestorDeProductos.CrearProducto(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
+
+
 
             //AGREGAMOS AL STOCK LOS PRODUCTOS CREADOS
             gestorDeProductos.AgregarProductoAStock(producto1);

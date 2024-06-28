@@ -96,7 +96,7 @@ namespace Entidades
                     {
                         if(pedido.Entregado == true)
                         {
-                            _montoAcumulado += pedido.CalcularPrecio();
+                            MontoAcumulado += pedido.CalcularPrecio();
                         }                                        
 
                     }
@@ -137,12 +137,24 @@ namespace Entidades
             get
             {
                 return _montoAcumulado;
-            }     
+            }
+            set
+            {
+                if(value > 0)
+                {
+
+                    _montoAcumulado = value;
+                }
+            }
         }
 
         public List<IMesa> MesasAsignada
         {
             get { return _mesasAsignada; }
+            set
+            {
+                _mesasAsignada = value;
+            }
         }
     }
 }

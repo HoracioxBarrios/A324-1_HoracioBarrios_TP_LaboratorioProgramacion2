@@ -56,8 +56,7 @@ namespace Entidades
                 if(cliente.Id == idCliente)
                 {
                     cliente.AgregarPedidoACliente(pedido);
-                    int id = cliente.Id;
-                    bool seCobro = Cobrar(id);
+                    bool seCobro = Cobrar(idCliente);
                     pedido.Entregado = true;
                     clienteEncontrado = true;
                     break;
@@ -85,7 +84,7 @@ namespace Entidades
                     List<IPedido> pedidosDelCliente = cliente.ObtenerPedidosDeLCliente();
                     foreach(Pedido pedido in pedidosDelCliente)
                     {
-                        _montoAcumulado += pedido.CalcularPrecio();
+                        MontoAcumulado += pedido.CalcularPrecio();
                     }
                     seCobro = true;
                     break;

@@ -12,9 +12,6 @@ namespace Entidades.Interfaces
 
         decimal GetPrecioDeCosto();
 
-        decimal Precio { get; set; }
-
-
         bool ListoParaEntregar { get; }
     }
 }

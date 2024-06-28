@@ -8,7 +8,7 @@ namespace Entidades.Interfaces
 {
     public interface ICobrador
     {
-        decimal MontoAcumulado { get; }
+        decimal MontoAcumulado { get; set; }
         bool Cobrar(int idDelClienteOMesa);// con la id puede verificar los pedidos del cliente y cobrarlos
     }
 }

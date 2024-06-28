@@ -8,6 +8,6 @@ namespace Entidades.Interfaces
 {
     public interface IEstablecedorDePrecios
     {
-        void EstablecerPrecioAProducto(IVendible producto ,decimal precioDeVenta);
+        void EstablecerPrecioAProducto(IConsumible producto ,decimal precioDeVenta);
     }
 }
