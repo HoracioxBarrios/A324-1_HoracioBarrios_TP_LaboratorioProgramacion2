@@ -133,7 +133,7 @@ namespace Entidades
             _precioDeloPedido = 0;
             foreach(IConsumible consumible in _consumiblesPedidos)
             {
-                if (consumible.Precio <= 0)//El Precio de Venta
+                if (consumible.Precio <= 0)//El Precio de Venta (TENEMOS EN CUENTA EL PRECIO DE VENTA)
                 {
                     throw new ConsumibleSinPrecioDeVentaException("El Consumible deber tener el Precio de Venta Setteado");                    
                 }

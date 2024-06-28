@@ -56,5 +56,17 @@ namespace Negocio
             }
         }
 
+
+        public ICliente GetCliente(int id)
+        {
+            foreach (ICliente cliente in _listaDeClientes)
+            {
+                if (cliente.Id == id)
+                {
+                    return cliente;
+                }
+            }
+            throw new ErrorAlBuscarClienteEnListaEnGestorDelivery("No esta el Cliente que estas buscando por ID");
+        }
     }
 }

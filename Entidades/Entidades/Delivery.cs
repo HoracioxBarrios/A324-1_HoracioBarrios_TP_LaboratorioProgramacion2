@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 
 namespace Entidades
@@ -23,7 +24,7 @@ namespace Entidades
             this.Direccion = direccion;
             this.Salario = salario;
             this.Rol = rol;
-
+            _montoAcumulado = 0;
             _clientes = new List<ICliente>();
         }
 
@@ -48,12 +49,49 @@ namespace Entidades
 
         public void EntregarPedido(int idCliente, IPedido pedido)
         {
-            throw new NotImplementedException();
+            bool clienteEncontrado = false;
+
+            foreach (Cliente cliente in _clientes)
+            {
+                if(cliente.Id == idCliente)
+                {
+                    cliente.AgregarPedidoACliente(pedido);
+                    int id = cliente.Id;
+                    bool seCobro = Cobrar(id);
+                    pedido.Entregado = true;
+                    clienteEncontrado = true;
+                    break;
+                }
+            }
+
+            if (!clienteEncontrado)
+            {
+                throw new AlEntregarPedidoException("Error no se encontro el cliente (al entregar Pedido al cliente del delivery)");
+            }
         }
 
-        public void Cobrar(int idMesaOCliente)
+
+        /// <summary>
+        /// Cobra el pedido en base al Precio de Venta de los Productos (IConsumibles o IVendibles)
+        /// </summary>
+        /// <param name="pedido"></param>
+        public bool Cobrar(int idDelCliente)
         {
-            throw new NotImplementedException();
+            bool seCobro = false;
+            foreach(Cliente cliente in _clientes)
+            {
+                if( cliente.Id == idDelCliente)
+                {
+                    List<IPedido> pedidosDelCliente = cliente.ObtenerPedidosDeLCliente();
+                    foreach(Pedido pedido in pedidosDelCliente)
+                    {
+                        _montoAcumulado += pedido.CalcularPrecio();
+                    }
+                    seCobro = true;
+                    break;
+                }
+            }
+            return seCobro;
         }
 
 

@@ -161,13 +161,13 @@ namespace Test
                 //Assert.IsTrue(estaListoElPedido);
 
 
-                IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntrega();
+                IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntregaEnLocal();
                 int idDelPedido = pedido.Id;
                 IMesa mesaDelPedido = gestorMesas.GetMesa(1);
                 //Assert.IsNotNull(mesaDelPedido);
                 int idDeLaMesa = mesaDelPedido.Id;
                 //Assert.AreEqual(1 , idDeLaMesa);
-                IPedido pedidoParaEntrega = gestorDePedidos.ObtenerPedidoListoParaLaEntrega();
+                IPedido pedidoParaEntrega = gestorDePedidos.ObtenerPedidoListoParaLaEntregaEnLocal();
                 //Assert.IsNotNull(pedidoParaEntrega);
                 int idDelPedidoParaLaMesa = pedidoParaEntrega.Id;
                 //Assert.AreEqual(2, idDelPedido);

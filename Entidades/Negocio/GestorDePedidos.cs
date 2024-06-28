@@ -132,18 +132,35 @@ namespace Negocio
         {
             bool seEntregoCorrectamente = false;
             bool seDescontoCorrectamente = false;
-            List<IConsumible> consumiblesDelPedido;
-            foreach(Pedido pedido in _pedidosParaLocal)
+            List<IConsumible> consumiblesDelPedido = new List<IConsumible>();
+            if(entregadorPedidos is Mesero)
             {
-                if (pedido.Id == idDelPedido && pedido.ListoParaEntregar == true)
+                foreach (Pedido pedido in _pedidosParaLocal)
                 {
-                    entregadorPedidos.EntregarPedido(idDeMesaOCliente, pedido); // se entrega por ej. a la mesa y se agrega  a una lista de pedidos para luego cobrar
-                    pedido.Entregado = true;
-                    consumiblesDelPedido = pedido.GetConsumibles();
-                    seDescontoCorrectamente = _gestorProductosStock.DescontarProductosDeStock(consumiblesDelPedido);
-                    break;
+                    if (pedido.Id == idDelPedido && pedido.ListoParaEntregar == true)
+                    {
+                        entregadorPedidos.EntregarPedido(idDeMesaOCliente, pedido); // se entrega por ej. a la mesa y se agrega  a una lista de pedidos para luego cobrar
+                        pedido.Entregado = true;
+                        consumiblesDelPedido = pedido.GetConsumibles();
+                        seDescontoCorrectamente = _gestorProductosStock.DescontarProductosDeStock(consumiblesDelPedido);
+                        break;
+                    }
                 }
             }
+            if(entregadorPedidos is Delivery)
+            {
+                foreach (Pedido pedido in _pedidosParaDelivery)
+                {
+                    if (pedido.Id == idDelPedido && pedido.ListoParaEntregar == true)
+                    {
+                        entregadorPedidos.EntregarPedido(idDeMesaOCliente, pedido); // se entrega por ej. a la mesa y se agrega  a una lista de pedidos para luego cobrar
+                        pedido.Entregado = true;
+                        consumiblesDelPedido = pedido.GetConsumibles();
+                        seDescontoCorrectamente = _gestorProductosStock.DescontarProductosDeStock(consumiblesDelPedido);
+                        break;
+                    }
+                }
+            }   
 
             if (seDescontoCorrectamente)
             {
@@ -152,7 +169,7 @@ namespace Negocio
             return seEntregoCorrectamente;
         }
 
-        public IPedido ObtenerPedidoListoParaLaEntrega()
+        public IPedido ObtenerPedidoListoParaLaEntregaEnLocal()
         {
             foreach(IPedido pedido in _pedidosParaLocal)
             {
@@ -161,7 +178,18 @@ namespace Negocio
                     return pedido;
                 }
             }
-            throw new NoHayPedidosParaEntregarException("No hay pedidos Para EntregarException en la cola");
+            throw new NoHayPedidosParaEntregarException("No hay pedidos Para entregar en la cola de pedidos para local");
+        }
+        public IPedido ObtenerPedidoListoParaLaEntregaDelivery()
+        {
+            foreach (IPedido pedido in _pedidosParaDelivery)
+            {
+                if (pedido.ListoParaEntregar && pedido.Entregado == false)
+                {
+                    return pedido;
+                }
+            }
+            throw new NoHayPedidosParaEntregarException("No hay pedidos Para Entregar en la cola de pedidos para delivery");
         }
     }
 }

@@ -77,14 +77,15 @@ namespace Entidades
 
             if (!mesaEncontrada)
             {
-                throw new AlEntregarPedidoException("Error al entregar Pedido a la mesa");
+                throw new AlEntregarPedidoException("Error Mesa no encontrada (al entregar Pedido a la mesa)");
             }
         }
 
 
 
-        public void Cobrar(int idMesaOCliente)
+        public bool Cobrar(int idMesaOCliente)
         {
+            bool seCobro = false;
             decimal montoMesaActual = 0;
             foreach(IMesa mesa in _mesasAsignada) 
             { 
@@ -99,11 +100,13 @@ namespace Entidades
                         }                                        
 
                     }
+                    seCobro = true;
                     CerrarMesa(idMesaOCliente);
                     break;
                 }
                 
             }
+            return seCobro;
         }
 
         private void CerrarMesa(int idMesa)

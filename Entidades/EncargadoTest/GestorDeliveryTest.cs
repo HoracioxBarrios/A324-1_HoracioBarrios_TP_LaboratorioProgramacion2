@@ -1,22 +1,20 @@
-﻿using Entidades;
-using Entidades.Enumerables;
+﻿using Entidades.Enumerables;
 using Entidades.Interfaces;
 using Entidades.Services;
-using Moq;
+using Entidades;
 using Negocio;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 
 namespace Test
 {
     [TestClass]
-    public class GestorDePedidosTest
+    public class GestorDeliveryTest
     {
-
         private IGestorMenu _gestorMenu;
         private IGestorProductos _gestorProductos;
         private ICocinero _cocinero;
@@ -74,7 +72,7 @@ namespace Test
             _encargado = (IEncargado)encargado;
             //------------------- GESTOR DE PRODUCTOS -----------------------
             _gestorProductos = new GestorDeProductos();
-            
+
             //Creamos los productos
             IProducto pollo = _gestorProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
             IProducto papa = _gestorProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
@@ -120,7 +118,7 @@ namespace Test
             //selecciona INGREDIENTES para el COCINERO (lo guardara en su lista de ingredientes seleccionados)
             _gestorMenu.SelecionarIngredienteParaUnPlato(nombreDelProductoSeleccionado1, cantidadDelProductoSeleccionado1, unidadDeMedidaParaElProductoSeleccionado1);
 
-            _gestorMenu.SelecionarIngredienteParaUnPlato( nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
+            _gestorMenu.SelecionarIngredienteParaUnPlato(nombreDelProductoSeleccionado2, cantidadDelProductoSeleccionado2, unidadDeMedidaParaElProductoSeleccionado2);
 
 
 
@@ -223,33 +221,6 @@ namespace Test
         }
 
 
-
-
-
-
-        [TestMethod]
-        public void TesteandoLaCreacionDeUnpedidoParaLocal_SeSelecionaUnPlatoYUnaBebida_SiNoLanzaExceptionEstaBien()
-        {
-            int cantidadDeMesas = 4;
-            GestorDeMesas gestorMesas = new GestorDeMesas(_encargado, cantidadDeMesas);
-           
-            gestorMesas.RegistrarMesero(_mesero); //Registro el Mesero en el gestor mesas
-
-            gestorMesas.AsignarMesaAMesero("Pepe", "Medusa", 1);
-
-
-            //Id de la mesa que realiza el pedido
-            int idDeLaMesCliente = 1;
-            GestorDePedidos gestorDePedidos = new GestorDePedidos(_gestorProductos);
-
-
-            bool seCreoPedido = gestorDePedidos.CrearPedido((ICreadorDePedidos)_mesero, ETipoDePedido.Para_Local, _consumublesSelecionadosParaPedido, idDeLaMesCliente);
-
-            Assert.IsTrue(seCreoPedido);
-
-        }
-
-
         [TestMethod]
         public async Task TesteamosLaCreacionDeUnPedidoParaElDelivery()
         {
@@ -304,193 +275,22 @@ namespace Test
         }
 
 
-
-
         [TestMethod]
-        public async Task TesteaLaEntregaDelPedidoParaLocal_AlEntregarElPedidoSeDescuentaDelStockLosProductos_SiMarcaEntregadoDebeDarTrue()
-        {
-
-            //Arrange
-            //DATOS PARA Ingrediente 1-----------------------------------
-            ETipoDeProducto tipoDeProducto1 = ETipoDeProducto.Ingrediente;
-            string nombreDeProducto1 = "Pollo";
-            double cantidad = 20;
-            EUnidadDeMedida unidadDeMedida = EUnidadDeMedida.Kilo;
-            decimal precio = 20000;
-
-            var mockProveedor1 = new Mock<IProveedor>();
-            mockProveedor1.Setup(p => p.Nombre).Returns("Proveedor 1");
-            mockProveedor1.Setup(p => p.Cuit).Returns("30-12345678-9");
-            mockProveedor1.Setup(p => p.Direccion).Returns("Calle Falsa 123");
-            mockProveedor1.Setup(p => p.TipoDeProducto).Returns(ETipoDeProducto.Almacen);
-            mockProveedor1.Setup(p => p.MediosDePago).Returns(EMediosDePago.Transferencia);
-            mockProveedor1.Setup(p => p.EsAcreedor).Returns(EAcreedor.Si);
-            mockProveedor1.Setup(p => p.DiaDeEntrega).Returns(EDiaDeLaSemana.Lunes);
-            mockProveedor1.Setup(p => p.ID).Returns(1);
-            mockProveedor1.Setup(p => p.ToString()).Returns("ID: 1, Nombre: Proveedor 1, CUIT: 30-12345678-9, Direccion: Calle Falsa 123, Tipo de Producto que Provee: Almacen, Medio de Pago: Transferencia, Es Acreedor? : Si, Dia de Entrega: Lunes");
-
-            //DATOS PARA Ingrediente 2 --------------------------------
-            ETipoDeProducto tipoDeProducto2 = ETipoDeProducto.Ingrediente;
-            string nombreDeProducto2 = "Papa";
-            double cantidad2 = 20;
-            EUnidadDeMedida unidadDeMedida2 = EUnidadDeMedida.Kilo;
-            decimal precio2 = 20000;
-
-            var mockProveedor2 = new Mock<IProveedor>();
-            mockProveedor2.Setup(p => p.Nombre).Returns("Proveedor 2");
-            mockProveedor2.Setup(p => p.Cuit).Returns("31-12345678-8");
-            mockProveedor2.Setup(p => p.Direccion).Returns("Calle Falsa 456");
-            mockProveedor2.Setup(p => p.TipoDeProducto).Returns(ETipoDeProducto.Carniceria);
-            mockProveedor2.Setup(p => p.MediosDePago).Returns(EMediosDePago.Tarjeta);
-            mockProveedor2.Setup(p => p.EsAcreedor).Returns(EAcreedor.No);
-            mockProveedor2.Setup(p => p.DiaDeEntrega).Returns(EDiaDeLaSemana.Martes);
-            mockProveedor2.Setup(p => p.ID).Returns(2);
-            mockProveedor2.Setup(p => p.ToString()).Returns("ID: 2, Nombre: Proveedor 2, CUIT: 31-12345678-8, Direccion: Calle Falsa 456, Tipo de Producto que Provee: Carniceria, Medio de Pago: Tarjeta, Es Acreedor? : No, Dia de Entrega: Martes");
-
-
-
-
-            //------------------- GESTOR DE PRODUCTOS -----------------------
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
-
-
-            //Act
-            //Productos que van a estar en la lista del stock (está dentro de GestorProductos)
-
-            // -------------- CREAMOS LOS INGREDIENTES para el stock ------------------
-            IProducto pollo = gestorDeProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
-            IProducto papa = gestorDeProductos.CrearProducto(tipoDeProducto2, nombreDeProducto2, cantidad2, unidadDeMedida2, precio2, mockProveedor2.Object);
-
-            //AGREGAMOS AL STOCK
-            gestorDeProductos.AgregarProductoAStock(pollo);
-            gestorDeProductos.AgregarProductoAStock(papa);
-
-            //Instanciamos EL COCINERO
-            IEmpleado cocinero = EmpleadoServiceFactory.CrearEmpleado(ERol.Cocinero, "Pipo", "Sdd", "2323", "Av pepe 123", 15000);
-
-
-            // EL ENCARGADO
-            IEmpleado encargado = EmpleadoServiceFactory.CrearEmpleado(ERol.Encargado, "Frey", "Varga", "421544", "Av. los copos 66", 45000M);
-
-            //INSTANCIAMOS EL GESTOR MENU
-            GestorDeMenu gestormenu = new GestorDeMenu((ICocinero)cocinero, gestorDeProductos);
-
-
-            //SELECCIONAMOS INGREDIENTES PARA EL PLATO (DEBE ESTAR CREADO EN SISTEMA ( -- STOCK --)) -- para el PLATO deben ser 
-            gestormenu.SelecionarIngredienteParaUnPlato("Pollo", 1, EUnidadDeMedida.Kilo);
-            gestormenu.SelecionarIngredienteParaUnPlato("Papa", 1, EUnidadDeMedida.Kilo);
-
-            // ----------------- Creamos el Menu -------------------
-            gestormenu.CrearMenu("Almuerzo");
-
-            // -------------- Creamos el plato ---------------------
-            string nombrePlato = "polloPapa";
-            int tiempoPreparacion = 10;
-            EUnidadDeTiempo unidadTiempo = EUnidadDeTiempo.Segundos;
-            decimal precioDeVentaDelPlato = 3000;
-            IConsumible plato = gestormenu.CrearPlato(nombrePlato, tiempoPreparacion, unidadTiempo);
-
-            //Agregamos el plato al menu
-            gestormenu.AgregarPlatoAMenu("Almuerzo", plato);
-
-            //Ponemos precio al plato IMPORTANTE
-            gestormenu.EstablecerPrecioAProducto((IEstablecedorDePrecios)encargado, nombrePlato, precioDeVentaDelPlato);
-
-
-
-            // >>>>>>>>>>>>>>>>>> ---- Traemos los menus disponibles Mostramos el menu ---- <<<<<<<<<<<<<<<<<<<<<<<<<<
-            List<IMenu> menusDisponibles = gestormenu.GetAllMenus();
-            IMenu menuSeleccionado = gestormenu.GetMenuPorNombre("Almuerzo");//selecionamos un menu
-
-            //----------- SELECCION DE CONSUMIBLES ( son los que elijen los comensales o clientes) con esto Armaremos el Pedido( solo sera selecionable la bebidas que hayan en stock y los platos que se puedan cocinar) --------------------
-
-
-            List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
-
-            IConsumible plato1 = menuSeleccionado.GetPlatoPorNombre("polloPapa");//del menu traemos el plato elegido por el cliente
-
-
-            consumublesSelecionadosParaPedido.Add(plato1);
-            //---------------------- CREAMOS EL PEDIDO ------------------------
-
-            GestorDePedidos gestorDePedidos = new GestorDePedidos(gestorDeProductos);
-
-            //ICreador de Pedidos MESERO O ENCARGADO
-            //EN CASO DEL MESERO DEBE ESTAR ASIGNADO A LA MESA:
-
-
-            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4);
-
-
-            IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Leo", "Gry", "1152000", "Av iglu 45", 15000M);
-            //Al no usar GestorEmpleado , tenemos que nosotros setear la ID del mesero (El gestorEmpleado al rcearlo en la db esta se encarga de generarnos la ID del empleado MESERO en este caso)
-            mesero.Id = 100;
-
-            gestorMesas.RegistrarMesero((IMesero)mesero); //Registro el Mesero en el gestor mesas
-
-            gestorMesas.AsignarMesaAMesero("Leo", "Gry", 1);
-
-
-            //Id de la mesa que realiza el pedido
-            int idDeLaMesaCliente = 1;
-
-            bool seCreoPedido = gestorDePedidos.CrearPedido((ICreadorDePedidos)mesero, ETipoDePedido.Para_Local, consumublesSelecionadosParaPedido, idDeLaMesaCliente);
-
-            //------------------------------------------------------ cuando SE CREa EL PEDIDO ya lo tenemos disponible
-            //DEBEMOS TOMAR ESE PEDIDO O COMANDA :por eemplo el cocinero que va a preparar los platos del pedido
-
-            IPedido pedido = gestorDePedidos.TomarPedidoSinPrepararAunParaElLocal();
-
-
-            //Preparar pedido el cocinero recibe el pedido, los PLATOS TARDAN EN COCINARSE y cuando esten los platos cocinados (el pedido pasara a estar disponible ), LAS BEBIDAS SE TOMAN COMO ENTREGABLES SI ESTAN disponibles EN STOCK
-            bool estaListoElPedido = await gestorDePedidos.PrepararPedido((IPreparadorDePedidos)cocinero, pedido);
-
-            //CUANDO TERMINA EL TIEMPO(de todos los platos)----->avisa por evento que el pedido esta LISTO PARA ENTREGAR
-            if (estaListoElPedido == true)
-            {
-                //Assert.IsTrue(estaListoElPedido);
-
-
-                IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntregaEnLocal();
-                int idDelPedido = pedido.Id;
-                IMesa mesaDelPedido = gestorMesas.GetMesa(1);
-                //Assert.IsNotNull(mesaDelPedido);
-                int idDeLaMesa = mesaDelPedido.Id;
-                //Assert.AreEqual(1 , idDeLaMesa);
-                IPedido pedidoParaEntrega = gestorDePedidos.ObtenerPedidoListoParaLaEntregaEnLocal();
-                //Assert.IsNotNull(pedidoParaEntrega);
-                int idDelPedidoParaLaMesa = pedidoParaEntrega.Id;
-                //Assert.AreEqual(2, idDelPedido);
-                bool seEntregoYSeDescontoDelStock = gestorDePedidos.EntregarPedido((IEntregadorPedidos)mesero, idDelPedidoParaLaMesa, idDeLaMesa); //ENTREGAMOS EL PEDIDO A LA MESA 1
-
-
-                Assert.IsTrue(seEntregoYSeDescontoDelStock);
-
-
-
-            }
-        }
-
-
-        [TestMethod]
-        public async Task TesteaLaEntregaDelPedidoParaDelivery_AlEntregarElPedidoSeDescuentaDelStockLosProductos_SiMarcaEntregadoDebeDarTrue()
+        public async Task TesteaLaCreacionDeUnPedidoParaElDelivery_SiSePreparoEstaBien()
         {
             //Gestor delivery
             GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
 
             //Cliente
-            int idHardCodeadaDelCLiente1 = 200;
+            int idHaecodeadaDelCLiente1 = 200;
             string nombreDelCliente1 = "PepeLaMangosta";
             string direccionCliente1 = "Av Los pekes 60";
             string telefenoCliente1 = "1522446680";
 
-            ICliente cliente1 = new Cliente(idHardCodeadaDelCLiente1, nombreDelCliente1, direccionCliente1, telefenoCliente1);
+            ICliente cliente1 = new Cliente(idHaecodeadaDelCLiente1, nombreDelCliente1, direccionCliente1, telefenoCliente1);
 
-            int idDelCliente = cliente1.Id;
             //registramos Cliente para tener disponible sus datos
             gestorDeDelivery.RegistrarCliente(cliente1);
-
-
 
             //Instanciamos un delivery
             string nombreEmpleado = "pedro";
@@ -501,18 +301,8 @@ namespace Test
             IEmpleado empleadoDelivery = EmpleadoServiceFactory.CrearEmpleado(
                 ERol.Delivery, nombreEmpleado, apellidoEmpleadoDelivery, contactoEmpleadoDelivery, direccionEmpleadoDelivery, salarioEmpleadoDelivery);
             int idDelEmpleadoDelivery = 50;
-            //seteamos la ID al Empleado delivery
+
             empleadoDelivery.Id = idDelEmpleadoDelivery;
-            //Hay que agregar el Delivery al Gestor Delivery
-            gestorDeDelivery.RegistrarDelivery((IDelivery)empleadoDelivery);
-
-
-
-            //HAY QUE ASIGNARLE CLIENTES AL DELIVERY PARA para que luego pueda entregarles pedidos
-            gestorDeDelivery.AsignarClienteADelivery(idDelEmpleadoDelivery, idDelCliente);
-
-            // chequear
-
 
             //Creamos el Pedido para delivery
             GestorDePedidos gestorDePedidos = new GestorDePedidos(_gestorProductos);
@@ -521,48 +311,21 @@ namespace Test
             List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
 
             IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
-                                                                             //del menu traemos el plato o bebida elegido por el cliente
+            //del menu traemos el plato o bebida elegido por el cliente
             IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola");
 
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
 
 
 
-            gestorDePedidos.CrearPedido((ICreadorDePedidos)_encargado, ETipoDePedido.Para_Delivery, consumublesSelecionadosParaPedido, idHardCodeadaDelCLiente1);
+            gestorDePedidos.CrearPedido((ICreadorDePedidos)_encargado, ETipoDePedido.Para_Delivery, consumublesSelecionadosParaPedido, idHaecodeadaDelCLiente1);
 
             IPedido pedidoParaDelivery = gestorDePedidos.TomarPedidoSinPrepararAunParaDelivery();
 
-            bool estaListoElPedido = await gestorDePedidos.PrepararPedido((IPreparadorDePedidos)_cocinero, pedidoParaDelivery);
+            bool sePreparo = await gestorDePedidos.PrepararPedido((IPreparadorDePedidos)_cocinero, pedidoParaDelivery);
 
+            Assert.IsTrue(sePreparo);
 
-            //CUANDO TERMINA EL TIEMPO(de todos los platos)----->avisa por evento que el pedido esta LISTO PARA ENTREGAR
-            //Necesitamos el DELIVERY QUE VA A ENTREGAR EL PEDIDO
-            IEmpleado delivery1 = EmpleadoServiceFactory.CrearEmpleado(ERol.Delivery, "Sol", "Dorado", "15444", "Calle 7", 10000);
-
-            if (estaListoElPedido == true)
-            {
-                //Assert.IsTrue(estaListoElPedido);
-
-
-                IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntregaDelivery();
-                ICliente clienteDelPedido = gestorDeDelivery.GetCliente(idHardCodeadaDelCLiente1);
-                //////Assert.IsNotNull(clienteDelPedido);
-                int idDelClienteConfirmado = cliente1.Id;
-                Assert.AreEqual(200, idDelClienteConfirmado);
-
-                ////Assert.IsNotNull(pedidoParaEntregar);
-                int idDelPedido = pedidoParaEntregar.Id; // OK
-                //Assert.AreEqual(3, idDelPedido); //ok
-
-
-/*                bool seEntregoYSeDescontoDelStock = gestorDePedidos.EntregarPedido((IEntregadorPedidos)delivery1, idDelPedido, 200);*/ //ENTREGAMOS EL PEDIDO Al Cliente 
-
-
-                //Assert.IsTrue(seEntregoYSeDescontoDelStock);
-
-
-
-            }
         }
     }
 }
