@@ -342,5 +342,11 @@ namespace Negocio
         }
 
 
+        public void BloquearParaLaVenta(IEncargado encargado ,IProducto producto)
+        {
+            encargado.bloquearParaLaVenta(producto);
+        }
+
+
     }
 }

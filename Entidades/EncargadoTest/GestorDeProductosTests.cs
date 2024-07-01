@@ -81,5 +81,27 @@ namespace Test
             // Assert
             Assert.AreEqual(2, productosEnStock.Count, "Debería haber 2 productos en stock.");
         }
+
+        public void BloqueoDeStockTest()
+        {
+            // Arrange
+            var mockProveedor = new Mock<IProveedor>();
+            mockProveedor.Setup(p => p.Nombre).Returns("Proveedor");
+            mockProveedor.Setup(p => p.Cuit).Returns("30-12345678-9");
+
+
+            // Crear productos
+            IProducto pollo = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "pollo", 20, EUnidadDeMedida.Kilo, 20000, mockProveedor.Object);
+
+            //Emulamos  que se agota el pollo
+            pollo.Cantidad = 0;
+
+            //Act
+            _gestorDeProductos.BloquearParaLaVenta(_encargado, pollo);
+
+            //Assert
+            Assert.AreEqual(false, pollo.Disponibilidad);
+
+        }
     }
 }

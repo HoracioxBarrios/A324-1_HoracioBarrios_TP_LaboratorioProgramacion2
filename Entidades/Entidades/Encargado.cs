@@ -174,6 +174,11 @@ namespace Entidades
 
             return productosPorAgotarse;
         }
+
+        public void bloquearParaLaVenta(IProducto producto)
+        {
+            producto.Disponibilidad = false;
+        }
     }
     
 }

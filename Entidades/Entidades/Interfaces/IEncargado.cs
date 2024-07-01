@@ -14,5 +14,7 @@ namespace Entidades.Interfaces
         List<IProducto> ConsultaStockVigente(List<IProducto> listaDeProductosEnStock);
 
         List<IProducto> ConsultaDeStockPorAgotarse(List<IProducto> listaDeProductosEnStock);
+
+        void bloquearParaLaVenta(IProducto producto);
     }
 }
