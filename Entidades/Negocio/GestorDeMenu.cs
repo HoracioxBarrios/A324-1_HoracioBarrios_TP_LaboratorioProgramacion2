@@ -43,7 +43,7 @@ namespace Negocio
             _gestorProductosStock = gestorDeproductosStock;
 
             //Sucribimos al evento para Actualizar  Iconsumibles como Bebidas o Ingredientes
-
+            _gestorProductosStock.EventStockDeProductosActualizados += ActualizarConsumiblesDesdeStock;
 
         }
 
@@ -418,6 +418,24 @@ namespace Negocio
 
             ActualizarConsumilesThread.Start();// inicio del Hilo
         }
-        
+
+
+        private void ActualizarConsumiblesDesdeStock()
+        {
+            // Actualizar consumibles en la lista local de bebidas
+            List<IConsumible> bebidasEnStock = _gestorProductosStock.ReadAllProductosBebidas();
+            lock (_ListaGeneralDeConsumiblesLocal)
+            {
+                foreach (Bebida bebida in bebidasEnStock)
+                {
+                    IConsumible bebidaExistente = _ListaGeneralDeConsumiblesLocal.OfType<Bebida>().FirstOrDefault(b => b.Id == bebida.Id);
+                    if (bebidaExistente != null)
+                    {
+                        bebidaExistente.Cantidad = bebida.Cantidad;
+                    }
+                }
+            }
+        }
+
     }
 }

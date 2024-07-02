@@ -19,6 +19,7 @@ namespace Entidades.Interfaces
 
         void AgregarPlatoAMenu(string nombreDelMenu, IConsumible plato);
         void AgregarPlatosAlMenu(string nombreDelMenu, List<IConsumible> listaDePlatos);
+        void AgregarBebidaAlMenu(string nombreDelMenu, IConsumible consumible);
         void AgregarBebidasAMenu(string nombreDelMenu, List<IConsumible> listaDeBebidas);
 
         IMenu GetMenuPorNombre(string nombreDelMenu);

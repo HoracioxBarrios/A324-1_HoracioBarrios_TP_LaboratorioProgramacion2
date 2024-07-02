@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using Entidades.Enumerables;
 using Entidades.Interfaces;
+using Entidades.Services;
 using Moq;
 using Negocio;
 using System;
@@ -90,7 +91,7 @@ namespace Test
             
         }
 
-
+        [TestMethod]
         public void TestBebidas_VerificamosSiSeCreanYSeAñadenALStock_SeDebePoderSumarElValorDeLosProductosQueEstanEnStock_SiLoHaceDebeDar30000()
         {
             //Arrange
@@ -130,14 +131,80 @@ namespace Test
             GestorDeProductos gestorDeProductos = new GestorDeProductos();
 
             //Act
-            gestorDeProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
-            gestorDeProductos.CrearProducto(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
+            IProducto coca = gestorDeProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
+            IProducto cerveza = gestorDeProductos.CrearProducto(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
 
+
+            gestorDeProductos.AgregarProductoAStock(coca);
+            gestorDeProductos.AgregarProductoAStock(cerveza);
             //Assert
 
 
             Assert.AreEqual(30000, gestorDeProductos.CalcularPrecio());
 
+        }
+
+        [TestMethod]
+        public void LaBebidaQueTieneLaUnidadDeMedidaUnidadDebeDescontarUnaUnidad()
+        {
+            //Arrange
+            //PROVEEDOR MOCK
+            var mockProveedor = new Mock<IProveedor>();
+            mockProveedor.Setup(p => p.Nombre).Returns("Proveedor 1");
+
+            ETipoDeProducto tipoDeProductoBebida1 = ETipoDeProducto.Bebida;
+            string nombreBebida1 = "CocaCola";
+            double cantidadBebida1 = 10;
+            EUnidadDeMedida eUnidadDeMedidaBebida1 = EUnidadDeMedida.Unidad;
+            decimal precioBebida1 = 10000;
+            IProveedor proveedorBebida1 = mockProveedor.Object;
+            ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
+            EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
+
+            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            IProducto coca = gestorDeProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
+            //------------------- Tenemos la COCA en stock ------------------------
+            gestorDeProductos.AgregarProductoAStock(coca);
+
+
+
+            IEmpleado empleado = EmpleadoServiceFactory.CrearEmpleado(ERol.Cocinero, "Pipo", "ERG", "4215554", "Av El Ruttu 5412", 40000M);
+            //Tengo que usar Gestor Emepleado 
+            Cocinero cocinero = (Cocinero)empleado;
+
+            GestorDeMenu gestorMenu = new GestorDeMenu(cocinero, gestorDeProductos);
+
+            gestorMenu.CrearMenu("General");
+            // AGREGAMOS LAS BEBIDAS DEL STOCK AL MENÚ
+            gestorMenu.AgregarBebidaAlMenu("General", (IConsumible)coca);
+
+
+
+            //ESTABLECEMOS PRECIO
+            // EL ENCARGADO
+            IEmpleado encargado = EmpleadoServiceFactory.CrearEmpleado(ERol.Encargado, "Frey", "Varga", "421544", "Av. los copos 66", 45000M);
+            gestorMenu.EstablecerPrecioAProducto((Encargado)encargado, "CocaCola", 1100); // el precio de costo es de 1000 por lo tanto debe ser mayor el precio de venta
+
+
+
+
+            //Elegimos el menu
+            IMenu menuEscogido = gestorMenu.GetMenuPorNombre("General");
+            //Selecionamos la bebida que esta ofrecida en el menu
+            IConsumible consumibleEscogidoParaPedido = menuEscogido.GetBebidaPorNombre("CocaCola", 1);
+
+            List<IConsumible> consumiblesDelPedidoParaDescontrDeStock = new List<IConsumible>(); // en este punto es cuando ya se entrega el pedido en el caso del delivery al cliente y se debe descontar de stock
+            consumiblesDelPedidoParaDescontrDeStock.Add(consumibleEscogidoParaPedido);
+            //Vamos a descontardel stock
+
+            bool seDesconto = gestorDeProductos.DescontarProductosDeStock(consumiblesDelPedidoParaDescontrDeStock);
+
+            IConsumible bebidaEnStockEnGestorMenu = gestorMenu.ObtenerConsumible("CocaCola");
+            IProducto bebidaEnStockEnGestorProducto = gestorDeProductos.ReadProducto("CocaCola");
+            Assert.IsTrue(seDesconto);
+
+            //Si se desconto entonces si es asi debe tener 9
+            Assert.AreEqual(9, bebidaEnStockEnGestorProducto.Cantidad);
         }
     }
 }
