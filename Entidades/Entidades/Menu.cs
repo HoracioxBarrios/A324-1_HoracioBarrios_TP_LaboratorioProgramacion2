@@ -53,17 +53,22 @@ namespace Entidades
         }
 
 
-        public IConsumible GetBebidaPorNombre(string nombreDeLaBebida)
+        public IConsumible GetBebidaPorNombre(string nombreDeLaBebida, int cantidad)
         {
-            foreach(IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
+            foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
             {
-                if(consumible is Bebida && consumible.Nombre == nombreDeLaBebida)
+                if (consumible is Bebida bebida && consumible.Nombre == nombreDeLaBebida)
                 {
-                    return consumible;
+                    if (consumible.Cantidad >= cantidad)
+                    {
+                        return bebida.CrearCopiaConCantidadNueva(cantidad);
+                    }
+                    throw new CantidadDeConsumibleExcedidaException("La cantidad 'Bebida' pedida excede a la del stock.");
                 }
             }
-            throw new ConsumibleNoExisteEnListaDeMenuException("No existe la bebida en la Lista del Menú");
+            throw new ConsumibleNoExisteEnListaDeMenuException("No existe la bebida en la lista del menú.");
         }
+
 
 
         public List<IConsumible> GetBebidasInMenu()

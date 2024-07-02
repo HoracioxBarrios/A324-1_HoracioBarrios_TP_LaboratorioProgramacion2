@@ -20,7 +20,7 @@ namespace Test
         private ICocinero _cocinero;
         private IMesero _mesero;
         private IEncargado _encargado;
-        private List<IConsumible> _consumublesSelecionadosParaPedido;
+
 
 
 
@@ -159,23 +159,27 @@ namespace Test
             string nombreBebida1 = "CocaCola";
             double cantidadBebida1 = 20;
             EUnidadDeMedida eUnidadDeMedidaBebida1 = EUnidadDeMedida.Unidad;
-            decimal precioBebida1 = 20000;
+            decimal precioCostoBebida1 = 20000;
             IProveedor proveedorBebida1 = mockProveedor4.Object;
             ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
             EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
 
             // BEBIDA 2
             ETipoDeProducto tipoDeProductoBebida2 = ETipoDeProducto.Bebida;
-            string nombreBebida2 = "Cerveza QUilmes";
+            string nombreBebida2 = "Cerveza Quilmes";
             double cantidadBebida2 = 10;
             EUnidadDeMedida eUnidadDeMedidaBebida2 = EUnidadDeMedida.Unidad;
-            decimal precioBebida2 = 10000;
+            decimal precioCostoBebida2 = 10000;
             IProveedor proveedorBebida2 = mockProveedor4.Object;
             ECategoriaConsumible categoriaConsumibleBebida2 = ECategoriaConsumible.Bebida;
             EClasificacionBebida clasificacionBebida2 = EClasificacionBebida.Con_Alcohol;
 
-            IProducto coca = _gestorProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
-            IProducto cerveza = _gestorProductos.CrearProducto(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
+            IProducto coca = _gestorProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioCostoBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
+            IProducto cerveza = _gestorProductos.CrearProducto(tipoDeProductoBebida2, nombreBebida2, cantidadBebida2, eUnidadDeMedidaBebida2, precioCostoBebida2, proveedorBebida2, categoriaConsumibleBebida2, clasificacionBebida2);
+
+
+
+
 
             //Agregamos los productos BEBIDAS
             _gestorProductos.AgregarProductoAStock(coca);
@@ -192,8 +196,15 @@ namespace Test
             decimal precioUnitarioCoca = coca.CalcularPrecioDeCosto();
             decimal precioUnitarioCerveza = cerveza.CalcularPrecioDeCosto();
 
-            _gestorMenu.EstablecerPrecioAProducto((IEstablecedorDePrecios)_encargado, "CocaCola", 1500M);
-            _gestorMenu.EstablecerPrecioAProducto((IEstablecedorDePrecios)_encargado, "Cerveza QUilmes", 1500M);
+
+            //IMPORTANTE ------------- ESTABLECEMOS PRECIO DE VENTA DE LAS BEBIDAS --------------------------
+            // EL PRECIO DE COSTO ES DE 1000 (Solo se peude setear un valor mayor a este)
+
+
+            _gestorMenu.EstablecerPrecioAProducto((IEstablecedorDePrecios)_encargado, "CocaCola", 1100);
+            _gestorMenu.EstablecerPrecioAProducto((IEstablecedorDePrecios)_encargado, "Cerveza Quilmes", 1100);
+
+
             //***************** Teniendo el Menú listo se puede mostrar y podriamos crear el pedido: --------->>>>>>>>>>>
 
 
@@ -203,7 +214,7 @@ namespace Test
             IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
 
             IConsumible platoSelecionado = menuSeleccionado.GetPlatoPorNombre("MilaPapa");//del menu traemos el plato elegido por el cliente
-            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola");
+            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
 
             consumublesSelecionadosParaPedido.Add(platoSelecionado);
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
@@ -258,7 +269,7 @@ namespace Test
 
             IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
             //del menu traemos el plato o bebida elegido por el cliente
-            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola");
+            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
 
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
 
@@ -312,7 +323,7 @@ namespace Test
 
             IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
             //del menu traemos el plato o bebida elegido por el cliente
-            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola");
+            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
 
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
 
@@ -326,6 +337,114 @@ namespace Test
 
             Assert.IsTrue(sePreparo);
 
+        }
+
+
+
+
+
+        [TestMethod]
+        public async Task TesteaLaEntregaDelPedidoParaDelivery_AlEntregarElPedidoSeDescuentaDelStockLosProductos_SiMarcaEntregadoDebeDarTrue()
+        {
+            //Gestor delivery
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+
+            //CLIENTE
+            int IdDelCliente = 200;
+            string nombreDelCliente1 = "PepeLaMangosta";
+            string direccionCliente1 = "Av Los pekes 60";
+            string telefenoCliente1 = "1522446680";
+
+            ICliente cliente1 = new Cliente(IdDelCliente, nombreDelCliente1, direccionCliente1, telefenoCliente1);
+
+
+
+
+            //registramos Cliente para tener disponible sus datos
+            gestorDeDelivery.RegistrarCliente(cliente1);
+
+
+            //DELIVERY
+            //Instanciamos un delivery
+            string nombreEmpleado = "pedro";
+            string apellidoEmpleadoDelivery = "pika";
+            string contactoEmpleadoDelivery = "4552166";
+            string direccionEmpleadoDelivery = "Calle 5";
+            decimal salarioEmpleadoDelivery = 20000;
+
+
+            IEmpleado empleadoDelivery = EmpleadoServiceFactory.CrearEmpleado(
+                ERol.Delivery, nombreEmpleado, apellidoEmpleadoDelivery, contactoEmpleadoDelivery, direccionEmpleadoDelivery, salarioEmpleadoDelivery);
+
+            //SET DE LA ID DELIVERY
+            int idDelEmpleadoDelivery = 50;
+
+            Delivery delivery1 = (Delivery)empleadoDelivery;
+            delivery1.Id = idDelEmpleadoDelivery;
+
+            //Hay que agregar el Delivery al Gestor Delivery - LO REGISTRAMOS
+            gestorDeDelivery.RegistrarDelivery(delivery1);
+
+
+
+            //HAY QUE ASIGNARLE CLIENTES AL DELIVERY PARA para que luego pueda entregarles pedidos - (aca el gestor tiene registrado tanto al empleado delivery como a los clientes)
+            gestorDeDelivery.AsignarClienteADelivery(idDelEmpleadoDelivery, IdDelCliente);
+
+
+
+
+            //Creamos el Pedido >>> para delivery <<<<
+            GestorDePedidos gestorDePedidos = new GestorDePedidos(_gestorProductos);
+
+            //Tenemos que tener una lista de consumibles pedidos.
+            List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
+
+            IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
+            //del menu traemos el plato o bebida elegido por el cliente
+            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
+
+            consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
+
+
+
+            gestorDePedidos.CrearPedido((ICreadorDePedidos)_encargado, ETipoDePedido.Para_Delivery, consumublesSelecionadosParaPedido, IdDelCliente);
+
+            IPedido pedidoParaDelivery = gestorDePedidos.TomarPedidoSinPrepararAunParaDelivery();
+
+            bool estaListoElPedido = await gestorDePedidos.PrepararPedido((IPreparadorDePedidos)_cocinero, pedidoParaDelivery);
+
+
+            //CUANDO TERMINA EL TIEMPO(de todos los platos)----->avisa por evento que el pedido esta LISTO PARA ENTREGAR
+
+            //Assert.IsTrue(estaListoElPedido);
+
+            if (estaListoElPedido == true)
+            {
+
+                IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntregaDelivery();//el pedido o tiene el precio total de los consumibles pedidos
+
+                ICliente clienteDelPedido = gestorDeDelivery.GetCliente(IdDelCliente);
+                //Assert.IsNotNull(clienteDelPedido);
+
+
+                //Assert.AreEqual(200, IdDelCliente);
+
+                //Assert.IsNotNull(pedidoParaEntregar);
+                int idDelPedido = pedidoParaEntregar.Id; // OK
+                //Assert.AreEqual(2, idDelPedido); //ok
+
+
+
+
+                //Assert.AreEqual(1100, bebidaDelPedido.Precio);
+                bool seEntregoYSeDescontoDelStock = gestorDePedidos.EntregarPedido((IEntregadorPedidos)delivery1, idDelPedido, IdDelCliente);//ENTREGAMOS EL PEDIDO Al Cliente 
+
+
+                Assert.IsTrue(seEntregoYSeDescontoDelStock);
+
+
+
+            }
         }
     }
 }

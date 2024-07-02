@@ -228,7 +228,7 @@ namespace Negocio
                 {
                     for (int i = 0; i < _listaDeProductosEnStock.Count; i++)
                     {
-                        Ingrediente ingredienteEnStock = (Ingrediente)_listaDeProductosEnStock[i];
+                        Producto ingredienteEnStock = (Producto)_listaDeProductosEnStock[i];
                         if (consumible is Plato plato)
                         {
                             List<IConsumible> ingredientesDelPlato = plato.GetIngredientesDelPlato();
@@ -236,7 +236,7 @@ namespace Negocio
                             {
                                 if (ingredienteADescontar.Nombre == _listaDeProductosEnStock[i].Nombre)
                                 {
-                                    Ingrediente nuevoIngrediente = ingredienteEnStock - ingredienteADescontar;
+                                    Ingrediente nuevoIngrediente = (Ingrediente)ingredienteEnStock - ingredienteADescontar;
                                     _listaDeProductosEnStock[i] = nuevoIngrediente;
                                     seModificoProductoEnLista = true;
                                     break;

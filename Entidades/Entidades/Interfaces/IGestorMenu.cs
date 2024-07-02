@@ -14,7 +14,6 @@ namespace Entidades.Interfaces
 
         IConsumible CrearPlato(string nombreDelPlato, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo);
         void EditarPlato(string nombrePlato, List<IConsumible> ingredientesActualizacion);
-
         void EliminarPlato(string nombrePlato);
         void EstablecerPrecioAProducto(IEstablecedorDePrecios establecedorDePrecios, string nombreDelPlato, decimal precioDeVentaDelPlato);
 
@@ -23,6 +22,7 @@ namespace Entidades.Interfaces
         void AgregarBebidasAMenu(string nombreDelMenu, List<IConsumible> listaDeBebidas);
 
         IMenu GetMenuPorNombre(string nombreDelMenu);
+        IConsumible ObtenerConsumible(string nombreConsumible);
         List<IMenu> GetAllMenus();
         List<IConsumible> GetPlatosDisponibles();
         List<IConsumible> GetBebidasDisponibles();

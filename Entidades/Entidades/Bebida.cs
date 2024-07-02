@@ -82,7 +82,7 @@ namespace Entidades
         /// -- SETTER : Establece el precio unitario de venta
         /// ---GETTER : Devuelve le precio unitario de venta
         /// </summary>
-        public decimal Precio
+        public override decimal Precio
         {
             get { return _precioUnitarioDeVenta; }
             set 
@@ -150,7 +150,38 @@ namespace Entidades
         }
 
 
-      
+        public Bebida CrearCopiaConCantidadNueva(double cantidadNecesaria)
+        {
+            if (cantidadNecesaria > this.Cantidad)
+            {
+                throw new ArgumentException("La cantidad necesaria no puede ser mayor que la cantidad existente.");
+            }
+
+
+            ITipoUnidadDeMedida nuevaITipoUnidadDeMedida = UnidadesDeMedidaServiceFactory.CrearUnidadDeMedida(this.EUnidadMedida, cantidadNecesaria);
+
+
+            return new Bebida(
+                id: this.Id,
+                nombre: this.Nombre,
+                cantidad: cantidadNecesaria,
+                eUnidadDeMedida: this.EUnidadMedida,
+                precioporCantidad: this._precioUnitarioDeCosto * (decimal)cantidadNecesaria,
+                proveedor: this.Proveedor,
+                categoriaDeConsumible: this.Categoria,
+                clasificacionDeBebida: this.ClasificacionDeBebida
+            )
+            {
+                _iTipoUnidadDeMedida = nuevaITipoUnidadDeMedida, 
+                _precioUnitarioDeCosto = this._precioUnitarioDeCosto, 
+                _precioUnitarioDeVenta = this._precioUnitarioDeVenta, 
+            };
+        }
+
+
+
+
+
         public string Nombre
         {
             get { return _nombre; }

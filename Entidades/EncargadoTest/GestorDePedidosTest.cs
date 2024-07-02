@@ -206,7 +206,7 @@ namespace Test
             IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
 
             IConsumible platoSelecionado = menuSeleccionado.GetPlatoPorNombre("MilaPapa");//del menu traemos el plato elegido por el cliente
-            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola");
+            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
             
             consumublesSelecionadosParaPedido.Add(platoSelecionado);
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
@@ -288,7 +288,7 @@ namespace Test
 
             IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
             //del menu traemos el plato o bebida elegido por el cliente
-            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola");
+            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
 
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
 

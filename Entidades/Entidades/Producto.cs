@@ -54,7 +54,7 @@ namespace Entidades
             get { return _iTipoUnidadDeMedida.Cantidad; }
             set { _iTipoUnidadDeMedida.Cantidad = value; }
         }
-        public decimal Precio
+        public virtual decimal Precio
         {
             get { return _precioUnitario; }
             set { _precioUnitario = value; }

@@ -22,7 +22,7 @@ namespace Entidades
         private decimal _precioDeVenta ;
         private ECategoriaConsumible _categoriaDeConsumible;
         private bool _disponibilidad;
-
+        private double _cantidad;
         private bool _listoParaEntregar;
 
         public event PlatoListoDelegate EventPlatoListo;
@@ -216,6 +216,11 @@ namespace Entidades
             }
         }
 
+        public double Cantidad
+        {
+            get { return _cantidad; }
+            set { _cantidad = value; }
+        }
         public bool ListoParaEntregar
         {
             get { return _listoParaEntregar; }
@@ -238,7 +243,7 @@ namespace Entidades
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Nombre: {Nombre}, Precio: {Precio}");
+            sb.AppendLine($"Nombre: {Nombre},Su Precio de Venta: {Precio}, Precio de Costo {_precioDeCosto}");
             return sb.ToString();
         }
 

@@ -12,7 +12,7 @@ namespace Entidades.Interfaces
         void Agregar(IConsumible consumible);
         void Quitar(IConsumible consumible);
         IConsumible GetPlatoPorNombre(string nombreDelPlato);
-        IConsumible GetBebidaPorNombre(string nombreDeLaBebida);
+        IConsumible GetBebidaPorNombre(string nombreDeLaBebida, int cantidadRequerida);
         List<IConsumible> GetPlatosEnMenu();
 
         List<IConsumible> GetBebidasInMenu();

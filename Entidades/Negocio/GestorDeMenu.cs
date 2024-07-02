@@ -60,6 +60,7 @@ namespace Negocio
         }
 
 
+
         /// <summary>
         /// Edita el nombre del Menu
         /// </summary>
@@ -74,6 +75,25 @@ namespace Negocio
                     _listaDeMenus[i].Nombre = nuevoNombre;
                 }
             }
+        }
+
+        public List<IMenu> GetAllMenus()
+        {
+            if (_listaDeMenus.Count > 0)
+            {
+                return _listaDeMenus;
+            }
+            throw new ListaVaciaException("La Lista de menú está Vacia");
+        }
+
+        public IMenu GetMenuPorNombre(string nombreDelMenu)
+        {
+            IMenu menu = _listaDeMenus.FirstOrDefault(m => m.Nombre == nombreDelMenu);// verifica si existe si es true lo retorna
+            if (menu == null)
+            {
+                throw new MenuNoExisteException("El menú no existe.");
+            }
+            return menu;
         }
 
 
@@ -140,6 +160,18 @@ namespace Negocio
             }
             _ListaGeneralDeConsumiblesLocal.Add(plato);
             return plato;
+        }
+
+        public IConsumible ObtenerConsumible(string nombreConsumible)
+        {
+
+            IConsumible consumibleEncontrado = _ListaGeneralDeConsumiblesLocal.FirstOrDefault(consumible => consumible.Nombre == nombreConsumible);
+            if (consumibleEncontrado == null)
+            {
+                throw new ConsumibleNoExisteEnListaDeMenuException("El plato o la bebida no existen en la lista.");
+            }
+
+            return consumibleEncontrado;
         }
 
 
@@ -259,6 +291,7 @@ namespace Negocio
             }
             IMenu menu = GetMenuPorNombre(nombreDelMenu);
             menu.Agregar(consumible);
+            _ListaGeneralDeConsumiblesLocal.Add(consumible);
         }
 
 
@@ -283,30 +316,14 @@ namespace Negocio
                 if (consumible is Bebida bebida && bebida.Disponibilidad)
                 {
                     menu.Agregar(consumible);
+                    _ListaGeneralDeConsumiblesLocal.Add(consumible);
                 }
             }
         }
 
 
 
-        public List<IMenu> GetAllMenus()
-        {
-            if(_listaDeMenus.Count > 0)
-            {
-                return _listaDeMenus;
-            }
-            throw new ListaVaciaException("La Lista de menú está Vacia");
-        }
 
-        public IMenu GetMenuPorNombre(string nombreDelMenu)
-        {
-            IMenu menu = _listaDeMenus.FirstOrDefault(m => m.Nombre == nombreDelMenu);// verifica si existe si es true lo retorna
-            if (menu == null)
-            {
-                throw new MenuNoExisteException("El menú no existe.");
-            }
-            return menu;
-        }
 
 
 
