@@ -120,19 +120,25 @@ namespace Negocio
 
 
 
-
         public IConsumible CrearPlato(string nombreDelPlato, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo)
         {
             List<IConsumible> ingredientesSeleccionados = _cocinero.ObtenerListaDeIngredientesSeleccionadosParaPlato();
-            if(ingredientesSeleccionados == null || ingredientesSeleccionados.Count == 0)
+            if (ingredientesSeleccionados == null || ingredientesSeleccionados.Count == 0)
             {
-                throw new ListaVaciaException("Error la Lista de ingredientes seleccioandos por el Cocinero esta Vacia");
+                throw new ListaVaciaException("La lista de ingredientes seleccionados por el cocinero está vacía.");
             }
+
             IConsumible plato = _cocinero.CrearPlato(nombreDelPlato, ingredientesSeleccionados, tiempoDePreparacion, unidadDeTiempo);
-            if (plato == null) 
+
+
+            bool disponibilidadPlato = ((Plato)plato).VerificarStockIngredientes(_gestorProductosStock.ObtenerTodosLosProductosIngrediente());//Verificamos si la disponibilidad
+            ((Plato)plato).Disponibilidad = disponibilidadPlato;
+
+            if (plato == null)
             {
-                throw new AlCrearPlatoException("El Plato no se Creó, es NULL");
+                throw new AlCrearPlatoException("El plato no se creó correctamente.");
             }
+
             _ListaGeneralDeConsumiblesLocal.Add(plato);
             return plato;
         }
@@ -291,19 +297,42 @@ namespace Negocio
         public List<IConsumible> ObtenerPlatosDisponibles()
         {
             List<IConsumible> platosDisponibles = new List<IConsumible>();
-            if (_ListaGeneralDeConsumiblesLocal.Count > 0)
+
+            foreach (IConsumible consumible in _ListaGeneralDeConsumiblesLocal)
             {
-                foreach (IConsumible consumible in _ListaGeneralDeConsumiblesLocal)
+                // Verificar si el consumible es un Plato y está disponible para crear
+                if (consumible is Plato plato && plato.Disponibilidad)
                 {
-                    if (consumible.Disponibilidad == true && consumible is Plato)
+                    try
                     {
-                        platosDisponibles.Add(consumible);
+                        // Verificar si el plato tiene ingredientes suficientes en stock
+                        List<IConsumible> ingredientesEnStock = _gestorProductosStock.ObtenerTodosLosProductosIngrediente();
+                        if (plato.VerificarStockIngredientes(ingredientesEnStock))
+                        {
+                            platosDisponibles.Add(plato);
+                        }
+                    }
+                    catch (ListaVaciaException ex)
+                    {
+                        // Manejar la excepción de lista vacía de ingredientes en stock
+                        Console.WriteLine($"Advertencia: {plato.Nombre} no está disponible debido a la falta de ingredientes en stock.");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejar otras excepciones
+                        Console.WriteLine($"Error al verificar disponibilidad de {plato.Nombre}: {ex.Message}");
                     }
                 }
-                return platosDisponibles;
             }
-            throw new ListaVaciaException("La Lista de todos los Platos está Vacia");
+
+            if (platosDisponibles.Count == 0)
+            {
+                throw new ListaVaciaException("No hay platos disponibles para crear debido a la escasez de ingredientes en stock.");
+            }
+
+            return platosDisponibles;
         }
+
 
 
         public List<IConsumible> ObtenerBebidasDisponibles()
@@ -326,19 +355,24 @@ namespace Negocio
         public List<IConsumible> ObtenerPlatosNoDisponibles()
         {
             List<IConsumible> platosNoDisponibles = new List<IConsumible>();
-            if (_ListaGeneralDeConsumiblesLocal.Count > 0)
+
+            foreach (IConsumible consumible in _ListaGeneralDeConsumiblesLocal)
             {
-                foreach (IConsumible consumible in _ListaGeneralDeConsumiblesLocal)
+                // Verificar si el consumible es un Plato y no está disponible por falta de ingredientes
+                if (consumible is Plato plato && !plato.Disponibilidad)
                 {
-                    if (consumible.Disponibilidad == false && consumible is Plato)
-                    {
-                           platosNoDisponibles.Add(consumible);
-                    }
+                    platosNoDisponibles.Add(plato);
                 }
-                return platosNoDisponibles;
             }
-            throw new ListaVaciaException("La Lista de todos los Platos está Vacia");
+
+            if (platosNoDisponibles.Count == 0)
+            {
+                throw new ListaVaciaException("No hay platos no disponibles debido a la insuficiencia de ingredientes.");
+            }
+
+            return platosNoDisponibles;
         }
+
         public List<IConsumible> ObtenerBebidasNoDisponibles()
         {
             List<IConsumible> bebidasNoDisponibles = new List<IConsumible>();

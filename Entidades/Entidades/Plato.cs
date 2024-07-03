@@ -121,37 +121,41 @@ namespace Entidades
 
 
 
-
-
-
-        /// <summary>
-        /// Esta disponible si hay mas ingredientes en stock, de lo que necesita el plato
-        /// </summary>
-        /// <param name="ingredientesEnStock"></param>
-        /// <returns></returns>
-        /// <exception cref="ListaVaciaException"></exception>
-        public bool VerificarDisponibilidad(List<IConsumible> ingredientesEnStock)
+        public bool VerificarStockIngredientes(List<IConsumible> ingredientesEnStock)
         {
-            _disponibilidad = false;
-            if(ingredientesEnStock == null || ingredientesEnStock.Count == 0)
+            if (ingredientesEnStock == null || ingredientesEnStock.Count == 0)
             {
-                throw new ListaVaciaException("La lista de productos INGREDIENTES que viene de stock esta vacia");
+                throw new ListaVaciaException("La lista de ingredientes en stock está vacía.");
             }
-            foreach(IConsumible ingredienteEnStock in ingredientesEnStock)
+
+            foreach (IConsumible ingrediente in _ingredientesSeleccionadosParaEstePlato)
             {
-                foreach (IConsumible ingrediente in _ingredientesSeleccionadosParaEstePlato)
+                bool encontrado = false;
+                foreach (IConsumible ingredienteEnStock in ingredientesEnStock)
                 {
-                    if(ingrediente.Nombre == ingredienteEnStock.Nombre)
+                    if (ingrediente.Nombre == ingredienteEnStock.Nombre)
                     {
-                        if((Ingrediente)ingredienteEnStock > (Ingrediente)ingrediente)
+                        // Comparar cantidades disponibles
+                        if ((Ingrediente)ingredienteEnStock > (Ingrediente)ingrediente)
                         {
-                            _disponibilidad = true;
+                            encontrado = true;
+                            break;
                         }
                     }
                 }
+                if (!encontrado)
+                {
+                    _disponibilidad = false;
+                    return _disponibilidad;
+                }
             }
+            _disponibilidad = true;
             return _disponibilidad;
         }
+
+
+
+
 
         public Ingrediente ObtenerIngrediente(string nombreIngrediente)
         {

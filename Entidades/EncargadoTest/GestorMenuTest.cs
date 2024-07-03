@@ -323,5 +323,35 @@ namespace Test
             Assert.AreEqual(plato3, platosOrdenados[1]);
             Assert.AreEqual(plato1, platosOrdenados[2]);
         }
+
+
+
+
+
+        [TestMethod]
+        public void TestObtenerPlatosNoDisponibles_PlatosNoDisponiblesCorrectamente()
+        {
+            // Arrange
+            // Crear platos con disponibilidad falsa
+            var plato1 = new Plato("Plato1", new List<IConsumible>(), 10, EUnidadDeTiempo.Minutos);
+            plato1.Disponibilidad = false;
+
+            var plato2 = new Plato("Plato2", new List<IConsumible>(), 15, EUnidadDeTiempo.Minutos);
+            plato2.Disponibilidad = false;
+
+            // Lista de consumibles locales (platos)
+            List<IConsumible> listaConsumibles = new List<IConsumible> { plato1, plato2 };
+            typeof(GestorDeMenu).GetField("_ListaGeneralDeConsumiblesLocal",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .SetValue(_gestorMenu, listaConsumibles);
+
+            // Act
+            List<IConsumible> platosNoDisponibles = _gestorMenu.ObtenerPlatosNoDisponibles();
+
+            // Assert
+            Assert.AreEqual(2, platosNoDisponibles.Count);
+            Assert.IsTrue(platosNoDisponibles.Contains(plato1));
+            Assert.IsTrue(platosNoDisponibles.Contains(plato2));
+        }
     }
 }
