@@ -70,7 +70,7 @@ namespace Test
 
             //Assert -- VERIFICAMOS QUE SE CREARON TRAYENDOLOS DE LA LISTA DE STOCK DE PRODCUTOS --
             int contador = 0;
-            foreach (var producto in gestorDeProductos.ReadAllProductos())
+            foreach (var producto in gestorDeProductos.ObtenerTodosLosProductos())
             {                
                 if (producto != null)
                 {
@@ -189,9 +189,9 @@ namespace Test
 
 
             //Elegimos el menu
-            IMenu menuEscogido = gestorMenu.GetMenuPorNombre("General");
+            IMenu menuEscogido = gestorMenu.ObtenerMenuPorNombre("General");
             //Selecionamos la bebida que esta ofrecida en el menu
-            IConsumible consumibleEscogidoParaPedido = menuEscogido.GetBebidaPorNombre("CocaCola", 1);
+            IConsumible consumibleEscogidoParaPedido = menuEscogido.ObtenerBebidaPorNombre("CocaCola", 1);
 
             List<IConsumible> consumiblesDelPedidoParaDescontrDeStock = new List<IConsumible>(); // en este punto es cuando ya se entrega el pedido en el caso del delivery al cliente y se debe descontar de stock
             consumiblesDelPedidoParaDescontrDeStock.Add(consumibleEscogidoParaPedido);
@@ -199,8 +199,8 @@ namespace Test
 
             bool seDesconto = gestorDeProductos.DescontarProductosDeStock(consumiblesDelPedidoParaDescontrDeStock);
 
-            IConsumible bebidaEnStockEnGestorMenu = gestorMenu.ObtenerConsumible("CocaCola");
-            IProducto bebidaEnStockEnGestorProducto = gestorDeProductos.ReadProducto("CocaCola");
+            IConsumible bebidaEnStockEnGestorMenu = gestorMenu.ObtenerConsumibleBebidaOPlato("CocaCola");
+            IProducto bebidaEnStockEnGestorProducto = gestorDeProductos.ObtenerProducto("CocaCola");
             Assert.IsTrue(seDesconto);
 
             //Si se desconto entonces si es asi debe tener 9

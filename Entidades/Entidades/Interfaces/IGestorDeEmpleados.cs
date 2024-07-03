@@ -12,14 +12,14 @@ namespace Entidades.Interfaces
 
         bool CrearEmpleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario);
 
-        IEmpleado ReadOneEmpleado(int id);
-        IEmpleado ReadOneEmpleado(string nombre, string apellido);
+        IEmpleado ObtenerEmpleado(int id);
+        IEmpleado ObtenerEmpleado(string nombre, string apellido);
         void EditarEmpleado(int id, string password);
         void EditarEmpleado(int id, string nombre, string apellido);
         void EditarEmpleado(int id, decimal salario);
         void EliminarEmpleado(int id);
-        List<IEmpleado> GetEmpleadosEnList();
-        IEmpleado GetEmpleadoEnList(string nombre);
+        List<IEmpleado> ObtenerEmpleados();
+        IEmpleado ObtenerEmpleado(string nombre);
 
 
 

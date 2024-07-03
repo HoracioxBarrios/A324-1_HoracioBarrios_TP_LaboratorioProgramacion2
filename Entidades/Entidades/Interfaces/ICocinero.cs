@@ -14,7 +14,7 @@ namespace Entidades.Interfaces
         IConsumible EditarPlato(IConsumible plato, List<IConsumible> ingredientesActualizacion);
         void EliminarPlato(string nombre, List<IConsumible> listaDePlatos);
         Task CocinarPlato(ICocinable plato);
-        List<IConsumible> GetListaDeIngredientesSeleccionados();
+        List<IConsumible> ObtenerListaDeIngredientesSeleccionadosParaPlato();
 
     }
 }

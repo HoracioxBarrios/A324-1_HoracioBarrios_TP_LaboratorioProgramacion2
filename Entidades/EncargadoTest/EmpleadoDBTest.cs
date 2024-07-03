@@ -38,7 +38,7 @@ namespace Test
             //gestorDeEmpleados.CrearEmpleado(ERol.Mesero, "Kler", "Dry", "117563", "Calle 41", 15000m);
             //gestorDeEmpleados.CrearEmpleado(ERol.Delivery, "Cris", "Lol", "115632", "Calle 56", 10000m);
 
-            List<IEmpleado> empleados = gestorDeEmpleados.GetEmpleadosEnList();
+            List<IEmpleado> empleados = gestorDeEmpleados.ObtenerEmpleados();
             Assert.IsTrue(empleados.Count > 0);
 
         }

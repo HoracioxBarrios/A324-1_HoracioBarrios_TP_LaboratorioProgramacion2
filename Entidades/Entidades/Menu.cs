@@ -40,7 +40,7 @@ namespace Entidades
             }
         }
 
-        public IConsumible GetPlatoPorNombre(string nombreDelPlato)
+        public IConsumible ObtenerPlatoPorNombre(string nombreDelPlato)
         {
             foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
             {
@@ -53,7 +53,7 @@ namespace Entidades
         }
 
 
-        public IConsumible GetBebidaPorNombre(string nombreDeLaBebida, int cantidad)
+        public IConsumible ObtenerBebidaPorNombre(string nombreDeLaBebida, int cantidad)
         {
             foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
             {
@@ -71,7 +71,7 @@ namespace Entidades
 
 
 
-        public List<IConsumible> GetBebidasInMenu()
+        public List<IConsumible> ObtenerBebidasEnMenu()
         {
             List<IConsumible> nuevaListaDeBebidas = new List<IConsumible>();
             foreach(IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
@@ -86,7 +86,7 @@ namespace Entidades
 
 
 
-        public List<IConsumible> GetPlatosEnMenu()
+        public List<IConsumible> ObtenerPlatosEnMenu()
         {
             List<IConsumible> nuevaListaDePlatos = new List<IConsumible>();
             foreach (IConsumible consumible in _listaDeConsumiblesBebidasYPlatos)
@@ -98,7 +98,7 @@ namespace Entidades
             }
             return nuevaListaDePlatos;
         }
-        public List<IConsumible> ObtenerAllItemsDelMenu()
+        public List<IConsumible> ObtenerTodosLosConsumiblesEnMenu()
         {
             return _listaDeConsumiblesBebidasYPlatos;
         }

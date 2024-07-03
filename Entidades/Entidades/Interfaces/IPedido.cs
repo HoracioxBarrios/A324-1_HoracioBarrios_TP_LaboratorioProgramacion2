@@ -18,9 +18,9 @@ namespace Entidades.Interfaces
         void EditarConsumible(IConsumible consumibleCorregido);
         void EditarConsumibles(List<IConsumible> nuevaListaDeConsumiblesCorregidos);
         void EliminarConsumible(IConsumible consumible);
-        List<IConsumible> GetBebidas();
-        List<IConsumible> GetPlatos();
-        List<IConsumible> GetConsumibles();
+        List<IConsumible> ObtenerConsumibleBebidasDelPedido();
+        List<IConsumible> ObtenerConsumiblePlatosDelPedido();
+        List<IConsumible> ObtenerTodosLosConsumiblesDelPedido();
         decimal CalcularPrecio();
         bool VerificarSiEsEntregable();
 

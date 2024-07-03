@@ -22,13 +22,13 @@ namespace Entidades.Interfaces
         void AgregarBebidaAlMenu(string nombreDelMenu, IConsumible consumible);
         void AgregarBebidasAMenu(string nombreDelMenu, List<IConsumible> listaDeBebidas);
 
-        IMenu GetMenuPorNombre(string nombreDelMenu);
-        IConsumible ObtenerConsumible(string nombreConsumible);
-        List<IMenu> GetAllMenus();
-        List<IConsumible> GetPlatosDisponibles();
-        List<IConsumible> GetBebidasDisponibles();
-        List<IConsumible> GetPlatosNoDisponibles();
-        List<IConsumible> GetBebidasNoDisponibles();
+        IMenu ObtenerMenuPorNombre(string nombreDelMenu);
+        IConsumible ObtenerConsumibleBebidaOPlato(string nombreConsumible);
+        List<IMenu> ObtenerTodosLosMenus();
+        List<IConsumible> ObtenerPlatosDisponibles();
+        List<IConsumible> ObtenerBebidasDisponibles();
+        List<IConsumible> ObtenerPlatosNoDisponibles();
+        List<IConsumible> ObtenerBebidasNoDisponibles();
 
     }
 }

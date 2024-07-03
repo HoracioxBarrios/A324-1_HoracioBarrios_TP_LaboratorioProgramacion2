@@ -45,24 +45,6 @@ namespace Entidades
 
 
 
-        /// <summary>
-        /// Verifica si el plato esta en la lista de Menu
-        /// </summary>
-        /// <param name="nombrePlato"></param>
-        /// <returns>Devuelve si existe en la Lista de Platos </returns>
-        private bool ExistePlatoEnLista(string nombrePlato, List<IConsumible> listaPlatosEnMenu)
-        {
-            bool seEncontro = false;
-            foreach (IConsumible plato in listaPlatosEnMenu)
-            {
-                if (plato.Nombre == nombrePlato)
-                {
-                    seEncontro = true;
-                    break;
-                }
-            }
-            return seEncontro;
-        }
 
 
         /// <summary>
@@ -119,6 +101,8 @@ namespace Entidades
 
 
 
+
+
         public void TomarPedido(IPedido pedido)
         {
             if (pedido == null)
@@ -131,7 +115,10 @@ namespace Entidades
         }
 
 
-
+        public async Task CocinarPlato(ICocinable plato)
+        {
+            await plato.Cocinar();
+        }
 
         public async Task<bool> PrepararPedido()
         {
@@ -164,7 +151,7 @@ namespace Entidades
         {
             List<IConsumible> platos = new List<IConsumible>();
 
-            foreach (var consumible in pedido.GetPlatos())
+            foreach (var consumible in pedido.ObtenerConsumiblePlatosDelPedido())
             {
                 if (consumible is IConsumible plato)
                 {
@@ -177,12 +164,25 @@ namespace Entidades
 
 
 
-        public async Task CocinarPlato(ICocinable plato)
+
+        /// <summary>
+        /// Verifica si el plato esta en la lista de Menu
+        /// </summary>
+        /// <param name="nombrePlato"></param>
+        /// <returns>Devuelve si existe en la Lista de Platos </returns>
+        private bool ExistePlatoEnLista(string nombrePlato, List<IConsumible> listaPlatosEnMenu)
         {
-            await plato.Cocinar();
+            bool seEncontro = false;
+            foreach (IConsumible plato in listaPlatosEnMenu)
+            {
+                if (plato.Nombre == nombrePlato)
+                {
+                    seEncontro = true;
+                    break;
+                }
+            }
+            return seEncontro;
         }
-
-
 
 
 
@@ -203,7 +203,7 @@ namespace Entidades
             }
         }
 
-        public List<IConsumible> GetListaDeIngredientesSeleccionados()
+        public List<IConsumible> ObtenerListaDeIngredientesSeleccionadosParaPlato()
         {
             return _ingredientesSelecionados;
         }

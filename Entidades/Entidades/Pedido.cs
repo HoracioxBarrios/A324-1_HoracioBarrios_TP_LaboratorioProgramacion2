@@ -48,6 +48,106 @@ namespace Entidades
 
 
 
+        public void AgregarConsumible(IConsumible consumible)
+        {
+            _consumiblesPedidos.Add(consumible);
+            SuscribirseUnPlatoAEventoPlatoListoParaEntregar(consumible);
+        }
+
+
+        public List<IConsumible> ObtenerConsumiblePlatosDelPedido()
+        {
+            List<IConsumible> platos = new List<IConsumible>();
+            if (_consumiblesPedidos.Count > 0)
+            {
+                foreach (IConsumible consumible in _consumiblesPedidos)
+                {
+                    if (consumible is Plato)
+                    {
+                        platos.Add(consumible);
+                    }
+                }
+                return platos;
+            }
+            throw new ListaVaciaException("La Lista de los Platos del pedido está Vacia");
+        }
+
+
+        public List<IConsumible> ObtenerConsumibleBebidasDelPedido()
+        {
+            List<IConsumible> bebidas = new List<IConsumible>();
+            if (_consumiblesPedidos.Count > 0)
+            {
+                foreach (IConsumible consumible in _consumiblesPedidos)
+                {
+                    if (consumible is Bebida)
+                    {
+                        bebidas.Add(consumible);
+                    }
+                }
+                return bebidas;
+            }
+            throw new ListaVaciaException("La lista de bebidas del pedido esta Vacia");
+        }
+
+        public List<IConsumible> ObtenerTodosLosConsumiblesDelPedido()
+        {
+            return _consumiblesPedidos;
+        }
+
+
+        public void EditarConsumibles(List<IConsumible> nuevaListaDeConsumiblesCorregidos)
+        {
+            _consumiblesPedidos.Clear();
+            _consumiblesPedidos.AddRange(nuevaListaDeConsumiblesCorregidos);
+            SuscribirseVariosPlatosAEventoPlatoListoParaEntregar(_consumiblesPedidos);
+        }
+        public void EditarConsumible(IConsumible consumibleConLaCantidadCorregida)
+        {
+            for (int i = 0; i < _consumiblesPedidos.Count; i++)
+            {
+                if (_consumiblesPedidos[i].Nombre == consumibleConLaCantidadCorregida.Nombre)
+                {
+                    _consumiblesPedidos[i] = consumibleConLaCantidadCorregida;
+                    SuscribirseUnPlatoAEventoPlatoListoParaEntregar(_consumiblesPedidos[i]);
+                    break;
+                }
+            }
+        }
+
+        public void EliminarConsumible(IConsumible consumible)
+        {
+            for (int i = 0; i < _consumiblesPedidos.Count; i++)
+            {
+                if (_consumiblesPedidos[i].Nombre == consumible.Nombre)
+                {
+                    DeSuscribirseUnPlatoAEventoPlatoListoParaEntregar(_consumiblesPedidos[i]);
+                    _consumiblesPedidos.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+
+
+
+
+        public decimal CalcularPrecio()
+        {
+            decimal precioDeloPedido = 0;
+            foreach (IConsumible consumible in _consumiblesPedidos)
+            {
+                precioDeloPedido += consumible.Precio;
+            }
+            return precioDeloPedido;
+        }
+
+
+
+
+
+
+
 
         /// <summary>
         /// Suscribe al evento de los platos de la lista para avisar mediante evento cuando estan listos (cocinados) para entregar en el pedido
@@ -129,95 +229,7 @@ namespace Entidades
         }
 
 
-        public decimal CalcularPrecio()
-        {
-            decimal precioDeloPedido = 0;
-            foreach(IConsumible consumible in _consumiblesPedidos)
-            {
-                precioDeloPedido += consumible.Precio;
-            }
-            return precioDeloPedido;
-        }
 
-        public void AgregarConsumible(IConsumible consumible) 
-        {
-            _consumiblesPedidos.Add(consumible);
-            SuscribirseUnPlatoAEventoPlatoListoParaEntregar(consumible);
-        }
-
-
-        public void EditarConsumibles(List<IConsumible> nuevaListaDeConsumiblesCorregidos)
-        {
-            _consumiblesPedidos.Clear();
-            _consumiblesPedidos.AddRange(nuevaListaDeConsumiblesCorregidos);
-            SuscribirseVariosPlatosAEventoPlatoListoParaEntregar(_consumiblesPedidos);
-        }
-        public void EditarConsumible(IConsumible consumibleConLaCantidadCorregida)
-        {
-            for (int i = 0; i < _consumiblesPedidos.Count; i++)
-            {
-                if (_consumiblesPedidos[i].Nombre == consumibleConLaCantidadCorregida.Nombre)
-                {
-                    _consumiblesPedidos[i] = consumibleConLaCantidadCorregida;
-                    SuscribirseUnPlatoAEventoPlatoListoParaEntregar(_consumiblesPedidos[i]);
-                    break;
-                }
-            }
-        }
-
-        public void EliminarConsumible(IConsumible consumible)
-        {
-            for (int i = 0; i < _consumiblesPedidos.Count; i++)
-            {
-                if (_consumiblesPedidos[i].Nombre == consumible.Nombre)
-                {
-                    DeSuscribirseUnPlatoAEventoPlatoListoParaEntregar(_consumiblesPedidos[i]);
-                    _consumiblesPedidos.RemoveAt(i);
-                    break; 
-                }
-            }
-        }
-
-
-        public List<IConsumible> GetPlatos()
-        {
-            List<IConsumible> platos = new List<IConsumible>();
-            if (_consumiblesPedidos.Count > 0)
-            {
-                foreach (IConsumible consumible in _consumiblesPedidos)
-                {
-                    if (consumible is Plato)
-                    {
-                        platos.Add(consumible);
-                    }
-                }
-                return platos;
-            }
-            throw new ListaVaciaException("La Lista de los Platos del pedido está Vacia");
-        }
-
-
-        public List<IConsumible> GetBebidas()
-        {
-            List<IConsumible> bebidas = new List<IConsumible>();
-            if (_consumiblesPedidos.Count > 0)
-            {
-                foreach (IConsumible consumible in _consumiblesPedidos)
-                {
-                    if (consumible is Bebida)
-                    {
-                        bebidas.Add(consumible);
-                    }
-                }
-                return bebidas;
-            }
-            throw new ListaVaciaException("La lista de bebidas del pedido esta Vacia");
-        }
-
-        public List<IConsumible> GetConsumibles()
-        {
-            return _consumiblesPedidos;
-        }
 
 
         public ETipoDePedido TipoDePedido 
@@ -267,13 +279,13 @@ namespace Entidades
 
             sb.Append($" --------- Listado de Productos del Pedido --------");
             sb.Append($"- Platos: ");
-            foreach (Plato plato in GetPlatos())
+            foreach (Plato plato in ObtenerConsumiblePlatosDelPedido())
             {
                 sb.AppendLine($"Nombre del Plato {plato.Nombre} ----- Precio: {plato.Precio}");
             }
 
             sb.Append($"- Bebidas: ");
-            foreach(Bebida bebida in GetBebidas())
+            foreach(Bebida bebida in ObtenerConsumibleBebidasDelPedido())
             {
                 sb.AppendLine($"Nombre de la Bebida: {bebida.Nombre} ----- Precio: {bebida.Precio}");
             }

@@ -149,7 +149,7 @@ namespace Test
             gestorProductos.AgregarProductoAStock(coca);
 
 
-            List<IConsumible> bebidasDelStock = gestorProductos.ReadAllProductosBebidas(); // vemos que esta en el stock
+            List<IConsumible> bebidasDelStock = gestorProductos.OtenerTodosLosProductosBebidas(); // vemos que esta en el stock
 
             //debemos crear el menu
 
@@ -173,9 +173,9 @@ namespace Test
 
 
             //Elegimos el menu
-            IMenu menuEscogido = gestorMenu.GetMenuPorNombre("General");
+            IMenu menuEscogido = gestorMenu.ObtenerMenuPorNombre("General");
             //Selecionamos la bebida que esta ofrecida en el menu
-            IConsumible consumible = menuEscogido.GetBebidaPorNombre("CocaCola", 1);
+            IConsumible consumible = menuEscogido.ObtenerBebidaPorNombre("CocaCola", 1);
 
             Bebida bebidaCoca = (Bebida)consumible;
 
@@ -215,7 +215,7 @@ namespace Test
             gestorProductos.AgregarProductoAStock(coca);
 
 
-            List<IConsumible> bebidasDelStock = gestorProductos.ReadAllProductosBebidas(); // vemos que esta en el stock
+            List<IConsumible> bebidasDelStock = gestorProductos.OtenerTodosLosProductosBebidas(); // vemos que esta en el stock
 
             //debemos crear el menu
 
@@ -239,9 +239,9 @@ namespace Test
 
 
             //Elegimos el menu
-            IMenu menuEscogido = gestorMenu.GetMenuPorNombre("General");
+            IMenu menuEscogido = gestorMenu.ObtenerMenuPorNombre("General");
             //Selecionamos la bebida que esta ofrecida en el menu
-            IConsumible consumible = menuEscogido.GetBebidaPorNombre("CocaCola", 1);
+            IConsumible consumible = menuEscogido.ObtenerBebidaPorNombre("CocaCola", 1);
 
             Bebida bebidaCoca = (Bebida)consumible;
 

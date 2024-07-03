@@ -79,7 +79,7 @@ namespace Test
             //CREAMOS EL MENU
             _gestorMenu.CrearMenu("Desayuno");
 
-            IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
+            IMenu menu = _gestorMenu.ObtenerTodosLosMenus().Find(m => m.Nombre == "Desayuno");
             Assert.IsNotNull(menu, "El menu 'Desayuno' no fue creado correctamente.");           
 
 
@@ -137,10 +137,10 @@ namespace Test
             _gestorMenu.AgregarPlatoAMenu("Desayuno", plato1);
 
             //Buscamos que este el menu
-            IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
+            IMenu menu = _gestorMenu.ObtenerTodosLosMenus().Find(m => m.Nombre == "Desayuno");
 
             //Buscamos que este el plato en el menu
-            Plato plato = (Plato)menu.GetPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
+            Plato plato = (Plato)menu.ObtenerPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
 
             Assert.IsNotNull(plato, "El plato 'Pizza' no fue agregado al menu correctamente.");
         }
@@ -175,11 +175,11 @@ namespace Test
 
 
 
-            IMenu menu = _gestorMenu.GetAllMenus().Find(m => m.Nombre == "Desayuno");
+            IMenu menu = _gestorMenu.ObtenerTodosLosMenus().Find(m => m.Nombre == "Desayuno");
 
-            Plato plato = (Plato)menu.GetPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
+            Plato plato = (Plato)menu.ObtenerPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
 
-            int cantidadIngredientes = plato.GetIngredientesDelPlato().Count;
+            int cantidadIngredientes = plato.ObtenerIngredientesDelPlato().Count;
             Assert.IsTrue(cantidadIngredientes >= 2, $"El plato '{plato.Nombre}' debe tener al menos 2 ingredientes.");
         }
 
@@ -239,7 +239,7 @@ namespace Test
             _gestorProductos.AgregarProductoAStock(papa);
 
             //PODEMOS VER LOS PRODUCTOS QUE SON INGREDIENTES EN STOCK
-            List<IConsumible> listaDeIngredientesEnStock = _gestorProductos.ReadAllProductosIngredientes();
+            List<IConsumible> listaDeIngredientesEnStock = _gestorProductos.ObtenerTodosLosProductosIngrediente();
 
 
             //INSTANCIAMOS EL COCINERO
@@ -287,8 +287,8 @@ namespace Test
             //Verificamos si en la lista de Menu esta el menu que creamos recien
 
 
-            Assert.IsTrue(_gestorMenu.GetAllMenus().Count() > 0);
-            var menuGeneral = _gestorMenu.GetAllMenus().FirstOrDefault(menu => menu.Nombre.Equals(nombreDelMenu, StringComparison.OrdinalIgnoreCase));
+            Assert.IsTrue(_gestorMenu.ObtenerTodosLosMenus().Count() > 0);
+            var menuGeneral = _gestorMenu.ObtenerTodosLosMenus().FirstOrDefault(menu => menu.Nombre.Equals(nombreDelMenu, StringComparison.OrdinalIgnoreCase));
 
             Assert.IsNotNull(menuGeneral);
 

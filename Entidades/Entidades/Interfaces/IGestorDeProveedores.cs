@@ -14,8 +14,12 @@ namespace Entidades.Interfaces
                 string nombre, string cuit, string direccion, ETipoDeProducto tipoDeProducto
                , EMediosDePago mediosDePago, EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega);
 
-        List<IProveedor> GetProveedores();
-        IProveedor GetProveedor(string nombre);
-        IProveedor GetProveedor(int id);
+
+        IProveedor ObtenerProveedor(string nombre);
+        IProveedor ObtenerProveedor(int id);
+        List<IProveedor> ObtenerProveedores();
+
+        void EditarProveedor(int id, string nombre);
+        void EliminarProveedor(int id);
     }
 }

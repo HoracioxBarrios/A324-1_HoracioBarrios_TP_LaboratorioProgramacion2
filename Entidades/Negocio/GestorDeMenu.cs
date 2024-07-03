@@ -49,23 +49,32 @@ namespace Negocio
 
 
 
-        /// <summary>
-        /// Crea un Menu y agrega a una lista interna en el gestor menu- Puede ser por ejemplo: DESAYUNO, ALMUERZO , MERIENDA, CENA, ESPECIAL, EMPRESARIAL, etc
-        /// </summary>
-        /// <param name="nombreMenu"></param>
+
         public void CrearMenu(string nombreMenu)
         {
             IMenu menu = new Menu(nombreMenu);
             _listaDeMenus.Add(menu);
         }
 
+        public IMenu ObtenerMenuPorNombre(string nombreDelMenu)
+        {
+            IMenu menu = _listaDeMenus.FirstOrDefault(m => m.Nombre == nombreDelMenu);// verifica si existe si es true lo retorna
+            if (menu == null)
+            {
+                throw new MenuNoExisteException("El menú no existe.");
+            }
+            return menu;
+        }
 
+        public List<IMenu> ObtenerTodosLosMenus()
+        {
+            if (_listaDeMenus.Count > 0)
+            {
+                return _listaDeMenus;
+            }
+            throw new ListaVaciaException("La Lista de menú está Vacia");
+        }
 
-        /// <summary>
-        /// Edita el nombre del Menu
-        /// </summary>
-        /// <param name="nombreMenu"></param>
-        /// <param name="nuevoNombre"></param>
         public void EditarMenu(string nombreMenu, string nuevoNombre)
         {
             for(int i = 0; i < _listaDeMenus.Count; i++)
@@ -77,39 +86,13 @@ namespace Negocio
             }
         }
 
-        public List<IMenu> GetAllMenus()
-        {
-            if (_listaDeMenus.Count > 0)
-            {
-                return _listaDeMenus;
-            }
-            throw new ListaVaciaException("La Lista de menú está Vacia");
-        }
-
-        public IMenu GetMenuPorNombre(string nombreDelMenu)
-        {
-            IMenu menu = _listaDeMenus.FirstOrDefault(m => m.Nombre == nombreDelMenu);// verifica si existe si es true lo retorna
-            if (menu == null)
-            {
-                throw new MenuNoExisteException("El menú no existe.");
-            }
-            return menu;
-        }
-
-
-        /// <summary>
-        /// Edita Reemplazando un Consumible BEBIDA O PLATO del Menu por otro.
-        /// </summary>
-        /// <param name="nombreMenu"></param>
-        /// <param name="consumibleExistente"></param>
-        /// <param name="consumibleQueReemplaza"></param>
         public void EditarMenu(string nombreMenu, IConsumible consumibleExistente, IConsumible consumibleQueReemplaza)
         {
             for (int i = 0; i < _listaDeMenus.Count; i++)
             {
                 if (_listaDeMenus[i].Nombre == nombreMenu)
                 {
-                    List<IConsumible> listConsumibles = _listaDeMenus[i].ObtenerAllItemsDelMenu();
+                    List<IConsumible> listConsumibles = _listaDeMenus[i].ObtenerTodosLosConsumiblesEnMenu();
                     for(int j  = 0; j < listConsumibles.Count; j++)
                     {
                         if (listConsumibles[j] == consumibleExistente)
@@ -136,19 +119,11 @@ namespace Negocio
 
 
 
-        public void SelecionarIngredienteParaUnPlato(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida )
-        {
-            List<IConsumible> ingredientesEnStock = _gestorProductosStock.ReadAllProductosIngredientes();
-            if (ingredientesEnStock == null || ingredientesEnStock.Count == 0)
-            {
-                throw new ListaVaciaException("La lista de Ingredientes en Stock esta Vacia");
-            }
-            _cocinero.SeleccionarIngredienteParaElPlato(ingredientesEnStock, nombreDelIngrediente, cantidadNecesaria, unidadDeMedida);
-        }
+
 
         public IConsumible CrearPlato(string nombreDelPlato, int tiempoDePreparacion, EUnidadDeTiempo unidadDeTiempo)
         {
-            List<IConsumible> ingredientesSeleccionados = _cocinero.GetListaDeIngredientesSeleccionados();
+            List<IConsumible> ingredientesSeleccionados = _cocinero.ObtenerListaDeIngredientesSeleccionadosParaPlato();
             if(ingredientesSeleccionados == null || ingredientesSeleccionados.Count == 0)
             {
                 throw new ListaVaciaException("Error la Lista de ingredientes seleccioandos por el Cocinero esta Vacia");
@@ -162,7 +137,7 @@ namespace Negocio
             return plato;
         }
 
-        public IConsumible ObtenerConsumible(string nombreConsumible)
+        public IConsumible ObtenerConsumibleBebidaOPlato(string nombreConsumible)
         {
 
             IConsumible consumibleEncontrado = _ListaGeneralDeConsumiblesLocal.FirstOrDefault(consumible => consumible.Nombre == nombreConsumible);
@@ -203,25 +178,7 @@ namespace Negocio
         }
 
 
-        /// <summary>
-        /// Establece el precio de Venta del producto
-        /// </summary>
-        /// En este Lugar (Gestor Menu estableceremos el precio a los productos)
-        /// <param name="establecedorDePrecios"></param>
-        /// <param name="nombreDelProducto"></param>
-        /// <param name="precioDeVentaDelProducto"></param>
-        public void EstablecerPrecioAProducto(IEstablecedorDePrecios establecedorDePrecios, string nombreDelProducto, decimal precioDeVentaDelProducto)
-        {
-            foreach (IConsumible producto in _ListaGeneralDeConsumiblesLocal)
-            {
-                if (producto.Nombre == nombreDelProducto)
-                {
-                    establecedorDePrecios.EstablecerPrecioAProducto(producto, precioDeVentaDelProducto);
-                    break;
-                }
-            }
 
-        }
 
 
         /// <summary>
@@ -242,7 +199,7 @@ namespace Negocio
             }
 
 
-            IMenu menu = GetMenuPorNombre(nombreDelMenu);
+            IMenu menu = ObtenerMenuPorNombre(nombreDelMenu);
             if(menu == null)
             {
                 throw new MenuNoExisteException("El Menu no existe en la Lista de menus");
@@ -264,7 +221,7 @@ namespace Negocio
                 throw new ListaDePlatosVaciaException("Error, La lista de platos esta Vacia");
             }
             
-            IMenu menu = GetMenuPorNombre(nombreDelMenu);
+            IMenu menu = ObtenerMenuPorNombre(nombreDelMenu);
             foreach (Plato plato in listaDePlatos)
             {
                 menu.Agregar(plato);
@@ -289,7 +246,7 @@ namespace Negocio
                 throw new ConsumibleInvalidoException("El consumible No es una bebida o No está disponible.");
 
             }
-            IMenu menu = GetMenuPorNombre(nombreDelMenu);
+            IMenu menu = ObtenerMenuPorNombre(nombreDelMenu);
             menu.Agregar(consumible);
             _ListaGeneralDeConsumiblesLocal.Add(consumible);
         }
@@ -310,7 +267,7 @@ namespace Negocio
             }
 
 
-            IMenu menu = GetMenuPorNombre(nombreDelMenu);
+            IMenu menu = ObtenerMenuPorNombre(nombreDelMenu);
             foreach (IConsumible consumible in listaDeBebidas)
             {
                 if (consumible is Bebida bebida && bebida.Disponibilidad)
@@ -328,7 +285,7 @@ namespace Negocio
 
 
 
-        public List<IConsumible> GetPlatosDisponibles()
+        public List<IConsumible> ObtenerPlatosDisponibles()
         {
             List<IConsumible> platosDisponibles = new List<IConsumible>();
             if (_ListaGeneralDeConsumiblesLocal.Count > 0)
@@ -346,7 +303,7 @@ namespace Negocio
         }
 
 
-        public List<IConsumible> GetBebidasDisponibles()
+        public List<IConsumible> ObtenerBebidasDisponibles()
         {
             List<IConsumible> bebidasDisponibles = new List<IConsumible>();
             if (_ListaGeneralDeConsumiblesLocal.Count > 0)
@@ -363,7 +320,7 @@ namespace Negocio
             throw new ListaVaciaException("La lista de bebidas esta Vacia");
         }
 
-        public List<IConsumible> GetPlatosNoDisponibles()
+        public List<IConsumible> ObtenerPlatosNoDisponibles()
         {
             List<IConsumible> platosNoDisponibles = new List<IConsumible>();
             if (_ListaGeneralDeConsumiblesLocal.Count > 0)
@@ -379,7 +336,7 @@ namespace Negocio
             }
             throw new ListaVaciaException("La Lista de todos los Platos está Vacia");
         }
-        public List<IConsumible> GetBebidasNoDisponibles()
+        public List<IConsumible> ObtenerBebidasNoDisponibles()
         {
             List<IConsumible> bebidasNoDisponibles = new List<IConsumible>();
             if (_ListaGeneralDeConsumiblesLocal.Count > 0)
@@ -396,13 +353,45 @@ namespace Negocio
             throw new ListaVaciaException("La lista de bebidas esta Vacia");
         }
 
+
+        /// <summary>
+        /// Establece el precio de Venta del producto
+        /// </summary>
+        /// En este Lugar (Gestor Menu estableceremos el precio a los productos)
+        /// <param name="establecedorDePrecios"></param>
+        /// <param name="nombreDelProducto"></param>
+        /// <param name="precioDeVentaDelProducto"></param>
+        public void EstablecerPrecioAProducto(IEstablecedorDePrecios establecedorDePrecios, string nombreDelProducto, decimal precioDeVentaDelProducto)
+        {
+            foreach (IConsumible producto in _ListaGeneralDeConsumiblesLocal)
+            {
+                if (producto.Nombre == nombreDelProducto)
+                {
+                    establecedorDePrecios.EstablecerPrecioAProducto(producto, precioDeVentaDelProducto);
+                    break;
+                }
+            }
+
+        }
+
+
+        public void SelecionarIngredienteParaUnPlato(string nombreDelIngrediente, double cantidadNecesaria, EUnidadDeMedida unidadDeMedida)
+        {
+            List<IConsumible> ingredientesEnStock = _gestorProductosStock.ObtenerTodosLosProductosIngrediente();
+            if (ingredientesEnStock == null || ingredientesEnStock.Count == 0)
+            {
+                throw new ListaVaciaException("La lista de Ingredientes en Stock esta Vacia");
+            }
+            _cocinero.SeleccionarIngredienteParaElPlato(ingredientesEnStock, nombreDelIngrediente, cantidadNecesaria, unidadDeMedida);
+        }
+
         private void ActualizarConsumibleEnListaLocal()
         {
             Thread ActualizarConsumilesThread = new Thread(() =>
             {
                 lock (_ListaGeneralDeConsumiblesLocal)
                 {
-                    List<IProducto> productos = _gestorProductosStock.ReadAllProductos();
+                    List<IProducto> productos = _gestorProductosStock.ObtenerTodosLosProductos();
                     HashSet<string> nombreDeBebidasEnlaListaLocal = new HashSet<string>(_ListaGeneralDeConsumiblesLocal.OfType<Bebida>().Select(b => b.Nombre));
 
                     foreach (IProducto producto in productos)
@@ -423,7 +412,7 @@ namespace Negocio
         private void ActualizarConsumiblesDesdeStock()
         {
             // Actualizar consumibles en la lista local de bebidas
-            List<IConsumible> bebidasEnStock = _gestorProductosStock.ReadAllProductosBebidas();
+            List<IConsumible> bebidasEnStock = _gestorProductosStock.OtenerTodosLosProductosBebidas();
             lock (_ListaGeneralDeConsumiblesLocal)
             {
                 foreach (Bebida bebida in bebidasEnStock)

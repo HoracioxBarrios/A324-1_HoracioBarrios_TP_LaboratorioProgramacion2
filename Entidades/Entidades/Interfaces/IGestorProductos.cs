@@ -23,9 +23,9 @@ namespace Entidades.Interfaces
         void EditarProducto(string nombre, string correccionDelNombre);
         void EliminarProducto(string nombre);
         void AgregarProductoAStock(IProducto producto);
-        List<IConsumible> ReadAllProductosIngredientes();
-        List<IConsumible> ReadAllProductosBebidas();
-        List<IProducto> ReadAllProductos();
+        List<IConsumible> ObtenerTodosLosProductosIngrediente();
+        List<IConsumible> OtenerTodosLosProductosBebidas();
+        List<IProducto> ObtenerTodosLosProductos();
 
         bool DescontarProductosDeStock(List<IConsumible> listaDeIngredienteEnElPlato);
 

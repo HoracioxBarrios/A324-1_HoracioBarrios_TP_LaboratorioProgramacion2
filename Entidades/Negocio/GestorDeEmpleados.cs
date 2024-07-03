@@ -41,7 +41,7 @@ namespace Negocio
             }
             
         }
-        public IEmpleado ReadOneEmpleado(int id)
+        public IEmpleado ObtenerEmpleado(int id)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Negocio
                 throw new AlLeerEmpleadoException($"Error al leer empleado en la base de datos. {e.Message}", e);
             }
         }
-        public IEmpleado ReadOneEmpleado(string nombre, string apellido)
+        public IEmpleado ObtenerEmpleado(string nombre, string apellido)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace Negocio
 
         }
 
-        public List<IEmpleado> GetEmpleadosEnList()
+        public List<IEmpleado> ObtenerEmpleados()
         {
             ActualizarListaEmpleadosLocal();
             if (_listaDeEmpleados.Count > 0)
@@ -148,7 +148,7 @@ namespace Negocio
             }
             throw new ListaVaciaException("La lista esta vacia");
         }
-        public IEmpleado GetEmpleadoEnList(string nombreEmpleado)
+        public IEmpleado ObtenerEmpleado(string nombreEmpleado)
         {
             ActualizarListaEmpleadosLocal();
             if (_listaDeEmpleados.Count > 0)

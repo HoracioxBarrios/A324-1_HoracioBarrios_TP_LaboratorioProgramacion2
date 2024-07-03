@@ -52,7 +52,7 @@ namespace Negocio
             }
         }
 
-        public List<IProveedor> GetProveedores()
+        public List<IProveedor> ObtenerProveedores()
         {
             if(_listProveedores.Count > 0)
             {
@@ -62,7 +62,7 @@ namespace Negocio
             
         }
 
-        public IProveedor GetProveedor(string nombre)
+        public IProveedor ObtenerProveedor(string nombre)
         {
             if (string.IsNullOrEmpty(nombre))
             {
@@ -78,14 +78,14 @@ namespace Negocio
             }
             return null;
         }
-        public IProveedor GetProveedor(int id)
+        public IProveedor ObtenerProveedor(int id)
         {
             if (id < 0)
             {
                 throw new DatoIncorrectoException("Dato Incorrecto: ID no valida");
             }
 
-            foreach (IProveedor proveedor in GetProveedores())
+            foreach (IProveedor proveedor in ObtenerProveedores())
             {
                 if (int.Equals(proveedor.ID, id))
                 {
@@ -93,6 +93,40 @@ namespace Negocio
                 }
             }
             return null;
+        }
+
+
+        public void EditarProveedor(int id, string nombre)
+        {
+            if(id < 0)
+            {
+                throw new DatoIncorrectoException("Dato Incorrecto: ID no valida");
+            }
+
+            foreach (IProveedor proveedor in ObtenerProveedores())
+            {
+                if (int.Equals(proveedor.ID, id))
+                {
+                    proveedor.Nombre = nombre;
+                }
+            }
+
+        }
+        public void EliminarProveedor(int id)
+        {
+            if (id < 0)
+            {
+                throw new DatoIncorrectoException("Dato Incorrecto: ID no valida");
+            }
+            List<IProveedor> proveedores = ObtenerProveedores();
+            for (int i = proveedores.Count - 1 ; i >= 0; i--)
+            {
+                if (proveedores[i].ID == id)
+                {
+                    proveedores.RemoveAt(i);
+                    break;
+                }
+            }
         }
     }
 }

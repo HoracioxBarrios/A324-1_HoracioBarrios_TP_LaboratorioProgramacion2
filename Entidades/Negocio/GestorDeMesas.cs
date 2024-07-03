@@ -101,7 +101,7 @@ namespace Negocio
             return seCobro;
         }
 
-        public IMesa GetMesa(int id)
+        public IMesa ObtenerMesa(int id)
         {
             foreach(IMesa mesa in _listaDeMesas)
             {
@@ -113,13 +113,13 @@ namespace Negocio
             throw new ErrorAlBuscarMesaEnListaEnGestorDeMesas("No esta la mesa que estas buscando por ID");
         }
 
-        public IMesero GetMesero(string nombre, string apellido)
+        public IMesero OtenerMesero(string nombre, string apellido)
         {
             return _listaDeMeseros.FirstOrDefault(m => m.Nombre == nombre && m.Apellido == apellido);
         }
 
 
-        public IMesero GetMesero(int idMesero)
+        public IMesero ObtenerMesero(int idMesero)
         {
             return _listaDeMeseros.FirstOrDefault(m => m.Id == idMesero );
         }

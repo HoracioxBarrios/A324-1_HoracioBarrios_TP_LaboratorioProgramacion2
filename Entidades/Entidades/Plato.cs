@@ -152,7 +152,7 @@ namespace Entidades
         }
 
 
-        public List<IConsumible> GetIngredientesDelPlato()
+        public List<IConsumible> ObtenerIngredientesDelPlato()
         {
             return _ingredientesSeleccionadosParaEstePlato;
         }

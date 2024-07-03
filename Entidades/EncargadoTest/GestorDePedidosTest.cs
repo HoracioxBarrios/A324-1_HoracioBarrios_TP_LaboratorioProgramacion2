@@ -86,7 +86,7 @@ namespace Test
 
 
             //podriamos Obtenemos la lista de ingredientes. si queremos visualizar que hay
-            List<IConsumible> listaDeIngredientesDisponibles = _gestorProductos.ReadAllProductosIngredientes();
+            List<IConsumible> listaDeIngredientesDisponibles = _gestorProductos.ObtenerTodosLosProductosIngrediente();
 
 
             //-- intanciamos el COCINERO --
@@ -185,7 +185,7 @@ namespace Test
             _gestorProductos.AgregarProductoAStock(cerveza);
 
 
-            List<IConsumible> bebidasDelStock = _gestorProductos.ReadAllProductosBebidas();
+            List<IConsumible> bebidasDelStock = _gestorProductos.OtenerTodosLosProductosBebidas();
 
             // AGREGAMOS LAS BEBIDAS DEL STOCK AL MENÚ
             _gestorMenu.AgregarBebidasAMenu(nombreDelmenu, bebidasDelStock);
@@ -203,10 +203,10 @@ namespace Test
 
             List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
 
-            IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
+            IMenu menuSeleccionado = _gestorMenu.ObtenerMenuPorNombre("General");//selecionamos un menu
 
-            IConsumible platoSelecionado = menuSeleccionado.GetPlatoPorNombre("MilaPapa");//del menu traemos el plato elegido por el cliente
-            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
+            IConsumible platoSelecionado = menuSeleccionado.ObtenerPlatoPorNombre("MilaPapa");//del menu traemos el plato elegido por el cliente
+            IConsumible bebidaSelecionada = menuSeleccionado.ObtenerBebidaPorNombre("CocaCola", 1);
             
             consumublesSelecionadosParaPedido.Add(platoSelecionado);
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
@@ -286,9 +286,9 @@ namespace Test
             //Tenemos que tener una lista de consumibles pedidos.
             List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
 
-            IMenu menuSeleccionado = _gestorMenu.GetMenuPorNombre("General");//selecionamos un menu
+            IMenu menuSeleccionado = _gestorMenu.ObtenerMenuPorNombre("General");//selecionamos un menu
             //del menu traemos el plato o bebida elegido por el cliente
-            IConsumible bebidaSelecionada = menuSeleccionado.GetBebidaPorNombre("CocaCola", 1);
+            IConsumible bebidaSelecionada = menuSeleccionado.ObtenerBebidaPorNombre("CocaCola", 1);
 
             consumublesSelecionadosParaPedido.Add(bebidaSelecionada);
 
@@ -400,15 +400,15 @@ namespace Test
 
 
             // >>>>>>>>>>>>>>>>>> ---- Traemos los menus disponibles Mostramos el menu ---- <<<<<<<<<<<<<<<<<<<<<<<<<<
-            List<IMenu> menusDisponibles = gestormenu.GetAllMenus();
-            IMenu menuSeleccionado = gestormenu.GetMenuPorNombre("Almuerzo");//selecionamos un menu
+            List<IMenu> menusDisponibles = gestormenu.ObtenerTodosLosMenus();
+            IMenu menuSeleccionado = gestormenu.ObtenerMenuPorNombre("Almuerzo");//selecionamos un menu
 
             //----------- SELECCION DE CONSUMIBLES ( son los que elijen los comensales o clientes) con esto Armaremos el Pedido( solo sera selecionable la bebidas que hayan en stock y los platos que se puedan cocinar) --------------------
 
 
             List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
 
-            IConsumible plato1 = menuSeleccionado.GetPlatoPorNombre("polloPapa");//del menu traemos el plato elegido por el cliente
+            IConsumible plato1 = menuSeleccionado.ObtenerPlatoPorNombre("polloPapa");//del menu traemos el plato elegido por el cliente
 
 
             consumublesSelecionadosParaPedido.Add(plato1);
@@ -454,7 +454,7 @@ namespace Test
 
                 IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntregaEnLocal();
                 int idDelPedido = pedido.Id;
-                IMesa mesaDelPedido = gestorMesas.GetMesa(1);
+                IMesa mesaDelPedido = gestorMesas.ObtenerMesa(1);
                 //Assert.IsNotNull(mesaDelPedido);
                 int idDeLaMesa = mesaDelPedido.Id;
                 //Assert.AreEqual(1 , idDeLaMesa);
@@ -567,15 +567,15 @@ namespace Test
 
 
             // >>>>>>>>>>>>>>>>>> ---- Traemos los menus disponibles Mostramos el menu ---- <<<<<<<<<<<<<<<<<<<<<<<<<<
-            List<IMenu> menusDisponibles = gestormenu.GetAllMenus();
-            IMenu menuSeleccionado = gestormenu.GetMenuPorNombre("Almuerzo");//selecionamos un menu
+            List<IMenu> menusDisponibles = gestormenu.ObtenerTodosLosMenus();
+            IMenu menuSeleccionado = gestormenu.ObtenerMenuPorNombre("Almuerzo");//selecionamos un menu
 
             //----------- SELECCION DE CONSUMIBLES ( son los que elijen los comensales o clientes) con esto Armaremos el Pedido( solo sera selecionable la bebidas que hayan en stock y los platos que se puedan cocinar) --------------------
 
 
             List<IConsumible> consumublesSelecionadosParaPedido = new List<IConsumible>(); // listo para los consumibles del pedido
 
-            IConsumible plato1 = menuSeleccionado.GetPlatoPorNombre("polloPapa");//del menu traemos el plato elegido por el cliente
+            IConsumible plato1 = menuSeleccionado.ObtenerPlatoPorNombre("polloPapa");//del menu traemos el plato elegido por el cliente
 
 
             consumublesSelecionadosParaPedido.Add(plato1);
@@ -623,7 +623,7 @@ namespace Test
 
                 IPedido pedidoParaEntregar = gestorDePedidos.ObtenerPedidoListoParaLaEntregaEnLocal();
                 int idDelPedido = pedido.Id;
-                IMesa mesaDelPedido = gestorMesas.GetMesa(1);
+                IMesa mesaDelPedido = gestorMesas.ObtenerMesa(1);
                 //Assert.IsNotNull(mesaDelPedido);
                 int idDeLaMesa = mesaDelPedido.Id;
                 //Assert.AreEqual(1 , idDeLaMesa);

@@ -32,22 +32,6 @@ namespace Negocio
 
 
 
-
-
-        /// <summary>
-        /// Crea un producto
-        /// </summary>
-        /// <param name="tipoProducto"></param>
-        /// <param name="nombre"></param>
-        /// <param name="cantidad"></param>
-        /// <param name="unidadDeMedida"></param>
-        /// <param name="precio"></param>
-        /// <param name="proveedor"></param>
-        /// <param name="categoria"></param>
-        /// <param name="clasificacionDeBebida"></param>
-        /// <returns> Retorna un IProducto </returns>
-        /// <exception cref="AlCrearProductoException"></exception>
-        /// <exception cref="Exception"></exception>
         public IProducto CrearProducto(
               ETipoDeProducto tipoProducto, string nombre, double cantidad, EUnidadDeMedida unidadDeMedida,
               decimal precio, IProveedor proveedor, ECategoriaConsumible categoria = default,
@@ -75,33 +59,7 @@ namespace Negocio
         }
 
 
-        /// <summary>
-        /// Agrega un producto a stock por ejemplo (Puede ser un Ingrediente o una Bebida)
-        /// </summary>
-        /// <param name="producto"></param>
-        /// <exception cref="AlAgregarProductoAStockException"></exception>
-        public void AgregarProductoAStock(IProducto producto)
-        {
-            bool seModificoLaLista = false;
-            if(producto == null)
-            {
-                throw new AlAgregarProductoAStockException("El producto es null, no se pudo agregar a la lista");
-            }
-            lock (_listaDeProductosEnStock)
-            {
-                _listaDeProductosEnStock.Add(producto);
-                seModificoLaLista = true;
-            }
-
-
-            if (seModificoLaLista)
-            {
-                OnStockProductosActualizado();
-            }
-        }
-
-
-        public IProducto ReadProducto(string nombre)
+        public IProducto ObtenerProducto(string nombre)
         {
 
             if (string.IsNullOrEmpty(nombre))
@@ -118,13 +76,13 @@ namespace Negocio
             return null;
         }
 
-        public IProducto ReadProducto(int id)
+        public IProducto ObtenerProducto(int id)
         {
             if (id < 0)
             {
                 throw new DatoIncorrectoException("Dato Incorrecto: ID no valida");
             }
-            foreach (Producto producto in ReadAllProductos())
+            foreach (Producto producto in ObtenerTodosLosProductos())
             {
                 if (producto.Id == id)
                 {
@@ -134,7 +92,9 @@ namespace Negocio
             return null;
         }
 
-        public List<IConsumible> ReadAllProductosIngredientes()
+
+
+        public List<IConsumible> ObtenerTodosLosProductosIngrediente()
         {
             List<IConsumible> nuevaListDeIngrediente = new List<IConsumible>();
 
@@ -150,7 +110,7 @@ namespace Negocio
             return nuevaListDeIngrediente;
         }
 
-        public List<IConsumible> ReadAllProductosBebidas()
+        public List<IConsumible> OtenerTodosLosProductosBebidas()
         {
             List<IConsumible> nuevaListDeBebidas = new List<IConsumible>();
 
@@ -166,7 +126,7 @@ namespace Negocio
             return nuevaListDeBebidas;
         }
 
-        public List<IProducto> ReadAllProductos()
+        public List<IProducto> ObtenerTodosLosProductos()
         {
             if (_listaDeProductosEnStock.Count > 0)
             {
@@ -215,6 +175,40 @@ namespace Negocio
         }
 
 
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Agrega un producto a stock por ejemplo (Puede ser un Ingrediente o una Bebida)
+        /// </summary>
+        /// <param name="producto"></param>
+        /// <exception cref="AlAgregarProductoAStockException"></exception>
+        public void AgregarProductoAStock(IProducto producto)
+        {
+            bool seModificoLaLista = false;
+            if(producto == null)
+            {
+                throw new AlAgregarProductoAStockException("El producto es null, no se pudo agregar a la lista");
+            }
+            lock (_listaDeProductosEnStock)
+            {
+                _listaDeProductosEnStock.Add(producto);
+                seModificoLaLista = true;
+            }
+
+
+            if (seModificoLaLista)
+            {
+                OnStockProductosActualizado();
+            }
+        }
+
+
         public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)//LE PUEDE LLEGAR PLATOS O BEBIDAS
         {
             bool seModificoProductoEnLista = false;
@@ -231,7 +225,7 @@ namespace Negocio
                         Producto ingredienteEnStock = (Producto)_listaDeProductosEnStock[i];
                         if (consumible is Plato plato)
                         {
-                            List<IConsumible> ingredientesDelPlato = plato.GetIngredientesDelPlato();
+                            List<IConsumible> ingredientesDelPlato = plato.ObtenerIngredientesDelPlato();
                             foreach (Ingrediente ingredienteADescontar in ingredientesDelPlato)
                             {
                                 if (ingredienteADescontar.Nombre == _listaDeProductosEnStock[i].Nombre)
@@ -261,6 +255,26 @@ namespace Negocio
 
             return seModificoProductoEnLista;
         }
+
+
+
+
+        public List<IProducto> ConsultaStockVigente(IEncargado encargado)
+        {
+            return encargado.ConsultaStockVigente(_listaDeProductosEnStock);
+        }
+
+        public List<IProducto> ConsultaDeStockPorAgotarse(IEncargado encargado)
+        {
+            return encargado.ConsultaDeStockPorAgotarse(_listaDeProductosEnStock);
+        }
+
+
+        public void BloquearParaLaVenta(IEncargado encargado, IProducto producto)
+        {
+            encargado.bloquearParaLaVenta(producto);
+        }
+
 
 
 
@@ -327,26 +341,5 @@ namespace Negocio
         {
             EventStockDeProductosActualizados?.Invoke();
         }
-
-
-
-
-        public List<IProducto> ConsultaStockVigente(IEncargado encargado)
-        {
-            return encargado.ConsultaStockVigente(_listaDeProductosEnStock);
-        }
-
-        public List<IProducto> ConsultaDeStockPorAgotarse(IEncargado encargado)
-        {
-            return encargado.ConsultaDeStockPorAgotarse(_listaDeProductosEnStock);
-        }
-
-
-        public void BloquearParaLaVenta(IEncargado encargado ,IProducto producto)
-        {
-            encargado.bloquearParaLaVenta(producto);
-        }
-
-
     }
 }

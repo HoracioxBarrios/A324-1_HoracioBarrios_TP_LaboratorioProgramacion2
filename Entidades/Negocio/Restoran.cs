@@ -50,13 +50,13 @@ namespace Negocio
             //------- instancio PRODUCTOS (INGREDIENTES)  Y Se Agregan al Stock ---------
 
             //Proveedor para Ingrediente 1 -ALMACEN
-            IProveedor proveedor1 = _gestorDeProveedores.GetProveedor(1);
+            IProveedor proveedor1 = _gestorDeProveedores.ObtenerProveedor(1);
             //Proveedor para Ingrediente 2 -CARNICERIA
-            IProveedor proveedor2 = _gestorDeProveedores.GetProveedor(2);
+            IProveedor proveedor2 = _gestorDeProveedores.ObtenerProveedor(2);
             //Proveedor para Ingrediente 3  -VERDULERIA
-            IProveedor proveedor3 = _gestorDeProveedores.GetProveedor(3);
+            IProveedor proveedor3 = _gestorDeProveedores.ObtenerProveedor(3);
             //proveedor para Ingrediente 4 -VERDULERIA
-            IProveedor proveedor4 = _gestorDeProveedores.GetProveedor(4);
+            IProveedor proveedor4 = _gestorDeProveedores.ObtenerProveedor(4);
 
             IProducto aceite = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Aceite", 2, EUnidadDeMedida.Litro, 1000M, proveedor1);
             IProducto pollo = _gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "Pollo", 6, EUnidadDeMedida.Kilo, 6000M, proveedor2) ;
@@ -92,7 +92,7 @@ namespace Negocio
             // TENIENDO STOCK DE PRODUCTOS PODEMOS CREAR EL PLATO
 
             //INSTANCIAMOS EL COCINERO
-            IEmpleado cocinero = _gestorDeEmpleados.GetEmpleadoEnList("Gille");
+            IEmpleado cocinero = _gestorDeEmpleados.ObtenerEmpleado("Gille");
 
             //INSTACIAMOS EL GESTOR MENU
             _gestorMenu = new GestorDeMenu((ICocinero)cocinero, _gestorDeProductos);

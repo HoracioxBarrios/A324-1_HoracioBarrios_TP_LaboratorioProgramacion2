@@ -57,7 +57,7 @@ namespace Negocio
         }
 
 
-        public ICliente GetCliente(int id)
+        public ICliente ObtenerCliente(int id)
         {
             foreach (ICliente cliente in _listaDeClientes)
             {

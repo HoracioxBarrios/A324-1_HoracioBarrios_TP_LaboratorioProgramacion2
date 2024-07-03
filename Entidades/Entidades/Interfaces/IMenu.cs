@@ -11,12 +11,12 @@ namespace Entidades.Interfaces
         string Nombre { get; set; }
         void Agregar(IConsumible consumible);
         void Quitar(IConsumible consumible);
-        IConsumible GetPlatoPorNombre(string nombreDelPlato);
-        IConsumible GetBebidaPorNombre(string nombreDeLaBebida, int cantidadRequerida);
-        List<IConsumible> GetPlatosEnMenu();
+        IConsumible ObtenerPlatoPorNombre(string nombreDelPlato);
+        IConsumible ObtenerBebidaPorNombre(string nombreDeLaBebida, int cantidadRequerida);
+        List<IConsumible> ObtenerPlatosEnMenu();
 
-        List<IConsumible> GetBebidasInMenu();
+        List<IConsumible> ObtenerBebidasEnMenu();
 
-        List<IConsumible> ObtenerAllItemsDelMenu();
+        List<IConsumible> ObtenerTodosLosConsumiblesEnMenu();
     }
 }
