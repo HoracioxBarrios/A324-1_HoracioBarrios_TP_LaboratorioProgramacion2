@@ -235,8 +235,9 @@ namespace Test
         [TestMethod]
         public async Task TesteamosLaCreacionDeUnPedidoParaElDelivery()
         {
+            GestorVentas gestorVentas = new GestorVentas(); // se usa en Gestor mesas y Gestor Delivery y es donde se registran los pagos
             //Gestor delivery
-            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado, gestorVentas);
 
             //Cliente
             int idHaecodeadaDelCLiente1 = 200;
@@ -289,8 +290,9 @@ namespace Test
         [TestMethod]
         public async Task TesteaLaCreacionDeUnPedidoParaElDelivery_SiSePreparoEstaBien()
         {
+            GestorVentas gestorVentas = new GestorVentas(); // se usa en Gestor mesas y Gestor Delivery y es donde se registran los pagos
             //Gestor delivery
-            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado, gestorVentas);
 
             //Cliente
             int idHaecodeadaDelCLiente1 = 200;
@@ -346,8 +348,9 @@ namespace Test
         [TestMethod]
         public async Task TesteaLaEntregaDelPedidoParaDelivery_AlEntregarElPedidoSeDescuentaDelStockLosProductos_SiMarcaEntregadoDebeDarTrue()
         {
+            GestorVentas gestorVentas = new GestorVentas(); // se usa en Gestor mesas y Gestor Delivery y es donde se registran los pagos
             //Gestor delivery
-            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado, gestorVentas);
 
             //CLIENTE
             int IdDelCliente = 200;

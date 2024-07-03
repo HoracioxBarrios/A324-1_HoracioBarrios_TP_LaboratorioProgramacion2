@@ -232,8 +232,9 @@ namespace Test
         [TestMethod]
         public async Task TesteaLaEntregaDelPedidoParaDelivery_AlEntregarElPedidoSeDescuentaDelStockLosProductos_SiDaTrueEstaEntregado()
         {
+            GestorVentas gestorVentas = new GestorVentas(); // se usa en Gestor mesas y Gestor Delivery y es donde se registran los pagos
             //Gestor delivery
-            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado, gestorVentas);
 
             //CLIENTE
             int IdDelCliente = 200;
@@ -336,8 +337,9 @@ namespace Test
         [TestMethod]
         public async Task TestDeCobroDelivery_ElDineroEnDeliveryDebeSerIguallEvaluado_seEsperaTrue()
         {
+            GestorVentas gestorVentas = new GestorVentas(); // se usa en Gestor mesas y Gestor Delivery y es donde se registran los pagos
             //Gestor delivery
-            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado, gestorVentas);
 
             //CLIENTE
             int IdDelCliente = 200;
@@ -422,13 +424,19 @@ namespace Test
 
 
                 //Assert.AreEqual(1100, bebidaDelPedido.Precio);
-                bool seEntregoYSeDescontoDelStock = gestorDePedidos.EntregarPedido((IEntregadorPedidos)delivery1, idDelPedido, IdDelCliente);//ENTREGAMOS EL PEDIDO Al Cliente y cobra
+                bool seEntregoYSeDescontoDelStock = gestorDePedidos.EntregarPedido((IEntregadorPedidos)delivery1, idDelPedido, IdDelCliente);//ENTREGAMOS EL PEDIDO Al Cliente
 
-                decimal montoCobradoEnDelivery = delivery1.MontoAcumulado;
+                //Se COBRA AHORA
+
+                bool seCobro = gestorDeDelivery.Cobrar(IdDelCliente, delivery1.Id, ETipoDePago.Contado);
 
 
+                //ahora debe de aparecer en el gestor de ventas el Pago y lo buscamos
+                decimal montoEnPago = gestorVentas[0].Monto; //uso indexador
 
-                Assert.AreEqual(1100 , montoCobradoEnDelivery);
+
+                Assert.IsTrue(seCobro);
+                Assert.AreEqual(1100, montoEnPago);
 
             }
         }
@@ -548,14 +556,18 @@ namespace Test
             //ICreador de Pedidos MESERO O ENCARGADO
             //EN CASO DEL MESERO DEBE ESTAR ASIGNADO A LA MESA:
 
+            GestorVentas gestorVentas = new GestorVentas(); //Es para guardar los pagos del gestor mesas y tambien se va a usar en el gestorDelivery
 
-            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4);
+            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4, gestorVentas);
 
 
 
-            IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Leo", "Gry", "1152000", "Av iglu 45", 15000M);
+            IEmpleado empMesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Leo", "Gry", "1152000", "Av iglu 45", 15000M);
+            empMesero.Id = 100;
+
+            IMesero mesero = (Mesero)empMesero;
             //Al no usar GestorEmpleado , tenemos que nosotros setear la ID del mesero (El gestorEmpleado al rcearlo en la db esta se encarga de generarnos la ID del empleado MESERO en este caso)
-            mesero.Id = 100;
+
             int idDelMesero = mesero.Id;
 
             gestorMesas.RegistrarMesero((IMesero)mesero); //Registro el Mesero en el gestor mesas
@@ -602,14 +614,22 @@ namespace Test
 
 
                 //PROCEDEMOS A COBRAR
-                bool seCobro = gestorMesas.Cobrar(idDeLaMesa, idDelMesero);
+                bool seCobro = gestorMesas.Cobrar(idDeLaMesa, idDelMesero, ETipoDePago.Contado);
 
                 Assert.IsTrue(seCobro);
 
-                IMesero mes = (IMesero)mesero;
-                decimal PlataEnElMesero = mes.MontoAcumulado;
 
-                Assert.AreEqual(3000, PlataEnElMesero);
+                //ahora debe de aparecer en el gestor de ventas el Pago y lo buscamos --------------------> BUSCAMOS EL PAGO EN EL GESTOR DE VENTAS <---------------------------
+                decimal montoEnPago = gestorVentas[0].Monto; //uso indexador
+
+
+                Assert.IsTrue(seCobro);
+                Assert.AreEqual(3000, montoEnPago);
+
+
+                
+                // DE MOMENTO VA A TENER EL MESERO ACUMULADO ----->>>>>>>>>>> 3000 
+                Assert.AreEqual(3000, mesero.MontoAcumulado);
             }
         }
     }

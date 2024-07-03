@@ -12,6 +12,7 @@ namespace Entidades
     public class Delivery : Empleado, IDelivery, IEntregadorPedidos, ICobrador
     {
 
+        private decimal _montoDelPedidoActualTemporal;//Hasta que se realiza el pago
         private decimal _montoAcumulado;
         private List<ICliente> _clientes;
    
@@ -25,6 +26,7 @@ namespace Entidades
             this.Salario = salario;
             this.Rol = rol;
             _montoAcumulado = 0;
+            _montoDelPedidoActualTemporal = 0;
             _clientes = new List<ICliente>();
         }
 
@@ -56,7 +58,6 @@ namespace Entidades
                 if(cliente.Id == idCliente)
                 {
                     cliente.AgregarPedidoACliente(pedido);
-                    bool seCobro = Cobrar(idCliente);
                     pedido.Entregado = true;
                     clienteEncontrado = true;
                     break;
@@ -71,28 +72,42 @@ namespace Entidades
 
 
         /// <summary>
-        /// Cobra el pedido en base al Precio de Venta de los Productos (IConsumibles o IVendibles)
+        /// Cobra el pedido en base al Precio de Venta de los Productos (IConsumibles o IVendibles --- Bebidas y Platos ----)
         /// </summary>
         /// <param name="pedido"></param>
-        public bool Cobrar(int idDelCliente)
+        public IPago Cobrar(int idDelCliente, ETipoDePago tipoDePago)
         {
             bool seCobro = false;
-            foreach(Cliente cliente in _clientes)
+            IPago pago = null;
+            foreach (Cliente cliente in _clientes)
             {
                 if( cliente.Id == idDelCliente)
                 {
                     List<IPedido> pedidosDelCliente = cliente.ObtenerPedidosDeLCliente();
                     foreach(Pedido pedido in pedidosDelCliente)
                     {
-                        MontoAcumulado += pedido.CalcularPrecio();
+                        _montoDelPedidoActualTemporal += pedido.CalcularPrecio();
                     }
                     seCobro = true;
+                    pago = RegistrarPago(cliente.Id, _montoDelPedidoActualTemporal, tipoDePago);
+
+                    _montoAcumulado = _montoDelPedidoActualTemporal; // se guarda en el acumulador General
+                    _montoDelPedidoActualTemporal = 0; //con el pago hecho, se limpia el acumulador para el proximo pedido.
                     break;
                 }
             }
-            return seCobro;
+
+            if (!seCobro)
+            {
+                throw new AlCobrarException("Error al cobrar mesa");
+            }
+            return pago;
         }
 
+        private IPago RegistrarPago(int idMesaOCliente, decimal monto, ETipoDePago tipoPago)
+        {
+            return new Pago(idMesaOCliente, this.Id, this.Rol, monto, tipoPago);
+        }
 
 
         public decimal MontoAcumulado
@@ -108,6 +123,16 @@ namespace Entidades
                     _montoAcumulado += value;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Va a tener temporalmente el precio del pedido actual, hasta que se Pague el pedido
+        /// </summary>
+        public decimal MontoDeLPedidoActualTemporal
+        {
+            get { return _montoDelPedidoActualTemporal; }
+            set { _montoDelPedidoActualTemporal = value; }
         }
     }
 }

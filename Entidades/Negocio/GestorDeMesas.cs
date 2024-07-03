@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
 using Entidades.Excepciones;
+using Entidades.Enumerables;
 
 namespace Negocio
 {
@@ -15,13 +16,16 @@ namespace Negocio
         private List<IMesa> _listaDeMesas;
         private List<IMesero> _listaDeMeseros;// SEGUIR HAY QUE METER A LOS MESEROS ACA
         private IEncargado _encargado;
+        private IGestorVentas _gestorVentas;
 
 
-
-        public GestorDeMesas(IEncargado encargado, int cantidadMesas)
+        public GestorDeMesas(IEncargado encargado, int cantidadMesas, IGestorVentas gestorVentas)
         {
             _listaDeMeseros = new List<IMesero>();
             _listaDeMesas = new List<IMesa>();
+
+            _gestorVentas = gestorVentas;
+
             _encargado = encargado;
             // Inicializar las mesas según la cantidad especificada
             for (int i = 1; i <= cantidadMesas; i++)
@@ -87,7 +91,7 @@ namespace Negocio
 
 
 
-        public bool Cobrar(int idMesaOCliente, int IdDelMesero)
+        public bool Cobrar(int idDeLaMesaCliente, int IdDelMesero , ETipoDePago tipoDePago)
         {
             bool seCobro = false;
             foreach (IMesero mesero in _listaDeMeseros)
@@ -95,10 +99,20 @@ namespace Negocio
                 if(mesero.Id == IdDelMesero)
                 {
                     ICobrador meseroCobrador = (ICobrador)mesero;
-                    seCobro = meseroCobrador.Cobrar(idMesaOCliente);
+                    IPago pago = meseroCobrador.Cobrar(idDeLaMesaCliente, tipoDePago);
+                    if(pago != null) 
+                    {
+                        seCobro = true;
+                        AgregarPagoAListaDePagos( pago);
+                    }
                 }
             }
             return seCobro;
+        }
+
+        private void AgregarPagoAListaDePagos(IPago pago)
+        {
+            _gestorVentas.Pagos.Add(pago);
         }
 
         public IMesa ObtenerMesa(int id)

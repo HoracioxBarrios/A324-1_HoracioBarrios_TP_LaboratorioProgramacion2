@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades.Enumerables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace Entidades.Interfaces
     public interface ICobrador
     {
         decimal MontoAcumulado { get; set; }
-        bool Cobrar(int idDelClienteOMesa);// con la id puede verificar los pedidos del cliente y cobrarlos
+        IPago Cobrar(int idMesaOCliente, ETipoDePago tipoPago);
     }
 }

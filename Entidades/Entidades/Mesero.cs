@@ -12,6 +12,7 @@ namespace Entidades
 {//meseri debe poder ser pasado a la entidad gestor pedidos y crear los pedidos que luego vera en la cocina para crear los platos(debe tener tiempo de preparacion)
     public class Mesero : Empleado, ICobrador, IMesero, ICreadorDePedidos, IEntregadorPedidos
     {
+        private decimal _montoDelPedidoActualTemporal;//Hasta que se realiza el pago
         private decimal _montoAcumulado;
         private List<IMesa> _mesasAsignada;
 
@@ -29,7 +30,7 @@ namespace Entidades
 
             _mesasAsignada = new List<IMesa>();
             _montoAcumulado = 0;
-
+            _montoDelPedidoActualTemporal = 0;
         }
         public Mesero(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
             rol, nombre, apellido, contacto, direccion, salario)
@@ -83,30 +84,46 @@ namespace Entidades
 
 
 
-        public bool Cobrar(int idMesaOCliente)
+
+        public IPago Cobrar(int idMesaOCliente, ETipoDePago tipoPago)
         {
             bool seCobro = false;
-            decimal montoMesaActual = 0;
-            foreach(IMesa mesa in _mesasAsignada) 
-            { 
-                if(mesa.Id == idMesaOCliente)
+            IPago pago = null;
+
+            foreach (IMesa mesa in _mesasAsignada)
+            {
+                if (mesa.Id == idMesaOCliente)
                 {
                     List<IPedido> pedidosDeLaMesa = mesa.ObtenerPedidosDeLaMesa();
-                    foreach(IPedido pedido in pedidosDeLaMesa)
+                    foreach (IPedido pedido in pedidosDeLaMesa)
                     {
-                        if(pedido.Entregado == true)
+                        if (pedido.Entregado)
                         {
-                            MontoAcumulado += pedido.CalcularPrecio();
-                        }                                        
-
+                            _montoDelPedidoActualTemporal += pedido.CalcularPrecio();
+                        }
                     }
+
+                    pago = RegistrarPago(idMesaOCliente, _montoDelPedidoActualTemporal, tipoPago);
                     seCobro = true;
                     CerrarMesa(idMesaOCliente);
+
+                    _montoAcumulado = _montoDelPedidoActualTemporal; // se guarda en el acumulador General
+                    _montoDelPedidoActualTemporal = 0; //con el pago hecho, se limpia el acumulador para el proximo pedido.
                     break;
                 }
-                
             }
-            return seCobro;
+
+            if (!seCobro)
+            {
+                throw new AlCobrarException("Error al cobrar mesa");
+            }
+
+            return pago;
+        }
+
+        private IPago RegistrarPago(int idMesaOCliente, decimal monto, ETipoDePago tipoPago)
+        {
+            return new Pago(idMesaOCliente, this.Id,this.Rol, monto, tipoPago);
         }
 
         private void CerrarMesa(int idMesa)
@@ -146,6 +163,15 @@ namespace Entidades
                     _montoAcumulado = value;
                 }
             }
+        }
+
+        /// <summary>
+        /// Va a tener temporalmente el precio del pedido actual, hasta que se Pague el pedido
+        /// </summary>
+        public decimal MontoDeLPedidoActualTemporal
+        {
+            get { return _montoDelPedidoActualTemporal; }
+            set { _montoDelPedidoActualTemporal = value; }
         }
 
         public List<IMesa> MesasAsignada

@@ -232,7 +232,9 @@ namespace Test
         public void TesteandoLaCreacionDeUnpedidoParaLocal_SeSelecionaUnPlatoYUnaBebida_SiNoLanzaExceptionEstaBien()
         {
             int cantidadDeMesas = 4;
-            GestorDeMesas gestorMesas = new GestorDeMesas(_encargado, cantidadDeMesas);
+
+            GestorVentas gestorVentas = new GestorVentas(); //Es para guardar los pagos del gestor mesas y tambien se va a usar en el gestorDelivery
+            GestorDeMesas gestorMesas = new GestorDeMesas(_encargado, cantidadDeMesas, gestorVentas);
            
             gestorMesas.RegistrarMesero(_mesero); //Registro el Mesero en el gestor mesas
 
@@ -254,8 +256,9 @@ namespace Test
         [TestMethod]
         public async Task TesteamosLaCreacionDeUnPedidoParaElDelivery()
         {
+            GestorVentas gestorVentas = new GestorVentas(); // se usa en Gestor mesas y Gestor Delivery y es donde se registran los pagos
             //Gestor delivery
-            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado);
+            GestorDeDelivery gestorDeDelivery = new GestorDeDelivery(_encargado, gestorVentas);
 
             //Cliente
             int idHaecodeadaDelCLiente1 = 200;
@@ -419,8 +422,8 @@ namespace Test
             //ICreador de Pedidos MESERO O ENCARGADO
             //EN CASO DEL MESERO DEBE ESTAR ASIGNADO A LA MESA:
 
-
-            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4);
+            GestorVentas gestorVentas = new GestorVentas(); //Es para guardar los pagos del gestor mesas y tambien se va a usar en el gestorDelivery
+            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4, gestorVentas);
 
 
             IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Leo", "Gry", "1152000", "Av iglu 45", 15000M);
@@ -587,7 +590,9 @@ namespace Test
             //EN CASO DEL MESERO DEBE ESTAR ASIGNADO A LA MESA:
 
 
-            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4);
+            GestorVentas gestorVentas = new GestorVentas(); //Es para guardar los pagos del gestor mesas y tambien se va a usar en el gestorDelivery
+
+            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4, gestorVentas);
 
 
 
@@ -639,8 +644,8 @@ namespace Test
                 
 
 
-                //PROCEDEMOS A COBRAR
-                bool seCobro = gestorMesas.Cobrar(idDeLaMesa, idDelMesero);
+                //PROCEDEMOS A COBRAR --------------------------------------------------------------> Se Evalua que en el acumulador el Mesero tenga 3000 -EN LOS TEST DE ENTREGADORES DE PEDIDO : esta implementado los tipos de PAGOS
+                bool seCobro = gestorMesas.Cobrar(idDeLaMesa, idDelMesero, ETipoDePago.Contado);
 
                 Assert.IsTrue(seCobro);
 

@@ -128,8 +128,9 @@ namespace Test
             //ICreador de Pedidos MESERO O ENCARGADO
             //EN CASO DEL MESERO DEBE ESTAR ASIGNADO A LA MESA:
 
+            GestorVentas gestorVentas = new GestorVentas(); // Es para Guardar los pagos que se va a hacer en el Local y tambien se va a usar en GestorDelivery
 
-            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4);
+            GestorDeMesas gestorMesas = new GestorDeMesas((IEncargado)encargado, 4, gestorVentas);
 
 
             IEmpleado mesero = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Leo", "Gry","1152000" , "Av iglu 45", 15000M);

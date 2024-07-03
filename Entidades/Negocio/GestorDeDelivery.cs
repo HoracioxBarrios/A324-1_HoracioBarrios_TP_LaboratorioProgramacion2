@@ -1,4 +1,5 @@
-﻿using Entidades.Excepciones;
+﻿using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,13 @@ namespace Negocio
         private List<ICliente> _listaDeClientes;
         private List<IDelivery> _listaDeDeliverys;// SEGUIR HAY QUE METER A LOS MESEROS ACA
         private IEncargado _encargado;
-
-        public GestorDeDelivery(IEncargado encargado)
+        private IGestorVentas _gestorDeVentas;
+        public GestorDeDelivery(IEncargado encargado, IGestorVentas gestorDeVentas)
         {
             _encargado = encargado;
             _listaDeClientes = new List<ICliente>();
             _listaDeDeliverys = new List<IDelivery>();
+            _gestorDeVentas = gestorDeVentas;
         }
 
         public void RegistrarDelivery(IDelivery delivery)
@@ -67,6 +69,32 @@ namespace Negocio
                 }
             }
             throw new ErrorAlBuscarClienteEnListaEnGestorDelivery("No esta el Cliente que estas buscando por ID");
+        }
+
+
+
+        public bool Cobrar(int idDelCliente, int idDelDelivery, ETipoDePago tipoDePago)
+        {
+            bool seCobro = false;
+            foreach (IDelivery delivery in _listaDeDeliverys)
+            {
+                if (delivery.Id == idDelDelivery)
+                {
+                    ICobrador deliveryCobrador = (ICobrador)delivery;
+                    IPago pago = deliveryCobrador.Cobrar(idDelCliente, tipoDePago);
+                    if (pago != null)
+                    {
+                        seCobro = true;
+                        AgregarPagoAListaDePagos(pago);
+                    }
+                }
+            }
+            return seCobro;
+        }
+
+        private void AgregarPagoAListaDePagos(IPago pago)
+        {
+            _gestorDeVentas.Pagos.Add(pago);
         }
     }
 }
