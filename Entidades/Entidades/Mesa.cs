@@ -22,7 +22,7 @@ namespace Entidades
         private Mesa()
         {
             _cantidadComensales = 4;
-            _estado = EStateMesa.Cerrada;
+            _estado = EStateMesa.Cerrada; // Cerrada es igual a disponible por default
             _pedidos = new List<IPedido>();
         }
 
@@ -65,6 +65,10 @@ namespace Entidades
             }
             return estaAsignada;
         }
+
+        /// <summary>
+        /// cambia el estado a Cerrado que es disponible y limpia la lista de los pedidos ---> para un nuevo siguiente cliente
+        /// </summary>
         public void Cerrar()
         {
             _estado = EStateMesa.Cerrada;

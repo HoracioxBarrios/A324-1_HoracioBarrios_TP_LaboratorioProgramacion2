@@ -139,5 +139,25 @@ namespace Negocio
         }
 
 
+        public List<IMesa> ObtenerMesasConConsumoNoPagado()
+        {
+            List<IMesa> mesasConConsumoNoPagado = new List<IMesa>();
+            foreach(IMesa mesa in _listaDeMesas)
+            {
+                if(mesa.Estado == EStateMesa.Consumo_No_Pagado)
+                {
+                    mesasConConsumoNoPagado.Add(mesa);
+                }
+            }
+            if(mesasConConsumoNoPagado.Count > 0)
+            {
+                return mesasConConsumoNoPagado;
+            }
+
+            throw new ListaVaciaException("Lista Vacia de Mesas con estado Consumo No Pagado");
+        }
+
+
+
     }
 }

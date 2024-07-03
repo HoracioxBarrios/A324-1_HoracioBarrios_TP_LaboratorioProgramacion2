@@ -70,6 +70,7 @@ namespace Entidades
                 {
                     
                     mesa.AgregarPedidoAMesa(pedido);
+                    mesa.Estado = EStateMesa.Consumo_No_Pagado; // se cambia a pago pendiente - cuando Cobramos la mesa va a cambiar a Cerrada que es disponible nuevamente
                     pedido.Entregado = true;
                     mesaEncontrada = true;
                     break;
@@ -105,7 +106,8 @@ namespace Entidades
 
                     pago = RegistrarPago(idMesaOCliente, _montoDelPedidoActualTemporal, tipoPago);
                     seCobro = true;
-                    CerrarMesa(idMesaOCliente);
+
+                    CerrarMesa(idMesaOCliente);//Se cobra y se cierra = esta nuevamente disponible
 
                     _montoAcumulado = _montoDelPedidoActualTemporal; // se guarda en el acumulador General
                     _montoDelPedidoActualTemporal = 0; //con el pago hecho, se limpia el acumulador para el proximo pedido.
@@ -126,15 +128,20 @@ namespace Entidades
             return new Pago(idMesaOCliente, this.Id,this.Rol, monto, tipoPago);
         }
 
+
+        /// <summary>
+        /// Cierra la mesa y la pone disponible nuevamente
+        /// </summary>
+        /// <param name="idMesa"></param>
         private void CerrarMesa(int idMesa)
         {
-            for (int i = 0; i < _mesasAsignada.Count; i++)
+            foreach(Mesa mesa in _mesasAsignada)
             {
-                if (_mesasAsignada[i].Id == idMesa)
+                if(mesa.Id == idMesa)
                 {
-                    _mesasAsignada[i].Cerrar();
+                    mesa.Cerrar();
                     break;
-                }            
+                }
             }
 
         }
