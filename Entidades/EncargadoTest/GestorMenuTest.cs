@@ -25,7 +25,7 @@ namespace Test
         private IGestorProductos? _gestorProductos;
 
 
-        //ok
+        
 
 
         [TestInitialize]
@@ -179,7 +179,7 @@ namespace Test
 
             Plato plato = (Plato)menu.ObtenerPlatosEnMenu().Find(p => p.Nombre == "Milapapa");
 
-            int cantidadIngredientes = plato.ObtenerIngredientesDelPlato().Count;
+            int cantidadIngredientes = plato.ObtenerIngredientes().Count;
             Assert.IsTrue(cantidadIngredientes >= 2, $"El plato '{plato.Nombre}' debe tener al menos 2 ingredientes.");
         }
 
@@ -292,6 +292,36 @@ namespace Test
 
             Assert.IsNotNull(menuGeneral);
 
+        }
+
+
+
+        [TestMethod]
+        public void OrdenarPlatosPorIngrediente_OrdenaPlatosCorrectamente()
+        {
+            // Arrange
+            // Crear ingredientes
+            var ingrediente1 = new Ingrediente(1, "Tomate", 100, EUnidadDeMedida.Gramo, 2, ETipoDeProducto.Ingrediente, null);
+            var ingrediente2 = new Ingrediente(2, "Tomate", 300, EUnidadDeMedida.Gramo, 1.5m, ETipoDeProducto.Ingrediente, null);
+            var ingrediente3 = new Ingrediente(3, "Tomate", 150, EUnidadDeMedida.Gramo, 1, ETipoDeProducto.Ingrediente, null);
+
+            // Crear platos
+            var plato1 = new Plato("Plato1", new List<IConsumible> { ingrediente1 }, 10, EUnidadDeTiempo.Minutos);
+            var plato2 = new Plato("Plato2", new List<IConsumible> { ingrediente2 }, 10, EUnidadDeTiempo.Minutos);
+            var plato3 = new Plato("Plato3", new List<IConsumible> { ingrediente3 }, 10, EUnidadDeTiempo.Minutos);
+
+            // Crear lista de consumibles y establecerla en el gestor de menú
+            var listaConsumibles = new List<IConsumible> { plato1, plato2, plato3 };
+            typeof(GestorDeMenu).GetField("_ListaGeneralDeConsumiblesLocal", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(_gestorMenu, listaConsumibles);
+
+            // Act
+            GestorDeMenu gestorMenu = (GestorDeMenu)_gestorMenu;
+            var platosOrdenados = gestorMenu.OrdenarPlatosPorIngrediente("Tomate");
+
+            // Assert
+            Assert.AreEqual(plato2, platosOrdenados[0]);
+            Assert.AreEqual(plato3, platosOrdenados[1]);
+            Assert.AreEqual(plato1, platosOrdenados[2]);
         }
     }
 }

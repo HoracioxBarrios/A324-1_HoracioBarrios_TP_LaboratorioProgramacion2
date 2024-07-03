@@ -181,6 +181,9 @@ namespace Negocio
 
 
 
+
+
+
         /// <summary>
         /// Crea el plato y lo agrega al menús / lista general de consumibles.
         /// </summary>
@@ -352,6 +355,46 @@ namespace Negocio
             }
             throw new ListaVaciaException("La lista de bebidas esta Vacia");
         }
+
+
+
+        public List<Plato> OrdenarPlatosPorIngrediente(string nombreIngrediente)
+        {
+            List<Plato> platos = _ListaGeneralDeConsumiblesLocal.OfType<Plato>().ToList();
+
+            platos.Sort((plato1, plato2) =>
+            {
+                Ingrediente ingrediente1 = plato1.ObtenerIngrediente(nombreIngrediente);
+                Ingrediente ingrediente2 = plato2.ObtenerIngrediente(nombreIngrediente);
+
+                // Manejar casos donde alguno de los ingredientes es null
+                if (ingrediente1 == null && ingrediente2 == null) return 0;
+                if (ingrediente1 == null) return -1;
+                if (ingrediente2 == null) return 1;
+
+                // Comparar de mayor a menor cantidad de ingrediente
+                if (ingrediente1 > ingrediente2) return -1;
+                if (ingrediente1 < ingrediente2) return 1;
+                return 0;
+            });
+
+            return platos;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /// <summary>

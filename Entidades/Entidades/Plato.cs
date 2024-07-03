@@ -120,7 +120,9 @@ namespace Entidades
         }
 
 
- 
+
+
+
 
         /// <summary>
         /// Esta disponible si hay mas ingredientes en stock, de lo que necesita el plato
@@ -151,8 +153,20 @@ namespace Entidades
             return _disponibilidad;
         }
 
+        public Ingrediente ObtenerIngrediente(string nombreIngrediente)
+        {
+            foreach (IConsumible consumible in _ingredientesSeleccionadosParaEstePlato)
+            {
+                Ingrediente? ingrediente = consumible as Ingrediente;
+                if (ingrediente != null && ingrediente.Nombre == nombreIngrediente)
+                {
+                    return ingrediente;
+                }
+            }
+            return null; 
+        }
 
-        public List<IConsumible> ObtenerIngredientesDelPlato()
+        public List<IConsumible> ObtenerIngredientes()
         {
             return _ingredientesSeleccionadosParaEstePlato;
         }

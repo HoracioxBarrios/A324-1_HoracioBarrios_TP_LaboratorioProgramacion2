@@ -225,7 +225,7 @@ namespace Negocio
                         Producto ingredienteEnStock = (Producto)_listaDeProductosEnStock[i];
                         if (consumible is Plato plato)
                         {
-                            List<IConsumible> ingredientesDelPlato = plato.ObtenerIngredientesDelPlato();
+                            List<IConsumible> ingredientesDelPlato = plato.ObtenerIngredientes();
                             foreach (Ingrediente ingredienteADescontar in ingredientesDelPlato)
                             {
                                 if (ingredienteADescontar.Nombre == _listaDeProductosEnStock[i].Nombre)

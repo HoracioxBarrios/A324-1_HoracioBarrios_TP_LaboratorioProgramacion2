@@ -20,7 +20,7 @@ namespace Entidades
     {
         private string _nombre;
         private decimal _precioCostoUnitario;
-        private ITipoUnidadDeMedida _iTipoUnidadDeMedida;
+        private ITipoUnidadDeMedida _iTipoUnidadDeMedida;//Aca se va  a guardar la cantidad y el tipo de unidad de medida x ejemplo KILO.Cantidad
         private ETipoDeProducto _eTipoDeProducto;
         private bool _disponibilidad = false;
         private EUnidadDeMedida _eUnidadDeMedida;
@@ -260,7 +260,7 @@ namespace Entidades
             }
         }
 
-
+  
 
         public override string ToString()
         {
