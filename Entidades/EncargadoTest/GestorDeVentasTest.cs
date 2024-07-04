@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades.Interfaces;
+using Datos;
+using Entidades.Services;
 
 namespace Test
 {
@@ -212,6 +214,100 @@ namespace Test
             Assert.AreEqual(totalTarjetaDeCreditoEsperado, totalTarjetaDeCreditoActual, "El total de los pagos con Tarjeta de Crédito no es el esperado.");
             Assert.AreEqual(totalContadoEsperado, totalContadoActual, "El total de los pagos con Contado no es el esperado.");
             Assert.AreEqual(totalBilleteraVirtualEsperado, totaBillerteraVirtualActual, "El total de los pagos con billetera Virtual no es el esperado");
+        }
+
+
+
+
+        [TestMethod]
+        public void ObtenerTop3Ventas_MeserosYDelivery_Test()
+        {
+            // Arrange
+            List<IEmpleado> empleados = new List<IEmpleado>();
+
+            IEmpleado empleado1 = EmpleadoServiceFactory.CrearEmpleado(ERol.Delivery, "Willy", "Car", "1145215", "calle 3", 15000m);
+            IEmpleado empleado2 = EmpleadoServiceFactory.CrearEmpleado(ERol.Delivery, "Arhi", "Shir", "1155856", "calle 11", 15000m);
+            IEmpleado empleado3 = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Pela", "Trex", "1153300", "av sin luz 44", 15000m);
+            IEmpleado empleado4 = EmpleadoServiceFactory.CrearEmpleado(ERol.Delivery, "Liloi", "Feri", "1157775", "av los copos 1", 15000m);
+            IEmpleado empleado5 = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Caro", "Juill", "1150006", "av Sol 10", 15000m);
+            IEmpleado empleado6 = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Juli", "Aser", "1155555", "av los copos 55", 15000m);
+
+            empleado1.Id = 1;
+            empleado2.Id = 2;
+            empleado3.Id = 3;
+            empleado4.Id = 4;
+            empleado5.Id = 5;
+            empleado6.Id = 6;
+
+            empleados.Add(empleado1);
+            empleados.Add(empleado2);
+            empleados.Add(empleado3);
+            empleados.Add(empleado4);
+            empleados.Add(empleado5);
+            empleados.Add(empleado6);
+
+            GestorVentas gestorVentas = new GestorVentas();
+
+            // registramos algunos pagos para meseros y delivery
+            gestorVentas.RegistrarPago(new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito));
+            gestorVentas.RegistrarPago(new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado));
+            gestorVentas.RegistrarPago(new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarPago(new Pago(4, 4, ERol.Delivery, 100.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarPago(new Pago(5, 5, ERol.Mesero, 250.25m, ETipoDePago.BilleteraVirtual));
+
+            // Act                                                                       top 3 ----> podria ser top 2, 1 o el que se quiera
+            List<Tuple<string, ERol, decimal>> top3Ventas = gestorVentas.ObtenerTopVentas(3, empleados);
+
+            // Assert
+            Assert.AreEqual(3, top3Ventas.Count, "El tamaño del top 3 no es 3.");
+
+        }
+
+
+        [TestMethod]
+        public void ObtenerTop3Ventas_PorRol_Test()
+        {
+            // Arrange
+            List<IEmpleado> empleados = new List<IEmpleado>();
+
+            IEmpleado empleado1 = EmpleadoServiceFactory.CrearEmpleado(ERol.Delivery, "Willy", "Car", "1145215", "calle 3", 15000m);
+            IEmpleado empleado2 = EmpleadoServiceFactory.CrearEmpleado(ERol.Delivery, "Arhi", "Shir", "1155856", "calle 11", 15000m);
+            IEmpleado empleado3 = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Pela", "Trex", "1153300", "av sin luz 44", 15000m);
+            IEmpleado empleado4 = EmpleadoServiceFactory.CrearEmpleado(ERol.Delivery, "Liloi", "Feri", "1157775", "av los copos 1", 15000m);
+            IEmpleado empleado5 = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Caro", "Juill", "1150006", "av Sol 10", 15000m);
+            IEmpleado empleado6 = EmpleadoServiceFactory.CrearEmpleado(ERol.Mesero, "Juli", "Aser", "1155555", "av los copos 55", 15000m);
+
+            empleado1.Id = 1;
+            empleado2.Id = 2;
+            empleado3.Id = 3;
+            empleado4.Id = 4;
+            empleado5.Id = 5;
+            empleado6.Id = 6;
+
+            empleados.Add(empleado1);
+            empleados.Add(empleado2);
+            empleados.Add(empleado3);
+            empleados.Add(empleado4);
+            empleados.Add(empleado5);
+            empleados.Add(empleado6);
+
+
+
+            GestorVentas gestorVentas = new GestorVentas();
+
+
+            // registramos algunos pagos para meseros y delivery
+            gestorVentas.RegistrarPago(new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito));
+            gestorVentas.RegistrarPago(new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado));
+            gestorVentas.RegistrarPago(new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarPago(new Pago(4, 4, ERol.Delivery, 100.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarPago(new Pago(5, 5, ERol.Mesero, 250.25m, ETipoDePago.BilleteraVirtual));
+
+            // Act                                                                          top 3
+            List<Tuple<string, ERol, decimal>> top3Ventas = gestorVentas.ObtenerTopVentasPorRol(3, ERol.Mesero, empleados);
+
+            // Assert -----------> debe haber 3 en el Top
+            Assert.AreEqual(3, top3Ventas.Count, "El tamaño del top 3 no es 3.");
         }
     }
 }
