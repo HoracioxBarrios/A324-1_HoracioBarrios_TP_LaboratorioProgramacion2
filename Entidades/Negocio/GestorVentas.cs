@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using Entidades.Excepciones;
 using Entidades.Interfaces;
+using Entidades.Enumerables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,9 +69,9 @@ namespace Negocio
         public decimal ObtenerMontoDeLosPagosDeLosConsumosTotales()
         {
             decimal montos = 0;
-            if(_pagosDeLasVentas.Count > 0)
+            if (_pagosDeLasVentas.Count > 0)
             {
-                foreach(Pago pago in _pagosDeLasVentas)
+                foreach (Pago pago in _pagosDeLasVentas)
                 {
                     montos += pago.Monto;
                 }
@@ -79,8 +80,42 @@ namespace Negocio
             return montos;
         }
 
+        public decimal ObtenerMontoDeLosPagosDeDeliverys()
+        {
+            decimal montos = 0;
+            if (_pagosDeLasVentas.Count > 0)
+            {
+                foreach (Pago pago in _pagosDeLasVentas)
+                {
+                    if(pago.RolDelCobrador == ERol.Delivery)
+                    {
+                        montos += pago.Monto;
+                    }
+                    
+                }
+            }
+
+            return montos;
+        }
 
 
+        public decimal ObtenerMontoDeLosPagosDeMeseros()
+        {
+            decimal montos = 0;
+            if (_pagosDeLasVentas.Count > 0)
+            {
+                foreach (Pago pago in _pagosDeLasVentas)
+                {
+                    if (pago.RolDelCobrador == ERol.Mesero)
+                    {
+                        montos += pago.Monto;
+                    }
+
+                }
+            }
+
+            return montos;
+        }
 
 
         public List<IPago> Pagos
