@@ -20,7 +20,7 @@ namespace Test
         private IGestorProductos _gestorProductos;
         private ICocinero _cocinero;
         private IMesero _mesero;
-        private IDelivery _delivery;
+
         private IEncargado _encargado;
 
 

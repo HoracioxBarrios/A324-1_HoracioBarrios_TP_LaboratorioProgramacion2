@@ -34,7 +34,8 @@ namespace Entidades
             _idMesaOCliente = idMesaOCliente;
             _monto = monto;
             _fecha = DateTime.Now;
-            _idDelCobrador = idDelCobrador;
+            _idDelCobrador = idDelCobrador ;
+            _rolDelCobrador = rolDelCobrador;
             _tipoDePago = tipoPago; 
 
 

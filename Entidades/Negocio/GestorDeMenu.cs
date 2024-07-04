@@ -300,12 +300,12 @@ namespace Negocio
 
             foreach (IConsumible consumible in _ListaGeneralDeConsumiblesLocal)
             {
-                // Verificar si el consumible es un Plato y está disponible para crear
+                
                 if (consumible is Plato plato && plato.Disponibilidad)
                 {
                     try
                     {
-                        // Verificar si el plato tiene ingredientes suficientes en stock
+                  
                         List<IConsumible> ingredientesEnStock = _gestorProductosStock.ObtenerTodosLosProductosIngrediente();
                         if (plato.VerificarStockIngredientes(ingredientesEnStock))
                         {
@@ -314,13 +314,13 @@ namespace Negocio
                     }
                     catch (ListaVaciaException ex)
                     {
-                        // Manejar la excepción de lista vacía de ingredientes en stock
-                        Console.WriteLine($"Advertencia: {plato.Nombre} no está disponible debido a la falta de ingredientes en stock.");
+
+                        throw new AlObtenerPlatosDisponiblesException($"Error al obtener Platos disponibles {ex}", ex);
                     }
                     catch (Exception ex)
                     {
-                        // Manejar otras excepciones
-                        Console.WriteLine($"Error al verificar disponibilidad de {plato.Nombre}: {ex.Message}");
+
+                        throw new AlObtenerPlatosDisponiblesException($"Error al verificar platos disponible{ex}", ex);
                     }
                 }
             }
@@ -358,7 +358,7 @@ namespace Negocio
 
             foreach (IConsumible consumible in _ListaGeneralDeConsumiblesLocal)
             {
-                // Verificar si el consumible es un Plato y no está disponible por falta de ingredientes
+
                 if (consumible is Plato plato && !plato.Disponibilidad)
                 {
                     platosNoDisponibles.Add(plato);
@@ -401,12 +401,12 @@ namespace Negocio
                 Ingrediente ingrediente1 = plato1.ObtenerIngrediente(nombreIngrediente);
                 Ingrediente ingrediente2 = plato2.ObtenerIngrediente(nombreIngrediente);
 
-                // Manejar casos donde alguno de los ingredientes es null
+                // Manejamos casos donde alguno de los ingredientes es null
                 if (ingrediente1 == null && ingrediente2 == null) return 0;
                 if (ingrediente1 == null) return -1;
                 if (ingrediente2 == null) return 1;
 
-                // Comparar de mayor a menor cantidad de ingrediente
+                // Comparamos de mayor a menor cantidad de ingrediente
                 if (ingrediente1 > ingrediente2) return -1;
                 if (ingrediente1 < ingrediente2) return 1;
                 return 0;

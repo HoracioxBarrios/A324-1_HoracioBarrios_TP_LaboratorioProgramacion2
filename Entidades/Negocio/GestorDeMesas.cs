@@ -112,7 +112,7 @@ namespace Negocio
 
         private void AgregarPagoAListaDePagos(IPago pago)
         {
-            _gestorVentas.Pagos.Add(pago);
+            _gestorVentas.RegistrarPago(pago);
         }
 
         public IMesa ObtenerMesa(int id)

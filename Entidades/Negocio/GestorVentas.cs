@@ -52,6 +52,15 @@ namespace Negocio
         }
 
 
+        public void RegistrarPago(IPago pago)
+        {
+            if (pago == null)
+            {
+                throw new ArgumentNullException(nameof(pago), "El pago no puede ser nulo.");
+            }
+            _pagosDeLasVentas.Add(pago);
+        }
+
 
 
         public IPago ObtenerPago(int id)
@@ -65,6 +74,16 @@ namespace Negocio
             }
             throw new AlObtenerPagoException("No se encontró el Pago por Id");
         }
+
+        public List<IPago> ObtenerPagos()
+        {
+            if(_pagosDeLasVentas.Count < 0)
+            {
+                throw new NoHayPagosEnLaListaDePagosDeLasVentasException("La Lista de Pagos de las Ventasesta Vacia");
+            }
+            return _pagosDeLasVentas;
+        }
+
 
         public decimal ObtenerMontoDeLosPagosDeLosConsumosTotales()
         {
@@ -118,10 +137,12 @@ namespace Negocio
         }
 
 
-        public List<IPago> Pagos
+        public decimal ObtenerMontoPorTipoDePago(ETipoDePago tipoDePago)
         {
-            get { return _pagosDeLasVentas; }
-            set { _pagosDeLasVentas = value ?? new List<IPago>(); }
+            return _pagosDeLasVentas
+                .Where(p => p.TipoPago == tipoDePago)
+                .Sum(p => p.Monto);
         }
+
     }
 }

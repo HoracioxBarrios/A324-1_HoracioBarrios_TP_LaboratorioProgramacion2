@@ -16,11 +16,7 @@ namespace Test
     public class GestorMenuTest
     {
 
-        private IConsumible? _ingrediente1;
-        private IConsumible? _ingrediente2;
-        private List<IConsumible>? _listaDeIngredientes;
         private ICocinero? _cocinero;
-
         private IGestorMenu? _gestorMenu;
         private IGestorProductos? _gestorProductos;
 

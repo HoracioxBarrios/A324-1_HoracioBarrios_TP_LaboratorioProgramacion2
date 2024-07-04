@@ -8,8 +8,12 @@ namespace Entidades.Interfaces
 {
     public interface IGestorVentas
     {
-        List<IPago> Pagos { get; set; }
 
+        void RegistrarPago(IPago pago);
         IPago ObtenerPago(int id);
+        List<IPago> ObtenerPagos();
+        decimal ObtenerMontoDeLosPagosDeLosConsumosTotales();
+        decimal ObtenerMontoDeLosPagosDeDeliverys();
+        decimal ObtenerMontoDeLosPagosDeMeseros();
     }
 }

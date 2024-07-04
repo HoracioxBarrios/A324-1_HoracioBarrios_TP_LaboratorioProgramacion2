@@ -89,7 +89,7 @@ namespace Entidades
         public IPago Cobrar(int idMesaOCliente, ETipoDePago tipoPago)
         {
             bool seCobro = false;
-            IPago pago = null;
+            IPago? pago = null;
 
             foreach (IMesa mesa in _mesasAsignada)
             {

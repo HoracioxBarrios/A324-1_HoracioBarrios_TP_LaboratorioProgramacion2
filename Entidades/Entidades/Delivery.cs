@@ -78,7 +78,7 @@ namespace Entidades
         public IPago Cobrar(int idDelCliente, ETipoDePago tipoDePago)
         {
             bool seCobro = false;
-            IPago pago = null;
+            IPago? pago = null;
             foreach (Cliente cliente in _clientes)
             {
                 if( cliente.Id == idDelCliente)

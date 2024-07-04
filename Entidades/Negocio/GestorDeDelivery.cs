@@ -94,7 +94,7 @@ namespace Negocio
 
         private void AgregarPagoAListaDePagos(IPago pago)
         {
-            _gestorDeVentas.Pagos.Add(pago);
+            _gestorDeVentas.RegistrarPago(pago);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Test
         [TestMethod]
         public void CorroboraLaExistenciaDeUnEmpleadoEnLaDB_DaTrueSiSeCreoElEmpleadoEnLaDB()
         {
-            ERol rol = ERol.Encargado;
+            //ERol rol = ERol.Encargado;
             string nombre = "ada";
             string apellido = "DBTEst";
             //string contacto = "1144553311";
@@ -68,13 +68,13 @@ namespace Test
         [TestMethod]
         public void CorroboraLaModificacionDeUnEmpleadoPorIdEnLaDB_DaTrueSiSeModificoElEmpleadoEnLaDB()
         {
-            ERol rol = ERol.Encargado;
-            string nombre = "Jhon";
-            string apellido = "DBTEst";
-            string contacto = "1144553311";
-            string nombreVacio = string.Empty;
-            string direccion = "Av. San Pocho";
-            decimal salario = 150000.50M;
+            //ERol rol = ERol.Encargado;
+            //string nombre = "Jhon";
+            //string apellido = "DBTEst";
+            //string contacto = "1144553311";
+            //string nombreVacio = string.Empty;
+            //string direccion = "Av. San Pocho";
+            //decimal salario = 150000.50M;
 
 
             int id = 6;
