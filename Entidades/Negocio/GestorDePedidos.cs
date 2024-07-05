@@ -16,7 +16,7 @@ namespace Negocio
         private Queue<IPedido> _pedidosParaDelivery;
         private IGestorProductos _gestorProductosStock;
 
-
+        private List<IConsumible> _historialDeConsumibles;
 
 
         public GestorDePedidos(IGestorProductos gestorProductosStock)
@@ -24,6 +24,7 @@ namespace Negocio
             _pedidosParaLocal = new Queue<IPedido>();
             _pedidosParaDelivery = new Queue<IPedido>();
             _gestorProductosStock = gestorProductosStock;
+            _historialDeConsumibles = new List<IConsumible>();
         }
     
 
@@ -41,29 +42,212 @@ namespace Negocio
             {
                 seCreo = true;
                 _pedidosParaLocal.Enqueue(pedido);
+                AgregarConsumiblesAlHistorial(consumiblesPedidos);
                 SuscribirEventoListoParaEntregar(pedido); // se suscribe al evento 
             }
             if (pedido != null && pedido.TipoDePedido == ETipoDePedido.Para_Delivery)
             {
                 seCreo = true;
                 _pedidosParaDelivery.Enqueue(pedido);
+                AgregarConsumiblesAlHistorial(consumiblesPedidos);
                 SuscribirEventoListoParaEntregar(pedido); // se suscribe al evento 
             }
 
             return seCreo;
         }
 
-        public bool EditarPedido(IEditorDePedidos editorDePedidos, int id, List<IConsumible> listaActulizadaDeConsumiblesParaElPedido)
+
+
+
+
+        public bool EditarPedido(IEditorDePedidos editorDePedidos, int id, List<IConsumible> listaActualizadaDeConsumiblesParaElPedido)
         {
-            return editorDePedidos.EditarPedido(id, _pedidosParaLocal, listaActulizadaDeConsumiblesParaElPedido);
+            bool seEdito = false;
+
+            
+            foreach (IPedido pedido in _pedidosParaLocal)// intentamos editar el pedido en la cola de pedidos para local
+            {
+                if (pedido.Id == id)
+                {
+                    editorDePedidos.EditarPedido(id, _pedidosParaLocal, listaActualizadaDeConsumiblesParaElPedido);
+                    seEdito = true;
+                    break;
+                }
+            }
+
+            
+            if (!seEdito)
+            {
+                foreach (IPedido pedido in _pedidosParaDelivery)// si no se encontró en la cola de pedidos para local, intenta en la cola de pedidos para delivery
+                {
+                    if (pedido.Id == id)
+                    {
+                        editorDePedidos.EditarPedido(id, _pedidosParaDelivery, listaActualizadaDeConsumiblesParaElPedido);
+                        seEdito = true;
+                        break;
+                    }
+                }
+            }
+
+            return seEdito;
+        }
+
+
+
+
+
+
+
+        public bool EliminarPedido(IEliminadorDePedidos eliminadorDePedidos, int id)
+        {
+            bool seElimino = false;
+
+            
+            foreach (IPedido pedido in _pedidosParaLocal)// Intenta eliminar el pedido de la cola de pedidos para local
+            {
+                if (pedido.Id == id)
+                {
+                    eliminadorDePedidos.EliminarPedido(id, _pedidosParaLocal);
+                    EliminarConsumiblesDelHistorial(pedido.ObtenerTodosLosConsumiblesDelPedido());
+                    seElimino = true;
+                    break;
+                }
+            }
+
+            
+            if (!seElimino)// Si no se encontró en la cola de pedidos para local, intenta en la cola de pedidos para delivery
+            {
+                foreach (IPedido pedido in _pedidosParaDelivery)
+                {
+                    if (pedido.Id == id)
+                    {
+                        eliminadorDePedidos.EliminarPedido(id, _pedidosParaDelivery);
+                        EliminarConsumiblesDelHistorial(pedido.ObtenerTodosLosConsumiblesDelPedido());
+                        seElimino = true;
+                        break;
+                    }
+                }
+            }
+
+            return seElimino;
+        }
+
+
+
+
+
+
+
+        private void AgregarConsumiblesAlHistorial(List<IConsumible> consumibles)
+        {
+            if(consumibles != null)
+            {
+                _historialDeConsumibles.AddRange(consumibles);
+            }
 
         }
 
-        public bool EliminarPedido(IEliminadorDePedidos ediminadorDePedidos, int id)
-        {
 
-            return ediminadorDePedidos.EliminarPedido(id, _pedidosParaLocal);
+
+
+        private void EliminarConsumiblesDelHistorial(List<IConsumible> consumibles)
+        {
+            foreach (var consumible in consumibles)
+            {
+                _historialDeConsumibles.Remove(consumible);
+            }
         }
+
+
+
+
+
+        public List<(IConsumible consumible, int cantidad)> ObtenerRankingDeConsumiblesMasPedido()         // Método para obtener ranking de consumibles (Platos o Bebidas más vendidos)
+        {
+            var rankingDict = new Dictionary<IConsumible, int>();
+
+            foreach (var consumible in _historialDeConsumibles)
+            {
+                if (rankingDict.ContainsKey(consumible))
+                {
+                    rankingDict[consumible]++;
+                }
+                else
+                {
+                    rankingDict[consumible] = 1;
+                }
+            }
+
+            var rankingList = new List<(IConsumible consumible, int cantidad)>();
+
+            foreach (var entry in rankingDict)
+            {
+                rankingList.Add((entry.Key, entry.Value));
+            }
+
+            rankingList.Sort((x, y) => y.cantidad.CompareTo(x.cantidad));
+
+            return rankingList;
+        }
+
+        
+        public List<(IConsumible consumible, int cantidad)> ObtenerRankingDeConsumiblesMenosPedido() // Método para obtener ranking de consumibles Platos o Beidas menos vendidos)
+        {
+            var rankingDict = new Dictionary<IConsumible, int>();
+
+            foreach (var consumible in _historialDeConsumibles)
+            {
+                if (rankingDict.ContainsKey(consumible))
+                {
+                    rankingDict[consumible]++;
+                }
+                else
+                {
+                    rankingDict[consumible] = 1;
+                }
+            }
+
+            var rankingList = new List<(IConsumible consumible, int cantidad)>();
+
+            foreach (var entry in rankingDict)
+            {
+                rankingList.Add((entry.Key, entry.Value));
+            }
+
+            rankingList.Sort((x, y) => x.cantidad.CompareTo(y.cantidad));
+
+            return rankingList;
+        }
+
+        public List<(IConsumible consumible, int cantidad)> ObtenerTopNConsumiblesMasPedidos(int topN)
+        {
+            var ranking = ObtenerRankingDeConsumiblesMasPedido();
+            var topNList = new List<(IConsumible consumible, int cantidad)>();
+
+            for (int i = 0; i < topN && i < ranking.Count; i++)
+            {
+                topNList.Add(ranking[i]);
+            }
+
+            return topNList;
+        }
+
+        public List<(IConsumible consumible, int cantidad)> ObtenerTopNConsumiblesMenosPedido(int topN)
+        {
+            var ranking = ObtenerRankingDeConsumiblesMenosPedido();
+            var topNList = new List<(IConsumible consumible, int cantidad)>();
+
+            for (int i = 0; i < topN && i < ranking.Count; i++)
+            {
+                topNList.Add(ranking[i]);
+            }
+
+            return topNList;
+        }
+
+
+
+
 
 
 
