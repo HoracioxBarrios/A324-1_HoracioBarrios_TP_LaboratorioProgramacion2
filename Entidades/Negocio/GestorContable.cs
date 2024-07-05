@@ -12,28 +12,28 @@ namespace Negocio
     public class GestorContable : IGestorContable
     {
         private IArca _arca;
-        private List<IPago> _historialDeLosPagosDeLasVentasGenerales;
+        private List<ICobro> _historialDeLosCobrosDeLasVentasGenerales;
         
 
         public GestorContable(IArca arca) 
         { 
-            _historialDeLosPagosDeLasVentasGenerales = new List<IPago>();
+            _historialDeLosCobrosDeLasVentasGenerales = new List<ICobro>();
             _arca = arca;
         
         }
 
 
-        public void RecibirPagosDeLasVentasDelTurno(List<IPago> pagosDeLasVentasDelTurno)
+        public void RecibirPagosDeLasVentasDelTurno(List<ICobro> pagosDeLasVentasDelTurno)
         {
             if(pagosDeLasVentasDelTurno.Count < 0)
             {
                 throw new ListaVaciaException("La Lista con los pagos del turno esta Vacia");
             }
 
-            foreach (Pago pago in pagosDeLasVentasDelTurno) 
+            foreach (Cobro cobro in pagosDeLasVentasDelTurno) 
             {
-                _historialDeLosPagosDeLasVentasGenerales.Add(pago);
-                _arca.AgregarDinero(pago.Monto);
+                _historialDeLosCobrosDeLasVentasGenerales.Add(cobro);
+                _arca.AgregarDinero(cobro.Monto);
             }
         }
 

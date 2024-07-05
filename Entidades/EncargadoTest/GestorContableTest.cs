@@ -21,11 +21,11 @@ namespace Test
             IGestorContable gestorContable = new GestorContable(arca);
             IGestorVentas gestorVentas = new GestorVentas(gestorContable);
 
-            IPago pagoMesero = new Pago(1, 100, ERol.Mesero, 1200, ETipoDePago.Contado);
-            IPago pagoDelivery = new Pago(2, 101, ERol.Delivery, 500, ETipoDePago.TarjetaDeCredito);
+            ICobro pagoMesero = new Cobro(1, 100, ERol.Mesero, 1200, ETipoDePago.Contado);
+            ICobro pagoDelivery = new Cobro(2, 101, ERol.Delivery, 500, ETipoDePago.TarjetaDeCredito);
 
-            gestorVentas.RegistrarPago(pagoMesero);
-            gestorVentas.RegistrarPago(pagoDelivery);
+            gestorVentas.RegistrarCobro(pagoMesero);
+            gestorVentas.RegistrarCobro(pagoDelivery);
 
             // Act
             gestorVentas.CerrarTurno();

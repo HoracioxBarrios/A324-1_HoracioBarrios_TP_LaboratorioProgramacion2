@@ -10,6 +10,6 @@ namespace Entidades.Interfaces
     public interface ICobrador
     {
         decimal MontoAcumulado { get; set; }
-        IPago Cobrar(int idMesaOCliente, ETipoDePago tipoPago);
+        ICobro Cobrar(int idMesaOCliente, ETipoDePago tipoPago);
     }
 }

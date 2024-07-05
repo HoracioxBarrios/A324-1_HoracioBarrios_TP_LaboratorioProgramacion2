@@ -99,7 +99,7 @@ namespace Negocio
                 if(mesero.Id == IdDelMesero)
                 {
                     ICobrador meseroCobrador = (ICobrador)mesero;
-                    IPago pago = meseroCobrador.Cobrar(idDeLaMesaCliente, tipoDePago);
+                    ICobro pago = meseroCobrador.Cobrar(idDeLaMesaCliente, tipoDePago);
                     if(pago != null) 
                     {
                         seCobro = true;
@@ -110,9 +110,9 @@ namespace Negocio
             return seCobro;
         }
 
-        private void AgregarPagoAListaDePagos(IPago pago)
+        private void AgregarPagoAListaDePagos(ICobro pago)
         {
-            _gestorVentas.RegistrarPago(pago);
+            _gestorVentas.RegistrarCobro(pago);
         }
 
         public IMesa ObtenerMesa(int id)

@@ -21,13 +21,13 @@ namespace Test
             // Arrange
             GestorVentas gestorVentas = new GestorVentas();
 
-            Pago pago1 = new Pago(1, 1, ERol.Mesero, 100.50m, ETipoDePago.TarjetaDeCredito);
-            Pago pago2 = new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
-            Pago pago3 = new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.BilleteraVirtual);
+            Cobro pago1 = new Cobro(1, 1, ERol.Mesero, 100.50m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago2 = new Cobro(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
+            Cobro pago3 = new Cobro(3, 3, ERol.Delivery, 300.00m, ETipoDePago.BilleteraVirtual);
 
-            gestorVentas.RegistrarPago(pago1);
-            gestorVentas.RegistrarPago(pago2);
-            gestorVentas.RegistrarPago(pago3);
+            gestorVentas.RegistrarCobro(pago1);
+            gestorVentas.RegistrarCobro(pago2);
+            gestorVentas.RegistrarCobro(pago3);
 
 
             decimal TotalEsperado = 100.50m + 200.75m + 300.00m;
@@ -65,17 +65,17 @@ namespace Test
             // Arrange
             GestorVentas gestorVentas = new GestorVentas();
 
-            Pago pago1 = new Pago(1, 1, ERol.Delivery, 150.50m, ETipoDePago.TarjetaDeCredito);
-            Pago pago2 = new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
-            Pago pago3 = new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado);
-            Pago pago4 = new Pago(4, 4, ERol.Mesero, 100.00m, ETipoDePago.Contado);
-            Pago pago5 = new Pago(5, 5, ERol.Delivery, 250.25m, ETipoDePago.BilleteraVirtual);
+            Cobro pago1 = new Cobro(1, 1, ERol.Delivery, 150.50m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago2 = new Cobro(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
+            Cobro pago3 = new Cobro(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado);
+            Cobro pago4 = new Cobro(4, 4, ERol.Mesero, 100.00m, ETipoDePago.Contado);
+            Cobro pago5 = new Cobro(5, 5, ERol.Delivery, 250.25m, ETipoDePago.BilleteraVirtual);
 
-            gestorVentas.RegistrarPago(pago1);
-            gestorVentas.RegistrarPago(pago2);
-            gestorVentas.RegistrarPago(pago3);
-            gestorVentas.RegistrarPago(pago4);
-            gestorVentas.RegistrarPago(pago5);
+            gestorVentas.RegistrarCobro(pago1);
+            gestorVentas.RegistrarCobro(pago2);
+            gestorVentas.RegistrarCobro(pago3);
+            gestorVentas.RegistrarCobro(pago4);
+            gestorVentas.RegistrarCobro(pago5);
 
             decimal totalEsperado = 150.50m + 300.00m + 250.25m;
 
@@ -92,11 +92,11 @@ namespace Test
             // Arrange
             GestorVentas gestorVentas = new GestorVentas();
 
-            Pago pago1 = new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
-            Pago pago2 = new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
+            Cobro pago1 = new Cobro(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago2 = new Cobro(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
 
-            gestorVentas.RegistrarPago(pago1);
-            gestorVentas.RegistrarPago(pago2);
+            gestorVentas.RegistrarCobro(pago1);
+            gestorVentas.RegistrarCobro(pago2);
 
             decimal TotalEsperado = 0m;
 
@@ -119,17 +119,17 @@ namespace Test
             // Arrange
             GestorVentas gestorVentas = new GestorVentas();
 
-            Pago pago1 = new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
-            Pago pago2 = new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
-            Pago pago3 = new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado);
-            Pago pago4 = new Pago(4, 4, ERol.Mesero, 100.00m, ETipoDePago.Contado);
-            Pago pago5 = new Pago(5, 5, ERol.Delivery, 250.25m, ETipoDePago.BilleteraVirtual);
+            Cobro pago1 = new Cobro(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago2 = new Cobro(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
+            Cobro pago3 = new Cobro(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado);
+            Cobro pago4 = new Cobro(4, 4, ERol.Mesero, 100.00m, ETipoDePago.Contado);
+            Cobro pago5 = new Cobro(5, 5, ERol.Delivery, 250.25m, ETipoDePago.BilleteraVirtual);
 
-            gestorVentas.RegistrarPago(pago1);
-            gestorVentas.RegistrarPago(pago2);
-            gestorVentas.RegistrarPago(pago3);
-            gestorVentas.RegistrarPago(pago4);
-            gestorVentas.RegistrarPago(pago5);
+            gestorVentas.RegistrarCobro(pago1);
+            gestorVentas.RegistrarCobro(pago2);
+            gestorVentas.RegistrarCobro(pago3);
+            gestorVentas.RegistrarCobro(pago4);
+            gestorVentas.RegistrarCobro(pago5);
 
             decimal totalEsperado = 150.50m + 200.75m + 100.00m;
 
@@ -146,11 +146,11 @@ namespace Test
             // Arrange
             GestorVentas gestorVentas = new GestorVentas();
 
-            Pago pago1 = new Pago(1, 1, ERol.Delivery, 150.50m, ETipoDePago.TarjetaDeCredito);
-            Pago pago2 = new Pago(2, 2, ERol.Delivery, 200.75m, ETipoDePago.Contado);
+            Cobro pago1 = new Cobro(1, 1, ERol.Delivery, 150.50m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago2 = new Cobro(2, 2, ERol.Delivery, 200.75m, ETipoDePago.Contado);
 
-            gestorVentas.RegistrarPago(pago1);
-            gestorVentas.RegistrarPago(pago2);
+            gestorVentas.RegistrarCobro(pago1);
+            gestorVentas.RegistrarCobro(pago2);
 
 
             decimal totalEsperado = 0m;
@@ -173,13 +173,13 @@ namespace Test
         {
             // Arrange
             GestorVentas gestorVentas = new GestorVentas();
-            Pago pago = new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago = new Cobro(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
 
             // Act
-            gestorVentas.RegistrarPago(pago);
+            gestorVentas.RegistrarCobro(pago);
 
             // Assert
-            List<IPago> pagosTotales = gestorVentas.ObtenerPagos();
+            List<ICobro> pagosTotales = gestorVentas.ObtenerPagos();
             Assert.AreEqual(1, pagosTotales.Count, "El pago no se ha registrado correctamente.");
             Assert.AreEqual(pago, gestorVentas[0], "El pago registrado no es el esperado.");
         }
@@ -190,17 +190,17 @@ namespace Test
             // Arrange
             GestorVentas gestorVentas = new GestorVentas();
 
-            Pago pago1 = new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
-            Pago pago2 = new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
-            Pago pago3 = new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado);
-            Pago pago4 = new Pago(4, 4, ERol.Mesero, 100.00m, ETipoDePago.TarjetaDeCredito);
-            Pago pago5 = new Pago(5, 5, ERol.Delivery, 250.25m, ETipoDePago.BilleteraVirtual);
+            Cobro pago1 = new Cobro(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago2 = new Cobro(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado);
+            Cobro pago3 = new Cobro(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado);
+            Cobro pago4 = new Cobro(4, 4, ERol.Mesero, 100.00m, ETipoDePago.TarjetaDeCredito);
+            Cobro pago5 = new Cobro(5, 5, ERol.Delivery, 250.25m, ETipoDePago.BilleteraVirtual);
 
-            gestorVentas.RegistrarPago(pago1);
-            gestorVentas.RegistrarPago(pago2);
-            gestorVentas.RegistrarPago(pago3);
-            gestorVentas.RegistrarPago(pago4);
-            gestorVentas.RegistrarPago(pago5);
+            gestorVentas.RegistrarCobro(pago1);
+            gestorVentas.RegistrarCobro(pago2);
+            gestorVentas.RegistrarCobro(pago3);
+            gestorVentas.RegistrarCobro(pago4);
+            gestorVentas.RegistrarCobro(pago5);
 
             decimal totalTarjetaDeCreditoEsperado = 150.50m + 100.00m;
             decimal totalContadoEsperado = 200.75m + 300.00m;
@@ -249,11 +249,11 @@ namespace Test
             GestorVentas gestorVentas = new GestorVentas();
 
             // registramos algunos pagos para meseros y delivery
-            gestorVentas.RegistrarPago(new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito));
-            gestorVentas.RegistrarPago(new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado));
-            gestorVentas.RegistrarPago(new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado));
-            gestorVentas.RegistrarPago(new Pago(4, 4, ERol.Delivery, 100.00m, ETipoDePago.Contado));
-            gestorVentas.RegistrarPago(new Pago(5, 5, ERol.Mesero, 250.25m, ETipoDePago.BilleteraVirtual));
+            gestorVentas.RegistrarCobro(new Cobro(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito));
+            gestorVentas.RegistrarCobro(new Cobro(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado));
+            gestorVentas.RegistrarCobro(new Cobro(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarCobro(new Cobro(4, 4, ERol.Delivery, 100.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarCobro(new Cobro(5, 5, ERol.Mesero, 250.25m, ETipoDePago.BilleteraVirtual));
 
             // Act                                                                       top 3 ----> podria ser top 2, 1 o el que se quiera
             List<Tuple<string, ERol, decimal>> top3Ventas = gestorVentas.ObtenerTopVentas(3, empleados);
@@ -297,11 +297,11 @@ namespace Test
 
 
             // registramos algunos pagos para meseros y delivery
-            gestorVentas.RegistrarPago(new Pago(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito));
-            gestorVentas.RegistrarPago(new Pago(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado));
-            gestorVentas.RegistrarPago(new Pago(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado));
-            gestorVentas.RegistrarPago(new Pago(4, 4, ERol.Delivery, 100.00m, ETipoDePago.Contado));
-            gestorVentas.RegistrarPago(new Pago(5, 5, ERol.Mesero, 250.25m, ETipoDePago.BilleteraVirtual));
+            gestorVentas.RegistrarCobro(new Cobro(1, 1, ERol.Mesero, 150.50m, ETipoDePago.TarjetaDeCredito));
+            gestorVentas.RegistrarCobro(new Cobro(2, 2, ERol.Mesero, 200.75m, ETipoDePago.Contado));
+            gestorVentas.RegistrarCobro(new Cobro(3, 3, ERol.Delivery, 300.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarCobro(new Cobro(4, 4, ERol.Delivery, 100.00m, ETipoDePago.Contado));
+            gestorVentas.RegistrarCobro(new Cobro(5, 5, ERol.Mesero, 250.25m, ETipoDePago.BilleteraVirtual));
 
             // Act                                                                          top 3
             List<Tuple<string, ERol, decimal>> top3Ventas = gestorVentas.ObtenerTopVentasPorRol(3, ERol.Mesero, empleados);
@@ -318,11 +318,11 @@ namespace Test
             IGestorContable gestorContable = new GestorContable(arca);
             IGestorVentas gestorVentas = new GestorVentas(gestorContable);
 
-            IPago pagoMesero = new Pago(1, 100, ERol.Mesero,1200, ETipoDePago.Contado);
-            IPago pagoDelivery = new Pago(2, 101, ERol.Delivery, 500 ,ETipoDePago.TarjetaDeCredito);
+            ICobro pagoMesero = new Cobro(1, 100, ERol.Mesero,1200, ETipoDePago.Contado);
+            ICobro pagoDelivery = new Cobro(2, 101, ERol.Delivery, 500 ,ETipoDePago.TarjetaDeCredito);
 
-            gestorVentas.RegistrarPago(pagoMesero);
-            gestorVentas.RegistrarPago(pagoDelivery);
+            gestorVentas.RegistrarCobro(pagoMesero);
+            gestorVentas.RegistrarCobro(pagoDelivery);
 
             // Act
             gestorVentas.CerrarTurno();

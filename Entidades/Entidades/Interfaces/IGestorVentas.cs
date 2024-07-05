@@ -9,9 +9,9 @@ namespace Entidades.Interfaces
     public interface IGestorVentas
     {
 
-        void RegistrarPago(IPago pago);
-        IPago ObtenerPago(int id);
-        List<IPago> ObtenerPagos();
+        void RegistrarCobro(ICobro pago);
+        ICobro ObtenerPago(int id);
+        List<ICobro> ObtenerPagos();
         decimal ObtenerMontoDeLosPagosDeLosConsumosTotales();
         decimal ObtenerMontoDeLosPagosDeDeliverys();
         decimal ObtenerMontoDeLosPagosDeMeseros();

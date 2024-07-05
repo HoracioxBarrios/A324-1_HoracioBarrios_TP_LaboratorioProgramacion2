@@ -14,7 +14,7 @@ namespace Negocio
     public class GestorVentas : IGestorVentas
     {
 
-        private List<IPago> _pagosDeLasVentas;
+        private List<ICobro> _cobroDeLasVentas;
         private IGestorContable _gestorContable;
 
 
@@ -22,7 +22,7 @@ namespace Negocio
 
         public GestorVentas() 
         { 
-            _pagosDeLasVentas = new List<IPago>();
+            _cobroDeLasVentas = new List<ICobro>();
         }
         public GestorVentas(IGestorContable gestorContable) :this()
         {
@@ -30,47 +30,47 @@ namespace Negocio
         }
 
         /// <summary>
-        /// Indexador para buscar el Pago en la lista de pagos de las Ventas Generales (Local y Delivery)
+        /// Indexador para buscar el Cobro en la lista de pagos de las Ventas Generales (Local y Delivery)
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         /// <exception cref="IndexOutOfRangeException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        public IPago this[int index]
+        public ICobro this[int index]
         {
             get
             {
-                if (index < 0 || index >= _pagosDeLasVentas.Count)
+                if (index < 0 || index >= _cobroDeLasVentas.Count)
                 {
                     throw new IndexOutOfRangeException("El índice está fuera del rango de la lista de pagos.");
                 }
-                return _pagosDeLasVentas[index];
+                return _cobroDeLasVentas[index];
             }
             set
             {
-                if (index < 0 || index >= _pagosDeLasVentas.Count)
+                if (index < 0 || index >= _cobroDeLasVentas.Count)
                 {
                     throw new IndexOutOfRangeException("El índice está fuera del rango de la lista de pagos.");
                 }
-                _pagosDeLasVentas[index] = value ?? throw new ArgumentNullException(nameof(value), "El pago no puede ser nulo.");
+                _cobroDeLasVentas[index] = value ?? throw new ArgumentNullException(nameof(value), "El pago no puede ser nulo.");
             }
         }
 
 
-        public void RegistrarPago(IPago pago)
+        public void RegistrarCobro(ICobro pago)
         {
             if (pago == null)
             {
                 throw new ArgumentNullException(nameof(pago), "El pago no puede ser nulo.");
             }
-            _pagosDeLasVentas.Add(pago);
+            _cobroDeLasVentas.Add(pago);
         }
 
 
 
-        public IPago ObtenerPago(int id)
+        public ICobro ObtenerPago(int id)
         {
-            foreach(IPago pago in _pagosDeLasVentas)
+            foreach(ICobro pago in _cobroDeLasVentas)
             {
                 if(pago.Id == id)
                 {
@@ -80,22 +80,22 @@ namespace Negocio
             throw new AlObtenerPagoException("No se encontró el Pago por Id");
         }
 
-        public List<IPago> ObtenerPagos()
+        public List<ICobro> ObtenerPagos()
         {
-            if(_pagosDeLasVentas.Count < 0)
+            if(_cobroDeLasVentas.Count < 0)
             {
                 throw new NoHayPagosEnLaListaDePagosDeLasVentasException("La Lista de Pagos de las Ventasesta Vacia");
             }
-            return _pagosDeLasVentas;
+            return _cobroDeLasVentas;
         }
 
 
         public decimal ObtenerMontoDeLosPagosDeLosConsumosTotales()
         {
             decimal montos = 0;
-            if (_pagosDeLasVentas.Count > 0)
+            if (_cobroDeLasVentas.Count > 0)
             {
-                foreach (Pago pago in _pagosDeLasVentas)
+                foreach (Cobro pago in _cobroDeLasVentas)
                 {
                     montos += pago.Monto;
                 }
@@ -107,9 +107,9 @@ namespace Negocio
         public decimal ObtenerMontoDeLosPagosDeDeliverys()
         {
             decimal montos = 0;
-            if (_pagosDeLasVentas.Count > 0)
+            if (_cobroDeLasVentas.Count > 0)
             {
-                foreach (Pago pago in _pagosDeLasVentas)
+                foreach (Cobro pago in _cobroDeLasVentas)
                 {
                     if(pago.RolDelCobrador == ERol.Delivery)
                     {
@@ -126,9 +126,9 @@ namespace Negocio
         public decimal ObtenerMontoDeLosPagosDeMeseros()
         {
             decimal montos = 0;
-            if (_pagosDeLasVentas.Count > 0)
+            if (_cobroDeLasVentas.Count > 0)
             {
-                foreach (Pago pago in _pagosDeLasVentas)
+                foreach (Cobro pago in _cobroDeLasVentas)
                 {
                     if (pago.RolDelCobrador == ERol.Mesero)
                     {
@@ -144,8 +144,8 @@ namespace Negocio
 
         public decimal ObtenerMontoPorTipoDePago(ETipoDePago tipoDePago)
         {
-            return _pagosDeLasVentas
-                .Where(p => p.TipoPago == tipoDePago)
+            return _cobroDeLasVentas
+                .Where(p => p.TiposDeCobro == tipoDePago)
                 .Sum(p => p.Monto);
         }
 
@@ -158,21 +158,21 @@ namespace Negocio
                 throw new ArgumentNullException(nameof(_gestorContable), "El Gestor Contable no puede ser nulo.");
             }
 
-            if (_pagosDeLasVentas.Count == 0)
+            if (_cobroDeLasVentas.Count == 0)
             {
                 throw new NoHayPagosEnLaListaDePagosDeLasVentasException("La Lista de Pagos de las Ventas está vacía");
             }
 
-            _gestorContable.RecibirPagosDeLasVentasDelTurno(_pagosDeLasVentas);
+            _gestorContable.RecibirPagosDeLasVentasDelTurno(_cobroDeLasVentas);
 
             MarcarComoContabilizado();
-            _pagosDeLasVentas.Clear();// Limpiamos la lista al Cerrar el Turno
+            _cobroDeLasVentas.Clear();// Limpiamos la lista al Cerrar el Turno
         }
 
         private void  MarcarComoContabilizado() 
         {
 
-            foreach (var pago in _pagosDeLasVentas)
+            foreach (var pago in _cobroDeLasVentas)
             {
                 pago.MarcarComoContabilizado();
             }
@@ -245,7 +245,7 @@ namespace Negocio
         {
             Dictionary<int, decimal> ventasPorEmpleado = new Dictionary<int, decimal>();
 
-            foreach (IPago pago in _pagosDeLasVentas)
+            foreach (ICobro pago in _cobroDeLasVentas)
             {
                 if (!ventasPorEmpleado.ContainsKey(pago.IdDelCobrador))
                 {
@@ -289,7 +289,7 @@ namespace Negocio
             Dictionary<int, decimal> ventasPorRol = new Dictionary<int, decimal>();
 
             
-            foreach (IPago pago in _pagosDeLasVentas)
+            foreach (ICobro pago in _cobroDeLasVentas)
             {
                 if (pago.RolDelCobrador == rol)
                 {

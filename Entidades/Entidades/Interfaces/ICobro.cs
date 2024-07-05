@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entidades.Interfaces
 {
-    public interface IPago
+    public interface ICobro
     {
         int Id { get; set; }
         int IdMesaOCliente { get; set; }
@@ -15,7 +15,7 @@ namespace Entidades.Interfaces
         DateTime Fecha { get; set; }
         int IdDelCobrador { get; set; }
         ERol RolDelCobrador { get; set; }
-        ETipoDePago TipoPago { get; set; }
+        ETipoDePago TiposDeCobro { get; set; }
 
         void MarcarComoContabilizado();
     }

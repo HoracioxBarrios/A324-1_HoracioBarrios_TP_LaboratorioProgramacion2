@@ -75,10 +75,10 @@ namespace Entidades
         /// Cobra el pedido en base al Precio de Venta de los Productos (IConsumibles o IVendibles --- Bebidas y Platos ----)
         /// </summary>
         /// <param name="pedido"></param>
-        public IPago Cobrar(int idDelCliente, ETipoDePago tipoDePago)
+        public ICobro Cobrar(int idDelCliente, ETipoDePago tipoDePago)
         {
             bool seCobro = false;
-            IPago? pago = null;
+            ICobro? pago = null;
             foreach (Cliente cliente in _clientes)
             {
                 if( cliente.Id == idDelCliente)
@@ -104,9 +104,9 @@ namespace Entidades
             return pago;
         }
 
-        private IPago RegistrarPago(int idMesaOCliente, decimal monto, ETipoDePago tipoPago)
+        private ICobro RegistrarPago(int idMesaOCliente, decimal monto, ETipoDePago tipoPago)
         {
-            return new Pago(idMesaOCliente, this.Id, this.Rol, monto, tipoPago);
+            return new Cobro(idMesaOCliente, this.Id, this.Rol, monto, tipoPago);
         }
 
 

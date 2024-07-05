@@ -81,7 +81,7 @@ namespace Negocio
                 if (delivery.Id == idDelDelivery)
                 {
                     ICobrador deliveryCobrador = (ICobrador)delivery;
-                    IPago pago = deliveryCobrador.Cobrar(idDelCliente, tipoDePago);
+                    ICobro pago = deliveryCobrador.Cobrar(idDelCliente, tipoDePago);
                     if (pago != null)
                     {
                         seCobro = true;
@@ -92,9 +92,9 @@ namespace Negocio
             return seCobro;
         }
 
-        private void AgregarPagoAListaDePagos(IPago pago)
+        private void AgregarPagoAListaDePagos(ICobro pago)
         {
-            _gestorDeVentas.RegistrarPago(pago);
+            _gestorDeVentas.RegistrarCobro(pago);
         }
     }
 }

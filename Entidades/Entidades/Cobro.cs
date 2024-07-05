@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Pago : IPago
+    public class Cobro : ICobro
     {
         private static readonly object _lock = new object();
         private static int _contadorId = 0;
@@ -20,26 +20,26 @@ namespace Entidades
         private ERol _rolDelCobrador;
         private decimal _monto;
         private DateTime _fecha;
-        private ETipoDePago _tipoDePago;
+        private ETipoDePago _tipoDeCobro;
 
-        private bool _contabilizado; // cuando se cierra el dia se recolectan todos los pagos y se agregan a las arcas (con esto aclaramos que ya lo agregamosa las arcas luego)
+        private bool _contabilizado; // cuando se cierra el dia se recolectan todos los Cobros y se agregan a las arcas (con esto aclaramos que ya lo agregamos a las arcas luego)
 
 
-        private Pago()
+        private Cobro()
         {
             _contabilizado = false;
         }
 
 
 
-        public Pago(int idMesaOCliente, int idDelCobrador, ERol rolDelCobrador, decimal monto, ETipoDePago tipoPago) : this()
+        public Cobro(int idMesaOCliente, int idDelCobrador, ERol rolDelCobrador, decimal monto, ETipoDePago tipoPago) : this()
         {
             _idMesaOCliente = idMesaOCliente;
             _monto = monto;
             _fecha = DateTime.Now;
             _idDelCobrador = idDelCobrador;
             _rolDelCobrador = rolDelCobrador;
-            _tipoDePago = tipoPago;
+            _tipoDeCobro = tipoPago;
 
 
 
@@ -100,10 +100,10 @@ namespace Entidades
 
 
 
-        public ETipoDePago TipoPago
+        public ETipoDePago TiposDeCobro
         {
-            get { return _tipoDePago; }
-            set { _tipoDePago = value; }
+            get { return _tipoDeCobro; }
+            set { _tipoDeCobro = value; }
         } 
 
     }

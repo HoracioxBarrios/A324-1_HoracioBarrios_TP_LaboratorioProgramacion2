@@ -8,6 +8,6 @@ namespace Entidades.Interfaces
 {
     public interface IGestorContable
     {
-        void RecibirPagosDeLasVentasDelTurno(List<IPago> pagosDeLasVentasDelTurno);
+        void RecibirPagosDeLasVentasDelTurno(List<ICobro> pagosDeLasVentasDelTurno);
     }
 }

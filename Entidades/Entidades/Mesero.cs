@@ -86,10 +86,10 @@ namespace Entidades
 
 
 
-        public IPago Cobrar(int idMesaOCliente, ETipoDePago tipoPago)
+        public ICobro Cobrar(int idMesaOCliente, ETipoDePago tipoPago)
         {
             bool seCobro = false;
-            IPago? pago = null;
+            ICobro? pago = null;
 
             foreach (IMesa mesa in _mesasAsignada)
             {
@@ -123,9 +123,9 @@ namespace Entidades
             return pago;
         }
 
-        private IPago RegistrarPago(int idMesaOCliente, decimal monto, ETipoDePago tipoPago)
+        private ICobro RegistrarPago(int idMesaOCliente, decimal monto, ETipoDePago tipoPago)
         {
-            return new Pago(idMesaOCliente, this.Id,this.Rol, monto, tipoPago);
+            return new Cobro(idMesaOCliente, this.Id,this.Rol, monto, tipoPago);
         }
 
 
