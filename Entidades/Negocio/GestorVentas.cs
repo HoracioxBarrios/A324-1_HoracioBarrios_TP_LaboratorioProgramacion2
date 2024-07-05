@@ -15,7 +15,7 @@ namespace Negocio
     {
 
         private List<IPago> _pagosDeLasVentas;
-
+        private IGestorContable _gestorContable;
 
 
 
@@ -23,6 +23,10 @@ namespace Negocio
         public GestorVentas() 
         { 
             _pagosDeLasVentas = new List<IPago>();
+        }
+        public GestorVentas(IGestorContable gestorContable) :this()
+        {
+            _gestorContable = gestorContable;
         }
 
         /// <summary>
@@ -147,7 +151,33 @@ namespace Negocio
 
 
 
+        public void CerrarTurno()
+        {
+            if (_gestorContable == null)
+            {
+                throw new ArgumentNullException(nameof(_gestorContable), "El Gestor Contable no puede ser nulo.");
+            }
 
+            if (_pagosDeLasVentas.Count == 0)
+            {
+                throw new NoHayPagosEnLaListaDePagosDeLasVentasException("La Lista de Pagos de las Ventas está vacía");
+            }
+
+            _gestorContable.RecibirPagosDeLasVentasDelTurno(_pagosDeLasVentas);
+
+            MarcarComoContabilizado();
+            _pagosDeLasVentas.Clear();// Limpiamos la lista al Cerrar el Turno
+        }
+
+        private void  MarcarComoContabilizado() 
+        {
+
+            foreach (var pago in _pagosDeLasVentas)
+            {
+                pago.MarcarComoContabilizado();
+            }
+
+        }
 
 
         public string ObtenerNombreVendedor(int idDelCobrador, ERol rolDelCobrador, List<IEmpleado> empleados)

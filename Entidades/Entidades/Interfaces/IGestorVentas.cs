@@ -15,5 +15,7 @@ namespace Entidades.Interfaces
         decimal ObtenerMontoDeLosPagosDeLosConsumosTotales();
         decimal ObtenerMontoDeLosPagosDeDeliverys();
         decimal ObtenerMontoDeLosPagosDeMeseros();
+
+        void CerrarTurno();
     }
 }

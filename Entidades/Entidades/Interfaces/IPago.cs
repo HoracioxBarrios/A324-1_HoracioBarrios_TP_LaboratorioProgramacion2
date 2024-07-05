@@ -16,5 +16,7 @@ namespace Entidades.Interfaces
         int IdDelCobrador { get; set; }
         ERol RolDelCobrador { get; set; }
         ETipoDePago TipoPago { get; set; }
+
+        void MarcarComoContabilizado();
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Pago :IPago
+    public class Pago : IPago
     {
         private static readonly object _lock = new object();
         private static int _contadorId = 0;
@@ -22,29 +22,47 @@ namespace Entidades
         private DateTime _fecha;
         private ETipoDePago _tipoDePago;
 
+        private bool _contabilizado; // cuando se cierra el dia se recolectan todos los pagos y se agregan a las arcas (con esto aclaramos que ya lo agregamosa las arcas luego)
+
+
+        private Pago()
+        {
+            _contabilizado = false;
+        }
 
 
 
-
-
-
-
-        public Pago(int idMesaOCliente, int idDelCobrador, ERol rolDelCobrador, decimal monto,  ETipoDePago tipoPago)
+        public Pago(int idMesaOCliente, int idDelCobrador, ERol rolDelCobrador, decimal monto, ETipoDePago tipoPago) : this()
         {
             _idMesaOCliente = idMesaOCliente;
             _monto = monto;
             _fecha = DateTime.Now;
-            _idDelCobrador = idDelCobrador ;
+            _idDelCobrador = idDelCobrador;
             _rolDelCobrador = rolDelCobrador;
-            _tipoDePago = tipoPago; 
+            _tipoDePago = tipoPago;
 
 
-            
+
             lock (_lock)// usamos el lock para garantizar thread-safety
             {
                 _id = ++_contadorId;
             }
         }
+
+
+
+
+
+        public void MarcarComoContabilizado()
+        {
+            _contabilizado = true;
+        }
+        public bool Contabilizado
+        {
+            get { return _contabilizado; }
+        }
+
+
 
 
         public int Id 

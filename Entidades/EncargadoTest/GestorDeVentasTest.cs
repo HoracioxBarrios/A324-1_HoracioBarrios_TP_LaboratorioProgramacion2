@@ -309,5 +309,27 @@ namespace Test
             // Assert -----------> debe haber 3 en el Top
             Assert.AreEqual(3, top3Ventas.Count, "El tamaño del top 3 no es 3.");
         }
+
+        [TestMethod]
+        public void CerrarTurno_AgregaDineroArca()
+        {
+            // Arrange
+            IArca arca = new Arca();
+            IGestorContable gestorContable = new GestorContable(arca);
+            IGestorVentas gestorVentas = new GestorVentas(gestorContable);
+
+            IPago pagoMesero = new Pago(1, 100, ERol.Mesero,1200, ETipoDePago.Contado);
+            IPago pagoDelivery = new Pago(2, 101, ERol.Delivery, 500 ,ETipoDePago.TarjetaDeCredito);
+
+            gestorVentas.RegistrarPago(pagoMesero);
+            gestorVentas.RegistrarPago(pagoDelivery);
+
+            // Act
+            gestorVentas.CerrarTurno();
+
+            // Assert
+            var montoEnArca = arca.ObtenerMontoDisponible();
+            Assert.AreEqual(1700, montoEnArca);
+        }
     }
 }
