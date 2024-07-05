@@ -162,27 +162,42 @@ namespace Negocio
 
 
 
-        public List<(IConsumible consumible, int cantidad)> ObtenerRankingDeConsumiblesMasPedido()         // Método para obtener ranking de consumibles (Platos o Bebidas más vendidos)
-        {
-            var rankingDict = new Dictionary<IConsumible, int>();
 
-            foreach (var consumible in _historialDeConsumibles)
+
+
+
+
+
+
+        public List<(IConsumible consumible, int cantidad)> ObtenerRankingDeConsumiblesMasPedido()
+        {
+            Dictionary<string, int> rankingDict = new Dictionary<string, int>();
+
+            foreach (IConsumible consumible in _historialDeConsumibles)
             {
-                if (rankingDict.ContainsKey(consumible))
+                string nombreConsumible = consumible.Nombre; // Suponiendo que Nombre es una propiedad en IConsumible que devuelve el nombre del consumible
+
+                if (rankingDict.ContainsKey(nombreConsumible))
                 {
-                    rankingDict[consumible]++;
+                    rankingDict[nombreConsumible]++;
                 }
                 else
                 {
-                    rankingDict[consumible] = 1;
+                    rankingDict[nombreConsumible] = 1;
                 }
             }
 
-            var rankingList = new List<(IConsumible consumible, int cantidad)>();
+            List<(IConsumible consumible, int cantidad)> rankingList = new List<(IConsumible consumible, int cantidad)>();
 
             foreach (var entry in rankingDict)
             {
-                rankingList.Add((entry.Key, entry.Value));
+                // Encuentra el consumible correspondiente en _historialDeConsumibles
+                IConsumible consumible = _historialDeConsumibles.FirstOrDefault(c => c.Nombre == entry.Key);
+
+                if (consumible != null)
+                {
+                    rankingList.Add((consumible, entry.Value));
+                }
             }
 
             rankingList.Sort((x, y) => y.cantidad.CompareTo(x.cantidad));
@@ -190,34 +205,51 @@ namespace Negocio
             return rankingList;
         }
 
-        
-        public List<(IConsumible consumible, int cantidad)> ObtenerRankingDeConsumiblesMenosPedido() // Método para obtener ranking de consumibles Platos o Beidas menos vendidos)
-        {
-            var rankingDict = new Dictionary<IConsumible, int>();
 
-            foreach (var consumible in _historialDeConsumibles)
+
+
+
+
+        public List<(IConsumible consumible, int cantidad)> ObtenerRankingDeConsumiblesMenosPedido()
+        {
+            Dictionary<string, int> rankingDict = new Dictionary<string, int>();
+
+            foreach (IConsumible consumible in _historialDeConsumibles)
             {
-                if (rankingDict.ContainsKey(consumible))
+                string nombreConsumible = consumible.Nombre; // Suponiendo que Nombre es una propiedad en IConsumible que devuelve el nombre del consumible
+
+                if (rankingDict.ContainsKey(nombreConsumible))
                 {
-                    rankingDict[consumible]++;
+                    rankingDict[nombreConsumible]++;
                 }
                 else
                 {
-                    rankingDict[consumible] = 1;
+                    rankingDict[nombreConsumible] = 1;
                 }
             }
 
-            var rankingList = new List<(IConsumible consumible, int cantidad)>();
+            List<(IConsumible consumible, int cantidad)> rankingList = new List<(IConsumible consumible, int cantidad)>();
 
             foreach (var entry in rankingDict)
             {
-                rankingList.Add((entry.Key, entry.Value));
+                // Encuentra el consumible correspondiente en _historialDeConsumibles
+                IConsumible consumible = _historialDeConsumibles.FirstOrDefault(c => c.Nombre == entry.Key);
+
+                if (consumible != null)
+                {
+                    rankingList.Add((consumible, entry.Value));
+                }
             }
 
             rankingList.Sort((x, y) => x.cantidad.CompareTo(y.cantidad));
 
             return rankingList;
         }
+
+
+
+
+
 
         public List<(IConsumible consumible, int cantidad)> ObtenerTopNConsumiblesMasPedidos(int topN)
         {
@@ -232,6 +264,11 @@ namespace Negocio
             return topNList;
         }
 
+
+
+
+
+
         public List<(IConsumible consumible, int cantidad)> ObtenerTopNConsumiblesMenosPedido(int topN)
         {
             var ranking = ObtenerRankingDeConsumiblesMenosPedido();
@@ -244,6 +281,10 @@ namespace Negocio
 
             return topNList;
         }
+
+
+
+
 
 
 
