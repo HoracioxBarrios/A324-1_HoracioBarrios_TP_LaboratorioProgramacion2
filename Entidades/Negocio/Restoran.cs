@@ -17,11 +17,19 @@ namespace Negocio
         private IGestorDeProveedores _gestorDeProveedores;
         private IGestorProductos _gestorDeProductos;
         private IGestorMenu _gestorMenu;
+        
+        private IGestorContable _gestorContable;
+
 
         IOperacionesEmpleadoDB _operacionesDeBaseDatosEmpleados;
 
         public Restoran() 
         {
+            IArca arca = new Arca();
+            arca.AgregarDinero(100000M);
+            _gestorContable = new GestorContable(arca);
+
+
             IOperacionesEmpleadoDB operacionesDeBaseDeDatosEmpleados = new EmpleadoDB();
             _operacionesDeBaseDatosEmpleados = operacionesDeBaseDeDatosEmpleados;
 
@@ -45,7 +53,10 @@ namespace Negocio
             _gestorDeProveedores.CrearProveedor("Verduras S.A", "5", "Av Sin Verduras 200", ETipoDeProducto.Verduleria, EMediosDePago.Contado, EAcreedor.No, EDiaDeLaSemana.Lunes);
 
 
-            _gestorDeProductos = new GestorDeProductos();
+
+
+
+            _gestorDeProductos = new GestorDeProductos(GestorContable);
 
             //------- instancio PRODUCTOS (INGREDIENTES)  Y Se Agregan al Stock ---------
 
@@ -138,7 +149,11 @@ namespace Negocio
         }
 
 
-
+        public IGestorContable GestorContable
+        {
+            get { return _gestorContable; }
+            set { _gestorContable = value; }
+        }
 
 
 

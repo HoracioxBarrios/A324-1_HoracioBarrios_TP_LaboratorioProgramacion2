@@ -15,6 +15,18 @@ namespace Test
     [TestClass]
     public class ProductoTest
     {
+        private IGestorContable _gestorContable;
+
+
+        [TestInitialize]
+        public void Setup()
+        {
+            IArca arca = new Arca();
+            arca.AgregarDinero(100000M);
+            _gestorContable = new GestorContable(arca); // Ahora el Gestor productos necesita esto al momento de Agregar los productos a stock para pagarles a los proveedores
+        }
+
+
         [TestMethod]
         public void ProductoBebidaTest_VerificamosSiSeCrea()
         {
@@ -106,7 +118,7 @@ namespace Test
             EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
 
 
-            GestorDeProductos gestorProductos = new GestorDeProductos();
+            GestorDeProductos gestorProductos = new GestorDeProductos(_gestorContable);
 
             IProducto coca = gestorProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioCostoBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
 
@@ -142,7 +154,7 @@ namespace Test
             EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
 
 
-            GestorDeProductos gestorProductos = new GestorDeProductos();
+            GestorDeProductos gestorProductos = new GestorDeProductos(_gestorContable);
 
             IProducto coca = gestorProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioCostoBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
             //Agregamos el producto BEBIDA al stock
@@ -208,7 +220,7 @@ namespace Test
             EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
 
 
-            GestorDeProductos gestorProductos = new GestorDeProductos();
+            GestorDeProductos gestorProductos = new GestorDeProductos(_gestorContable);
 
             IProducto coca = gestorProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioCostoBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
             //Agregamos el producto BEBIDA al stock

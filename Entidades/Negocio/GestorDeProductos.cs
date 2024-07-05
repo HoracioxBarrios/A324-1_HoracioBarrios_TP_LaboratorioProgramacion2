@@ -15,6 +15,7 @@ namespace Negocio
         private int _contadorId = 1;
 
         public event StockDeProductosActualizoDelegate EventStockDeProductosActualizados;
+        private IGestorContable _gestorContable;
 
 
 
@@ -22,11 +23,15 @@ namespace Negocio
 
 
 
-
-        public GestorDeProductos() //Puede esperar un servicio a DB.
+        private GestorDeProductos() //Puede esperar un servicio a DB.
         {
             _listaDeProductosEnStock = new List<IProducto>();
             CorroborarUltimaIdDeProducto();
+        }
+
+        public GestorDeProductos(IGestorContable gestorContable) :this()
+        {
+            _gestorContable = gestorContable;
         }
 
 
@@ -188,25 +193,40 @@ namespace Negocio
         /// </summary>
         /// <param name="producto"></param>
         /// <exception cref="AlAgregarProductoAStockException"></exception>
+        /// <summary>
+        /// Agrega un producto a stock y paga al proveedor si hay suficiente dinero.
+        /// </summary>
+        /// <param name="producto"></param>
+        /// <exception cref="AlAgregarProductoAStockException"></exception>
         public void AgregarProductoAStock(IProducto producto)
         {
-            bool seModificoLaLista = false;
-            if(producto == null)
+            if (producto == null)
             {
                 throw new AlAgregarProductoAStockException("El producto es null, no se pudo agregar a la lista");
             }
+
             lock (_listaDeProductosEnStock)
             {
-                _listaDeProductosEnStock.Add(producto);
-                seModificoLaLista = true;
-            }
+                decimal precioProducto = producto.Precio;
 
+                // Verificar si hay suficiente dinero en el arca para pagar al proveedor
+                if (_gestorContable.ObtenerMontoDisponible() >= precioProducto)
+                {
+                    _gestorContable.PagarProveedor(producto, producto.Proveedor);
+                    _listaDeProductosEnStock.Add(producto);
+                }
+                else
+                {
+                    // Usar la cuenta corriente del proveedor
+                    producto.Proveedor.UsarCuentaCorriente();
+                    _listaDeProductosEnStock.Add(producto); // Agregar producto al stock sin pagar al proveedor de inmediato
+                }
 
-            if (seModificoLaLista)
-            {
                 OnStockProductosActualizado();
             }
         }
+
+
 
 
         public bool DescontarProductosDeStock(List<IConsumible> consumiblesADescontarDeStock)//LE PUEDE LLEGAR PLATOS O BEBIDAS

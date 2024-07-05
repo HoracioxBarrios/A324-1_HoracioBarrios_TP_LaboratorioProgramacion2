@@ -14,14 +14,31 @@ namespace Entidades
         private decimal _monto;
 
         private DateTime _fechaDePago;
+
+        private bool _pendiente; // en el caso de ser proveedor acreeedor podemos usar esto.
         public Pago(string nombreCobrador, decimal monto)
         {
             _nombreDelCobrador = nombreCobrador;
             _monto = monto;
             _fechaDePago = DateTime.Now; // Fecha actual al momento de crear el pago
+
+            _pendiente = false;
         }
 
+        public void EstablecerPagoPendienteAProveedorAcreedor()
+        {
+            _pendiente= true;
+        }
+        public void EstablecerPagoNoPendienteAProveedor()
+        {
+            _fechaDePago= DateTime.Now;
+            _pendiente = false;
+        }
 
+        public bool PagoPendienteAProveedor
+        {
+            get { return _pendiente; }
+        }
 
         public string NombreCobrador 
         { 

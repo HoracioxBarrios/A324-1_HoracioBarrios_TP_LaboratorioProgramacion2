@@ -16,7 +16,7 @@ namespace Entidades.Interfaces
         bool Disponibilidad { get; set; }
         int Id { get; set; }
         decimal CalcularPrecioDeCosto();
-
+        IProveedor Proveedor { get; set; }
         EUnidadDeMedida UnidadDeMedida { get; set; }
         ETipoDeProducto ETipoDeProducto { get; set; }
     }

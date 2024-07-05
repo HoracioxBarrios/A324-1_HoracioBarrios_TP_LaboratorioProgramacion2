@@ -14,12 +14,26 @@ namespace Negocio
     {
         private IArca _arca;
         private List<ICobro> _historialDeLosCobrosDeLasVentas;
-        private List<IPago> _historialDePagos;
+
+
+        private List<IPago> _historialPagosRealizadosEmpleados; // Los pagos pendientes a Empleados se manejan distinto a los de Proveedores. ya que al empleado no se genera el pago (si no hay plata )y al proveedor si se genera el pago (pero con estado pendiente )Y se asigna a una lista de pendientes abajo, para pagar luego.
+
+        private List<IPago> _historialPagosRealizadosAProveedores;
+        private List<IPago> _pagosPendientesAProveedores;
+        
+
+
+
+
+
 
         public GestorContable(IArca arca) 
         { 
             _historialDeLosCobrosDeLasVentas = new List<ICobro>();
-            _historialDePagos = new List<IPago>();
+            _historialPagosRealizadosEmpleados = new List<IPago>();
+
+            _historialPagosRealizadosAProveedores = new List<IPago>();
+            _pagosPendientesAProveedores = new List<IPago>();   
             _arca = arca;
         
         }
@@ -96,13 +110,31 @@ namespace Negocio
                     IPago pago = new Pago(empleado.Nombre, montoAPagar);
                     empleado.RecibirPago(pago); // Se marca como cobrado
 
-                    _historialDePagos.Add(pago);
+                    _historialPagosRealizadosEmpleados.Add(pago);
                 }
                 else
                 {
-                    // Si no hay suficiente dinero o el salario ya fue cobrado, continuar con el siguiente empleado - (Por defecto el empleado tiene Salario no cobrado aun.)
+                    // Si no hay suficiente dinero o el salario ya fue cobrado, continua con el siguiente empleado - (Por defecto el empleado tiene Salario no cobrado aun.) y para pagarle simplemente se corre de nuevo si hay plata se le pagara. ----> con el provvedor es distinto. este se agrega a una lista de pendientes y el proveedor se marca como pago pendiente.
                     continue;
                 }
+            }
+        }
+
+        public void PagarProveedor(IProducto producto, IProveedor proveedor)
+        {
+            decimal precioProducto = producto.Precio;
+            IPago pago = new Pago(proveedor.Nombre, precioProducto);
+
+            if (_arca.ObtenerMontoDisponible() >= precioProducto)
+            {
+                _arca.TomarDinero(precioProducto);
+                _historialPagosRealizadosAProveedores.Add(pago);
+            }
+            else
+            {               
+
+                proveedor.UsarCuentaCorriente();// Usamos la cuenta corriente del proveedor y agregamos a pagos pendientes a proveedores
+                _pagosPendientesAProveedores.Add(pago);
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 
 namespace Test
 {
@@ -97,6 +98,64 @@ namespace Test
                     Assert.IsFalse(empleado.CobroMensualPendienteACobrar); // Verificamos que otros roles NO tienen el pago pendiente
                 }
             }
+        }
+
+
+
+        [TestMethod]
+        public void AgregarProductoAStock_PagoAlProveedorCorrecto()
+        {
+            // Arrange
+            var mockArca = new Mock<IArca>();
+            var gestorContable = new GestorContable(mockArca.Object);
+            var gestorDeProductos = new GestorDeProductos(gestorContable);
+
+            var mockProveedor = new Mock<IProveedor>();
+            mockProveedor.Setup(p => p.Nombre).Returns("Proveedor");
+            mockProveedor.Setup(p => p.Cuit).Returns("30-12345678-9");
+
+            var mockProducto = new Mock<IProducto>();
+            mockProducto.Setup(p => p.Nombre).Returns("pollo");
+            mockProducto.Setup(p => p.Precio).Returns(20000M);
+            mockProducto.Setup(p => p.Proveedor).Returns(mockProveedor.Object);
+
+            // Mock para simular suficiente dinero en el arca
+            mockArca.Setup(a => a.ObtenerMontoDisponible()).Returns(30000M);
+
+            // Act
+            gestorDeProductos.AgregarProductoAStock(mockProducto.Object);
+
+            // Assert
+            mockArca.Verify(a => a.TomarDinero(20000M), Times.Once);
+            Assert.IsTrue(gestorDeProductos.ObtenerTodosLosProductos().Contains(mockProducto.Object), "El producto debería estar en el stock.");
+        }
+
+        [TestMethod]
+        public void AgregarProductoAStock_UsoCuentaCorrienteDelProveedor()
+        {
+            // Arrange
+            var mockArca = new Mock<IArca>();
+            var gestorContable = new GestorContable(mockArca.Object);
+            var gestorDeProductos = new GestorDeProductos(gestorContable);
+
+            var mockProveedor = new Mock<IProveedor>();
+            mockProveedor.Setup(p => p.Nombre).Returns("Proveedor");
+            mockProveedor.Setup(p => p.Cuit).Returns("30-12345678-9");
+
+            var mockProducto = new Mock<IProducto>();
+            mockProducto.Setup(p => p.Nombre).Returns("pollo");
+            mockProducto.Setup(p => p.Precio).Returns(20000M);
+            mockProducto.Setup(p => p.Proveedor).Returns(mockProveedor.Object);
+
+            // Mock para simular dinero insuficiente en el arca
+            mockArca.Setup(a => a.ObtenerMontoDisponible()).Returns(10000M); // Menor al precio del producto
+
+            // Act
+            gestorDeProductos.AgregarProductoAStock(mockProducto.Object);
+
+            // Assert
+            mockProveedor.Verify(p => p.UsarCuentaCorriente(), Times.Once);
+            Assert.IsTrue(gestorDeProductos.ObtenerTodosLosProductos().Contains(mockProducto.Object), "El producto debería estar en el stock.");
         }
 
     }

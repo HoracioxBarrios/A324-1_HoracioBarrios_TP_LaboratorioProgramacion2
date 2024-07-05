@@ -11,5 +11,7 @@ namespace Entidades.Interfaces
         void CobrarPagosDeLasVentasDelTurno(List<ICobro> pagosDeLasVentasDelTurno);
         void Pagar(decimal montoAPagar);
         decimal ObtenerMontoDisponible();
+
+        void PagarProveedor(IProducto producto, IProveedor proveedor);
     }
 }

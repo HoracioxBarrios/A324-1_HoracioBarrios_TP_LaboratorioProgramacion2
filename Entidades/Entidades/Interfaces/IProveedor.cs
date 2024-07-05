@@ -13,5 +13,7 @@ namespace Entidades.Interfaces
         EDiaDeLaSemana DiaDeEntrega { get;set; }
         int ID { get; }
 
+        void UsarCuentaCorriente();
+
     }
 }

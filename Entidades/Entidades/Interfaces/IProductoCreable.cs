@@ -10,6 +10,5 @@ namespace Entidades.Interfaces
     public interface IProductoCreable
     {
         EUnidadDeMedida UnidadDeMedida { get; set; }
-        IProveedor Proveedor { get; set; }
     }
 }

@@ -16,6 +16,23 @@ namespace Test
     [TestClass]
     public class IngredienteTest
     {
+
+        private IGestorContable _gestorContable;
+
+
+
+        [TestInitialize]
+        public void Setup()
+        {
+            IArca arca = new Arca();
+            arca.AgregarDinero(100000M);
+            _gestorContable = new GestorContable(arca); // Ahora el Gestor productos necesita esto al momento de Agregar los productos a stock para pagarles a los proveedores
+        }
+
+
+
+
+
         [TestMethod]
         public async Task DescontarConsumiblesDelStock_DebeDescontarDelStockLasCantidadesDeLosConsumiblesQueSePidieron_SiSeDescontóDaTrue()
         {
@@ -61,7 +78,7 @@ namespace Test
 
 
             //------------------- GESTOR DE PRODUCTOS -----------------------
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
 
             //Act
@@ -252,7 +269,7 @@ namespace Test
             mockProveedor3.Setup(p => p.ID).Returns(1);
             mockProveedor3.Setup(p => p.ToString()).Returns("ID: 1, Nombre: Proveedor 1, CUIT: 30-12345678-9, Direccion: Calle Falsa 123, Tipo de Producto que Provee: Almacen, Medio de Pago: Transferencia, Es Acreedor? : Si, Dia de Entrega: Lunes");
 
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
 
             //Act
@@ -349,7 +366,7 @@ namespace Test
             mockProveedor3.Setup(p => p.ID).Returns(1);
             mockProveedor3.Setup(p => p.ToString()).Returns("ID: 1, Nombre: Proveedor 1, CUIT: 30-12345678-9, Direccion: Calle Falsa 123, Tipo de Producto que Provee: Almacen, Medio de Pago: Transferencia, Es Acreedor? : Si, Dia de Entrega: Lunes");
 
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
 
             //Act
@@ -445,7 +462,7 @@ namespace Test
             mockProveedor3.Setup(p => p.ID).Returns(1);
             mockProveedor3.Setup(p => p.ToString()).Returns("ID: 1, Nombre: Proveedor 1, CUIT: 30-12345678-9, Direccion: Calle Falsa 123, Tipo de Producto que Provee: Almacen, Medio de Pago: Transferencia, Es Acreedor? : Si, Dia de Entrega: Lunes");
 
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
 
             //Act

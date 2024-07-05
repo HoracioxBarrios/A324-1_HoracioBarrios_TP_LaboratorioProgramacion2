@@ -16,11 +16,16 @@ namespace Test
         private Mock<IProveedor> _mockProveedor1;
         private List<IConsumible> _ingredientes;
 
-
+        private IGestorContable _gestorContable;
 
         [TestInitialize]
         public void Init() 
         {
+            IArca arca = new Arca();
+            arca.AgregarDinero(100000M);
+            _gestorContable = new GestorContable(arca); // Ahora el Gestor productos necesita esto al momento de Agregar los productos a stock para pagarles a los proveedores
+
+
             // Arrange
             //creamos el producto para el plato
             _mockProveedor1 = new Mock<IProveedor>();
@@ -37,7 +42,7 @@ namespace Test
 
 
 
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
             IProducto ingrediente1 = gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "papa", 1, EUnidadDeMedida.Kilo, 10000, _mockProveedor1.Object);
             IProducto ingrediente2 = gestorDeProductos.CrearProducto(ETipoDeProducto.Ingrediente, "pollo", 1, EUnidadDeMedida.Kilo, 10000, _mockProveedor1.Object);

@@ -15,6 +15,21 @@ namespace Test
     [TestClass]
     public class BebidaTest
     {
+        private IGestorContable _gestorContable;
+
+
+
+        [TestInitialize]
+        public void Setup()
+        {
+            IArca arca = new Arca();
+            arca.AgregarDinero(100000M);
+            _gestorContable = new GestorContable(arca); // Ahora el Gestor productos necesita esto al momento de Agregar los productos a stock para pagarles a los proveedores
+        }
+
+
+
+
         [TestMethod]
         public void TestBebidas_VerificamosSiSeCreanYSeAñadenALStock_AlAgregarseAlStock_SiSeAgreganseDebeContarLosDosYSiEsAsiEsTaBien()
         {
@@ -55,7 +70,7 @@ namespace Test
 
 
             //GESTOR DE PRODUCTOS
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
           
             //Act  -- CREAMOS LOS PRODUCTOS --
             IProducto producto1 = gestorDeProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
@@ -128,7 +143,7 @@ namespace Test
 
 
             //GESTOR
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
             //Act
             IProducto coca = gestorDeProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
@@ -161,7 +176,7 @@ namespace Test
             ECategoriaConsumible categoriaConsumibleBebida1 = ECategoriaConsumible.Bebida;
             EClasificacionBebida clasificacionBebida1 = EClasificacionBebida.Sin_Añcohol;
 
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
             IProducto coca = gestorDeProductos.CrearProducto(tipoDeProductoBebida1, nombreBebida1, cantidadBebida1, eUnidadDeMedidaBebida1, precioBebida1, proveedorBebida1, categoriaConsumibleBebida1, clasificacionBebida1);
             //------------------- Tenemos la COCA en stock ------------------------
             gestorDeProductos.AgregarProductoAStock(coca);

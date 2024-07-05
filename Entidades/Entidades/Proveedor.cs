@@ -1,4 +1,5 @@
 ﻿using Entidades.Enumerables;
+using Entidades.Excepciones;
 using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,9 @@ namespace Entidades
         private EMediosDePago _medioDePago;// podria ser una lista de IMediosDePago
         private EAcreedor _esAcreedor;
         private EDiaDeLaSemana _diaDeEntrega;
-        
+
+        private List<IPago> _historialDePagosCobrados;
+        private bool _tienePagosPendiente;
 
         public Proveedor(string nombre, string cuit, string direccion, ETipoDeProducto tipoDeproducto, EMediosDePago medioDePago,EAcreedor esAcreedor, EDiaDeLaSemana diaDeEntrega) 
         {
@@ -35,6 +38,38 @@ namespace Entidades
             EsAcreedor = esAcreedor;
             DiaDeEntrega = diaDeEntrega;
             _id = ++_contadorId;
+
+            _historialDePagosCobrados = new List<IPago>();
+            _tienePagosPendiente = false;
+        }
+
+        public void AgregarPago(IPago pago)
+        {
+            if(pago != null)
+            {
+                _historialDePagosCobrados.Add(pago); 
+            }
+        }
+
+        public void UsarCuentaCorriente()
+        {
+            EstalecerQueTienePagoPendiente(); // Marcar que hay un pago pendiente con este proveedor
+            
+        }
+
+
+        public void EstalecerQueTienePagoPendiente()
+        {
+            _tienePagosPendiente = true;
+        }
+        public bool TienePagosPendiente
+        {
+            get { return _tienePagosPendiente; }
+        }
+
+        public List<IPago> HistorialDePagos
+        {
+            get { return _historialDePagosCobrados; }
         }
         public string Nombre 
         { 
@@ -80,6 +115,8 @@ namespace Entidades
             get { return _id; }
             private set { _id = value; }
         }
+
+        
         public override string ToString()
         {
             return $"ID: {ID}, Nombre: {Nombre}, CUIT: {Cuit}, Direccion: {Direccion}, Tipo de Producto que Provee: {TipoDeProducto}, Medio de Pago: {MediosDePago}, Es Acreedor? : {EsAcreedor}, Dia de Entrega: {DiaDeEntrega}";

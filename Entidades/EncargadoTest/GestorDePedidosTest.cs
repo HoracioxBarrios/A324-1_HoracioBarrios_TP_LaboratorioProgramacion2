@@ -25,6 +25,9 @@ namespace Test
         private IEncargado _encargado;
         private List<IConsumible> _consumublesSelecionadosParaPedido;
 
+        private IGestorContable _gestorContable;
+
+
 
 
 
@@ -32,6 +35,11 @@ namespace Test
         [TestInitialize]
         public void Setup()
         {
+            IArca arca = new Arca();
+            arca.AgregarDinero(100000M);
+            _gestorContable = new GestorContable(arca); // Ahora el Gestor productos necesita esto al momento de Agregar los productos a stock para pagarles a los proveedores
+
+
 
             //CREAMOS Y PONEMOS EN STOCK LOS INGREDIENTES que van a formar los platos.
             //Ingrediente 1-----------------------------------
@@ -74,7 +82,7 @@ namespace Test
             IEmpleado encargado = EmpleadoServiceFactory.CrearEmpleado(ERol.Encargado, "Hui", "yu", "45213", "Av pollo 12", 45000M);
             _encargado = (IEncargado)encargado;
             //------------------- GESTOR DE PRODUCTOS -----------------------
-            _gestorProductos = new GestorDeProductos();
+            _gestorProductos = new GestorDeProductos(_gestorContable);
             
             //Creamos los productos
             IProducto pollo = _gestorProductos.CrearProducto(tipoDeProducto1, nombreDeProducto1, cantidad, unidadDeMedida, precio, mockProveedor1.Object);
@@ -355,7 +363,7 @@ namespace Test
 
 
             //------------------- GESTOR DE PRODUCTOS -----------------------
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
 
             //Act
@@ -520,7 +528,7 @@ namespace Test
 
 
             //------------------- GESTOR DE PRODUCTOS -----------------------
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
 
             //Act
@@ -705,7 +713,7 @@ namespace Test
 
 
             //------------------- GESTOR DE PRODUCTOS -----------------------
-            GestorDeProductos gestorDeProductos = new GestorDeProductos();
+            GestorDeProductos gestorDeProductos = new GestorDeProductos(_gestorContable);
 
 
             //Act
