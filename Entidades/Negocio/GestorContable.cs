@@ -13,12 +13,13 @@ namespace Negocio
     public class GestorContable : IGestorContable
     {
         private IArca _arca;
-        private List<ICobro> _historialDeLosCobrosDeLasVentasGenerales;
-
+        private List<ICobro> _historialDeLosCobrosDeLasVentas;
+        private List<IPago> _historialDePagos;
 
         public GestorContable(IArca arca) 
         { 
-            _historialDeLosCobrosDeLasVentasGenerales = new List<ICobro>();
+            _historialDeLosCobrosDeLasVentas = new List<ICobro>();
+            _historialDePagos = new List<IPago>();
             _arca = arca;
         
         }
@@ -33,7 +34,7 @@ namespace Negocio
 
             foreach (Cobro cobro in cobrosDeLasVentasDelTurno) 
             {
-                _historialDeLosCobrosDeLasVentasGenerales.Add(cobro);
+                _historialDeLosCobrosDeLasVentas.Add(cobro);
                 _arca.AgregarDinero(cobro.Monto);
             }
         }
@@ -92,7 +93,10 @@ namespace Negocio
                 if (_arca.ObtenerMontoDisponible() >= montoAPagar && empleado.CobroMensualPendienteACobrar)
                 {
                     _arca.TomarDinero(montoAPagar);
-                    empleado.RecibirPago(new Pago(empleado.Nombre, montoAPagar)); // Se marca como cobrado
+                    IPago pago = new Pago(empleado.Nombre, montoAPagar);
+                    empleado.RecibirPago(pago); // Se marca como cobrado
+
+                    _historialDePagos.Add(pago);
                 }
                 else
                 {
