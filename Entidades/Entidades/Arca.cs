@@ -26,13 +26,13 @@ namespace Entidades
 
         public decimal TomarDinero(decimal montoNecesario)
         {
-            decimal dinero = 0;
-            if(_montoDineroDisponibleDelRestoran > 0 && montoNecesario >= _montoDineroDisponibleDelRestoran)
+            if (_montoDineroDisponibleDelRestoran >= montoNecesario)
             {
                 _montoDineroDisponibleDelRestoran -= montoNecesario;
             }
             return montoNecesario;
         }
+
 
 
 

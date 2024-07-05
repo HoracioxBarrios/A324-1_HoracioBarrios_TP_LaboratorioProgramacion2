@@ -16,7 +16,9 @@ namespace Entidades
         private int _id;
         private EStatus _status;
 
-        
+        private List<IPago> _historialPagosSalarioMensual;
+        private bool _cobroMensualPendienteACobrar;
+
         protected Empleado(ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario)
         {
             _rol = rol;
@@ -27,13 +29,16 @@ namespace Entidades
             _salario = salario;
             _status = EStatus.Activo;
             _password = "123456";
+
+            _historialPagosSalarioMensual = new List<IPago>();
+            _cobroMensualPendienteACobrar = true;
         }
-        protected Empleado(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) :this(rol, nombre,  apellido,  contacto, direccion,  salario)
-        { 
-            _id = id;        
+        protected Empleado(int id, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(rol, nombre, apellido, contacto, direccion, salario)
+        {
+            _id = id;
         }
 
-        protected Empleado(int id,string password, EStatus status,  ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this (
+        protected Empleado(int id, string password, EStatus status, ERol rol, string nombre, string apellido, string contacto, string direccion, decimal salario) : this(
             id, rol, nombre, apellido, contacto, direccion, salario)
         {
             _password = password;
@@ -41,16 +46,30 @@ namespace Entidades
         }
 
 
+        /// <summary>
+        /// Recie el pago y cambia su estado de CobroMensualPendienteACobrar a False
+        /// </summary>
+        /// <param name="pagoMensual"></param>
+        public void RecibirPago(IPago pagoMensual)
+        {
+            decimal montoMensual = pagoMensual.Monto;
+            if(montoMensual > 0 && montoMensual == Salario)
+            {
+                _historialPagosSalarioMensual.Add(pagoMensual);
+
+                _cobroMensualPendienteACobrar = false; // --- Se tiene que volver a setear con EVENTOS cuando empiece un nuevo mes (Usando DateTime o algo parecido ) asi refleja que ese mes esta pendiente a Cobrar. ----
+            }
+        }
 
         public string Nombre
         {
             get { return _nombre; }
-            set { _nombre = value;}
+            set { _nombre = value; }
         }
         public string Apellido
         {
             get { return _apellido; }
-            set { _apellido = value;}
+            set { _apellido = value; }
         }
         public string Contacto
         {
@@ -71,7 +90,7 @@ namespace Entidades
         public decimal Salario
         {
             get { return _salario; }
-            set { _salario=value; }
+            set { _salario = value; }
         }
         public int Id
         {
@@ -90,6 +109,17 @@ namespace Entidades
             get { return _password; }
             set { _password = value; }
         }
+
+        public List<IPago> HistorialDePagosSalariosMensual
+        {
+            get {return _historialPagosSalarioMensual;}
+            private set {_historialPagosSalarioMensual = value;}
+        }
+        public bool CobroMensualPendienteACobrar
+        {
+            get { return _cobroMensualPendienteACobrar; }
+        }
+
         public override string ToString()
         {
             return $"Id: {Id}, Nombre: {Nombre}, Apellido: {Apellido}, Contacto: {Contacto}, Rol: {Rol}, Direccion: {Direccion}, Salario: {Salario}";

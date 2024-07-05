@@ -19,5 +19,8 @@ namespace Entidades.Interfaces
         int Id { get; set; }
         EStatus Status { get; set; }
 
+        void RecibirPago(IPago pagoMensual);
+        bool CobroMensualPendienteACobrar { get; }
+
     }
 }

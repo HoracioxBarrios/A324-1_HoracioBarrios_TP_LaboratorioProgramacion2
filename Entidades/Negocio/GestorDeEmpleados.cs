@@ -11,11 +11,15 @@ namespace Negocio
         private List<IEmpleado> _listaDeEmpleados;
         private IOperacionesEmpleadoDB _operacionesDeBaseDeDatos;
 
+
+
+
         public GestorDeEmpleados(IOperacionesEmpleadoDB operacionesDeBaseDeDatos)
         {
             _listaDeEmpleados = new List<IEmpleado>();
             _operacionesDeBaseDeDatos = operacionesDeBaseDeDatos;
         }
+
 
 
 
@@ -176,5 +180,7 @@ namespace Negocio
             }
             
         }
+
+
     }
 }

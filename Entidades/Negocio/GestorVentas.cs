@@ -163,7 +163,7 @@ namespace Negocio
                 throw new NoHayPagosEnLaListaDePagosDeLasVentasException("La Lista de Pagos de las Ventas está vacía");
             }
 
-            _gestorContable.RecibirPagosDeLasVentasDelTurno(_cobroDeLasVentas);
+            _gestorContable.CobrarPagosDeLasVentasDelTurno(_cobroDeLasVentas);
 
             MarcarComoContabilizado();
             _cobroDeLasVentas.Clear();// Limpiamos la lista al Cerrar el Turno
