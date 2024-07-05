@@ -137,5 +137,42 @@ namespace Negocio
                 _pagosPendientesAProveedores.Add(pago);
             }
         }
+
+        #region Balances
+        public List<ICobro> ObtenerCobrosEnPeriodo(DateTime fechaInicio, DateTime fechaFin)
+        {
+            return _historialDeLosCobrosDeLasVentas.Where(cobro => cobro.Fecha >= fechaInicio && cobro.Fecha <= fechaFin)
+                .ToList();
+        }
+
+        public List<IPago> ObtenerPagosAProveedoresEnPeriodo(DateTime fechaInicio, DateTime fechaFin)
+        {
+            return _historialPagosRealizadosAProveedores
+                .Where(pago => pago.FechaPago >= fechaInicio && pago.FechaPago <= fechaFin)
+                .ToList();
+        }
+
+        public decimal CalcularTotalVentasEnPeriodo(DateTime fechaInicio, DateTime fechaFin)
+        {
+            var cobrosEnPeriodo = ObtenerCobrosEnPeriodo(fechaInicio, fechaFin);
+            return cobrosEnPeriodo.Sum(cobro => cobro.Monto);
+        }
+        public decimal CalcularTotalComprasEnPeriodo(DateTime fechaInicio, DateTime fechaFin)
+        {
+            var pagosEnPeriodo = ObtenerPagosAProveedoresEnPeriodo(fechaInicio, fechaFin);
+            return pagosEnPeriodo.Sum(pago => pago.Monto);
+        }
+
+        public decimal CalcularBalanceEnPeriodo(DateTime fechaInicio, DateTime fechaFin)
+        {
+            decimal totalVentas = CalcularTotalVentasEnPeriodo(fechaInicio, fechaFin);
+            decimal totalCompras = CalcularTotalComprasEnPeriodo(fechaInicio, fechaFin);
+
+            return totalVentas - totalCompras;
+        }
+
+
+
+        #endregion
     }
 }
