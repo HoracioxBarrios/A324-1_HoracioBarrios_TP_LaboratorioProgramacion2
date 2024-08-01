@@ -6,7 +6,7 @@
 
 
 #NOTA FINAL (Parte Practica LABORATORIO PROGRAMACION II) con 10
-#https://docs.google.com/document/d/1jBNLfQ5Up_S7XYhXLcoveCV9YdtEp58DsOuct__Csuk/edit?usp=sharing
+#https://drive.google.com/file/d/16IC5-z1fwe6sTdfbbJ0FBWtxC-s_9-yV/view?usp=sharing
 
 #NOTA PRIMER PARCIAL(Parte Teorica PROGRAMACION II) 6
 #https://drive.google.com/file/d/1FbykQ3vpmFF5Ym5_UsgWEwasz0P-6TtP/view?usp=sharing
